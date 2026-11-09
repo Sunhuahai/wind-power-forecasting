@@ -1,0 +1,260 @@
+{
+  "postgres": "18.6 (Homebrew)",
+  "counts": {
+    "wind_farms": 10,
+    "power_observations": 175440,
+    "nwp_forecasts": 175440,
+    "dataset_splits": 3,
+    "model_runs": 55,
+    "predictions": 232680
+  },
+  "idempotent_import_and_prediction": true,
+  "invalid_prediction_rows": 0,
+  "source_by_site": [
+    {
+      "farm_id": 1,
+      "rows": 17544,
+      "missing": 18
+    },
+    {
+      "farm_id": 2,
+      "rows": 17544,
+      "missing": 21
+    },
+    {
+      "farm_id": 3,
+      "rows": 17544,
+      "missing": 94
+    },
+    {
+      "farm_id": 4,
+      "rows": 17544,
+      "missing": 6
+    },
+    {
+      "farm_id": 5,
+      "rows": 17544,
+      "missing": 6
+    },
+    {
+      "farm_id": 6,
+      "rows": 17544,
+      "missing": 6
+    },
+    {
+      "farm_id": 7,
+      "rows": 17544,
+      "missing": 6
+    },
+    {
+      "farm_id": 8,
+      "rows": 17544,
+      "missing": 6
+    },
+    {
+      "farm_id": 9,
+      "rows": 17544,
+      "missing": 6
+    },
+    {
+      "farm_id": 10,
+      "rows": 17544,
+      "missing": 6
+    }
+  ],
+  "unknown_issued_at": 175440,
+  "example": [
+    {
+      "farm_id": 10,
+      "model": "lightgbm",
+      "origin": "2013-07-01 00:00:00",
+      "valid_at": "2013-07-01 01:00:00",
+      "lead": 1,
+      "prediction": 0.16245777904026432
+    },
+    {
+      "farm_id": 10,
+      "model": "lightgbm",
+      "origin": "2013-07-01 00:00:00",
+      "valid_at": "2013-07-01 02:00:00",
+      "lead": 2,
+      "prediction": 0.13079011180995923
+    },
+    {
+      "farm_id": 10,
+      "model": "lightgbm",
+      "origin": "2013-07-01 00:00:00",
+      "valid_at": "2013-07-01 03:00:00",
+      "lead": 3,
+      "prediction": 0.1789883938911504
+    },
+    {
+      "farm_id": 10,
+      "model": "lightgbm",
+      "origin": "2013-07-01 00:00:00",
+      "valid_at": "2013-07-01 04:00:00",
+      "lead": 4,
+      "prediction": 0.18048357422113992
+    },
+    {
+      "farm_id": 10,
+      "model": "lightgbm",
+      "origin": "2013-07-01 00:00:00",
+      "valid_at": "2013-07-01 05:00:00",
+      "lead": 5,
+      "prediction": 0.1836460264315763
+    },
+    {
+      "farm_id": 10,
+      "model": "lightgbm",
+      "origin": "2013-07-01 00:00:00",
+      "valid_at": "2013-07-01 06:00:00",
+      "lead": 6,
+      "prediction": 0.15748191031695777
+    },
+    {
+      "farm_id": 10,
+      "model": "lightgbm",
+      "origin": "2013-07-01 00:00:00",
+      "valid_at": "2013-07-01 07:00:00",
+      "lead": 7,
+      "prediction": 0.16178270667618855
+    },
+    {
+      "farm_id": 10,
+      "model": "lightgbm",
+      "origin": "2013-07-01 00:00:00",
+      "valid_at": "2013-07-01 08:00:00",
+      "lead": 8,
+      "prediction": 0.12547310025165986
+    },
+    {
+      "farm_id": 10,
+      "model": "lightgbm",
+      "origin": "2013-07-01 00:00:00",
+      "valid_at": "2013-07-01 09:00:00",
+      "lead": 9,
+      "prediction": 0.101125402624397
+    },
+    {
+      "farm_id": 10,
+      "model": "lightgbm",
+      "origin": "2013-07-01 00:00:00",
+      "valid_at": "2013-07-01 10:00:00",
+      "lead": 10,
+      "prediction": 0.11410702655663318
+    },
+    {
+      "farm_id": 10,
+      "model": "lightgbm",
+      "origin": "2013-07-01 00:00:00",
+      "valid_at": "2013-07-01 11:00:00",
+      "lead": 11,
+      "prediction": 0.13359362262894975
+    },
+    {
+      "farm_id": 10,
+      "model": "lightgbm",
+      "origin": "2013-07-01 00:00:00",
+      "valid_at": "2013-07-01 12:00:00",
+      "lead": 12,
+      "prediction": 0.1349395315866747
+    },
+    {
+      "farm_id": 10,
+      "model": "lightgbm",
+      "origin": "2013-07-01 00:00:00",
+      "valid_at": "2013-07-01 13:00:00",
+      "lead": 13,
+      "prediction": 0.15248539639920644
+    },
+    {
+      "farm_id": 10,
+      "model": "lightgbm",
+      "origin": "2013-07-01 00:00:00",
+      "valid_at": "2013-07-01 14:00:00",
+      "lead": 14,
+      "prediction": 0.18560207861739383
+    },
+    {
+      "farm_id": 10,
+      "model": "lightgbm",
+      "origin": "2013-07-01 00:00:00",
+      "valid_at": "2013-07-01 15:00:00",
+      "lead": 15,
+      "prediction": 0.2487070076783281
+    },
+    {
+      "farm_id": 10,
+      "model": "lightgbm",
+      "origin": "2013-07-01 00:00:00",
+      "valid_at": "2013-07-01 16:00:00",
+      "lead": 16,
+      "prediction": 0.2561236235179911
+    },
+    {
+      "farm_id": 10,
+      "model": "lightgbm",
+      "origin": "2013-07-01 00:00:00",
+      "valid_at": "2013-07-01 17:00:00",
+      "lead": 17,
+      "prediction": 0.2589147043330778
+    },
+    {
+      "farm_id": 10,
+      "model": "lightgbm",
+      "origin": "2013-07-01 00:00:00",
+      "valid_at": "2013-07-01 18:00:00",
+      "lead": 18,
+      "prediction": 0.2561236235179911
+    },
+    {
+      "farm_id": 10,
+      "model": "lightgbm",
+      "origin": "2013-07-01 00:00:00",
+      "valid_at": "2013-07-01 19:00:00",
+      "lead": 19,
+      "prediction": 0.2589147043330778
+    },
+    {
+      "farm_id": 10,
+      "model": "lightgbm",
+      "origin": "2013-07-01 00:00:00",
+      "valid_at": "2013-07-01 20:00:00",
+      "lead": 20,
+      "prediction": 0.2909964219581726
+    },
+    {
+      "farm_id": 10,
+      "model": "lightgbm",
+      "origin": "2013-07-01 00:00:00",
+      "valid_at": "2013-07-01 21:00:00",
+      "lead": 21,
+      "prediction": 0.26097091306667064
+    },
+    {
+      "farm_id": 10,
+      "model": "lightgbm",
+      "origin": "2013-07-01 00:00:00",
+      "valid_at": "2013-07-01 22:00:00",
+      "lead": 22,
+      "prediction": 0.29288987504922165
+    },
+    {
+      "farm_id": 10,
+      "model": "lightgbm",
+      "origin": "2013-07-01 00:00:00",
+      "valid_at": "2013-07-01 23:00:00",
+      "lead": 23,
+      "prediction": 0.29747027321601865
+    },
+    {
+      "farm_id": 10,
+      "model": "lightgbm",
+      "origin": "2013-07-01 00:00:00",
+      "valid_at": "2013-07-02 00:00:00",
+      "lead": 24,
+      "prediction": 0.2560219361841535
+    }
+  ]
+}

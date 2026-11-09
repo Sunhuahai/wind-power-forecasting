@@ -1,0 +1,9 @@
+{
+  "rows": 17544,
+  "start": "2012-01-01 01:00:00",
+  "end": "2014-01-01 00:00:00",
+  "null_power": 21,
+  "invalid_power": 0,
+  "gaps": 0,
+  "null_weather": 0
+}

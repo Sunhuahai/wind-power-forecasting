@@ -1,0 +1,14 @@
+{
+  "site": 4,
+  "rows": 17544,
+  "duplicates": 0,
+  "start": "2012-01-01 01:00:00",
+  "end": "2014-01-01 00:00:00",
+  "gap_count": 0,
+  "gaps": [],
+  "field_issues": {
+    "power:missing": 6
+  },
+  "timezone": "unknown",
+  "availability": "Daily 00:00 source-clock origin; following 1..24h NWP assumed available at origin. Competition replay assumption, actual issue/arrival unknown; timezone unknown."
+}

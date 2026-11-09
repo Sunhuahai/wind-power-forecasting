@@ -1,0 +1,58 @@
+{
+  "fresh_environment": "/private/tmp/windpower-replay-venv",
+  "fresh_database": "windpower_repro",
+  "raw_download": "cached official archive from this execution",
+  "metrics_identical": true,
+  "metrics": [
+    {
+      "site": "1",
+      "run_id": "68f02af0-a33c-4f05-88bd-f12095a23832",
+      "model": "persistence_C",
+      "MAE": "0.25398435700052485",
+      "RMSE": "0.35017686459202224",
+      "nMAE": "0.25398435700052485",
+      "nRMSE": "0.35017686459202224",
+      "n": "4104"
+    },
+    {
+      "site": "1",
+      "run_id": "a63e9fe7-2519-4f46-8d8e-a3e80577cc11",
+      "model": "ridge_C",
+      "MAE": "0.15264319370946758",
+      "RMSE": "0.19490475934215573",
+      "nMAE": "0.15264319370946758",
+      "nRMSE": "0.19490475934215573",
+      "n": "4104"
+    },
+    {
+      "site": "1",
+      "run_id": "2d35f805-12a9-4333-b495-d25e21f14f1e",
+      "model": "lightgbm_A",
+      "MAE": "0.14161714411052692",
+      "RMSE": "0.18270868885111138",
+      "nMAE": "0.14161714411052692",
+      "nRMSE": "0.18270868885111138",
+      "n": "4104"
+    },
+    {
+      "site": "1",
+      "run_id": "2a801446-afa2-4dff-97f2-06773546d93c",
+      "model": "lightgbm_B",
+      "MAE": "0.13433503935284408",
+      "RMSE": "0.1764965856913997",
+      "nMAE": "0.13433503935284408",
+      "nRMSE": "0.1764965856913997",
+      "n": "4104"
+    },
+    {
+      "site": "1",
+      "run_id": "902bf322-9d31-4361-b74a-b647edf80ae4",
+      "model": "lightgbm_C",
+      "MAE": "0.13477538502125871",
+      "RMSE": "0.17748447685100918",
+      "nMAE": "0.13477538502125871",
+      "nRMSE": "0.17748447685100918",
+      "n": "4104"
+    }
+  ]
+}
