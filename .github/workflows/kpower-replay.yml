@@ -1,0 +1,36 @@
+name: GEFCom2014 kPower full replay
+
+on:
+  push:
+    branches: [experiment/gefcom2014-kpower-reproduction]
+    paths:
+      - ".github/workflows/kpower-replay.yml"
+  workflow_dispatch:
+
+jobs:
+  full-replay:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+        with:
+          python-version: "3.13"
+      - run: uv sync --extra dev
+      - name: Create local-only PostgreSQL credentials
+        run: cp .env.example .env
+      - name: Start PostgreSQL 18.6
+        run: uv run windpower db-start
+      - name: Import official dataset and reproduce all frozen baselines
+        run: uv run windpower run-sites
+      - name: Run kPower-inspired OOF two-stage model across 10 zones
+        run: uv run python -m windpower.models.kpower_reproduction --sites all --experiment-id ci_kpower_10sites
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: kpower-replay-results
+          path: |
+            artifacts/kpower_reproduction/ci_kpower_10sites/summary.json
+            artifacts/kpower_reproduction/ci_kpower_10sites/site_metrics.csv
+            artifacts/all_sites_summary.csv
+          if-no-files-found: warn
