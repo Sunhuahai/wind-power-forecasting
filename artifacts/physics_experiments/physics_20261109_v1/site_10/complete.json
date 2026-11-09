@@ -1,0 +1,11 @@
+{
+  "site": 10,
+  "experiment_id": "physics_20261109_v1",
+  "run_ids": {
+    "baseline": "107a65ac-72f9-46d5-84dc-9305cc6ea2ec",
+    "physics": "d726e1ee-93b9-4831-843d-a26b679a7e06",
+    "residual": "f6e82ad1-52a9-4977-9306-8d80b8a06a30",
+    "injected": "f4ee96b2-81dd-4055-9a58-21f0045c1ce0"
+  },
+  "test_samples": 4392
+}

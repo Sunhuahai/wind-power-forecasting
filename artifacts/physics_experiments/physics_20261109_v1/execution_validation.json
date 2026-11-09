@@ -1,0 +1,9 @@
+{
+  "tests": "21 passed including PostgreSQL integration; 2026-11-09",
+  "command": "WINDPOWER_TEST_DB=1 uv run --offline --extra dev pytest -q",
+  "legacy_files_unchanged": 265,
+  "new_model_runs": 40,
+  "verified_new_predictions": 169728,
+  "zone1_then_ten_sites": true,
+  "database_restored_closed": true
+}

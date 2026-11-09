@@ -120,4 +120,10 @@ def summarize():
     ax.set_ylabel('Pooled normalized RMSE');ax.tick_params(axis='x',rotation=20)
     fig.tight_layout();fig.savefig('artifacts/all_sites_comparison.png',dpi=150);plt.close(fig)
     emit(summary.to_dicts())
+@app.command('physics-experiment')
+def physics_experiment(site:int=1,all_sites:bool=False,experiment_id:str|None=None):
+    """独立物理融合实验；可用相同 experiment-id 续跑十站，不覆盖基线。"""
+    from windpower.models.physics_experiment import run_experiment
+    folder=run_experiment(range(1,11) if all_sites else [site],experiment_id)
+    emit({'experiment':str(folder),'report':str(folder/'report.md')})
 if __name__=='__main__':app()

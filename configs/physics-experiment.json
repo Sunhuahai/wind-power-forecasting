@@ -1,0 +1,13 @@
+{
+  "physics": {
+    "cut_in_min": 0.0, "cut_in_max": 6.0,
+    "rated_min": 6.5, "rated_max": 20.0,
+    "grid_step": 0.25, "plateau_min": 0.3, "plateau_max": 1.0,
+    "objective": "training MSE; analytic bounded plateau for each cut-in/rated grid pair",
+    "cut_out": null
+  },
+  "wind_bins": [0, 3, 6, 9, 12, 15, 20],
+  "bootstrap": {"replicates": 2000, "block_days": 7, "seed": 42},
+  "inference": {"warmup": 3, "repeats": 20},
+  "feature_injection": true
+}

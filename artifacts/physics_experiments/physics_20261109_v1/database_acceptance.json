@@ -1,0 +1,256 @@
+{
+  "experiment_id": "physics_20261109_v1",
+  "postgres": "18.6 (Homebrew)",
+  "verified_model_runs": 40,
+  "verified_predictions": 169728,
+  "database_counts": {
+    "wind_farms": 10,
+    "power_observations": 175440,
+    "nwp_forecasts": 175440,
+    "model_runs": 95,
+    "predictions": 402528
+  },
+  "checks": "identical keys/actuals/predictions between new experiment CSV and PostgreSQL; bounds and lead equality",
+  "rows": [
+    {
+      "site": 1,
+      "model": "baseline",
+      "run_id": "9e82f7b5-9848-46ef-b333-8be31edff45c",
+      "verified_predictions": 4104
+    },
+    {
+      "site": 1,
+      "model": "physics",
+      "run_id": "77658cb2-e265-459b-b27b-bd2411ce03b3",
+      "verified_predictions": 4104
+    },
+    {
+      "site": 1,
+      "model": "residual",
+      "run_id": "ed8e5f35-e80f-48b3-bd71-79117f75339c",
+      "verified_predictions": 4104
+    },
+    {
+      "site": 1,
+      "model": "injected",
+      "run_id": "f0e79918-14a0-46fd-9d47-b24efffc1589",
+      "verified_predictions": 4104
+    },
+    {
+      "site": 2,
+      "model": "baseline",
+      "run_id": "5efb2860-42e5-4ed0-85d7-000ef1b9458e",
+      "verified_predictions": 4080
+    },
+    {
+      "site": 2,
+      "model": "physics",
+      "run_id": "3aebe665-90bd-4759-ace3-ea2395f70502",
+      "verified_predictions": 4080
+    },
+    {
+      "site": 2,
+      "model": "residual",
+      "run_id": "54d79011-0c3e-4adb-9578-6768d003eb03",
+      "verified_predictions": 4080
+    },
+    {
+      "site": 2,
+      "model": "injected",
+      "run_id": "c84bc5e7-11dc-4283-961c-5a483248a5ce",
+      "verified_predictions": 4080
+    },
+    {
+      "site": 3,
+      "model": "baseline",
+      "run_id": "9b0a8d82-eee1-4f2b-8bab-b3a58bd78b78",
+      "verified_predictions": 3504
+    },
+    {
+      "site": 3,
+      "model": "physics",
+      "run_id": "2e109823-13d5-4f85-99dc-e50c8e4d6c9b",
+      "verified_predictions": 3504
+    },
+    {
+      "site": 3,
+      "model": "residual",
+      "run_id": "8b16928d-7d15-4fd0-823a-db23a9e5ba37",
+      "verified_predictions": 3504
+    },
+    {
+      "site": 3,
+      "model": "injected",
+      "run_id": "b4ea338c-0163-4601-937a-0ac395f452d9",
+      "verified_predictions": 3504
+    },
+    {
+      "site": 4,
+      "model": "baseline",
+      "run_id": "03be959a-5de0-490a-b8a8-7b8eb593bdde",
+      "verified_predictions": 4392
+    },
+    {
+      "site": 4,
+      "model": "physics",
+      "run_id": "319aa9fe-d152-4e24-ac3a-5ee9fde3cd33",
+      "verified_predictions": 4392
+    },
+    {
+      "site": 4,
+      "model": "residual",
+      "run_id": "6ad89e1f-708b-4fb8-a1c6-4a7009f1b9d9",
+      "verified_predictions": 4392
+    },
+    {
+      "site": 4,
+      "model": "injected",
+      "run_id": "05da77eb-65fe-4e9e-99bd-f287a1d86960",
+      "verified_predictions": 4392
+    },
+    {
+      "site": 5,
+      "model": "baseline",
+      "run_id": "f05dd426-3ae6-48af-997c-fc517812469e",
+      "verified_predictions": 4392
+    },
+    {
+      "site": 5,
+      "model": "physics",
+      "run_id": "44571e15-fc21-4487-b088-4ca1b419e8ac",
+      "verified_predictions": 4392
+    },
+    {
+      "site": 5,
+      "model": "residual",
+      "run_id": "84a3c53d-2c72-4230-a0e0-822b254c50cb",
+      "verified_predictions": 4392
+    },
+    {
+      "site": 5,
+      "model": "injected",
+      "run_id": "9c27106e-3aed-461b-803f-d547e6c2a8f9",
+      "verified_predictions": 4392
+    },
+    {
+      "site": 6,
+      "model": "baseline",
+      "run_id": "5f7099ae-2954-466e-9f7a-440623c4b288",
+      "verified_predictions": 4392
+    },
+    {
+      "site": 6,
+      "model": "physics",
+      "run_id": "fe596a91-74ff-4758-883f-0dc12326d7fc",
+      "verified_predictions": 4392
+    },
+    {
+      "site": 6,
+      "model": "residual",
+      "run_id": "369e742e-aa28-40de-a6a2-d4f4d1bbbce8",
+      "verified_predictions": 4392
+    },
+    {
+      "site": 6,
+      "model": "injected",
+      "run_id": "ba0ad575-4c91-4ce6-82f5-3e40e55fc501",
+      "verified_predictions": 4392
+    },
+    {
+      "site": 7,
+      "model": "baseline",
+      "run_id": "a918522e-d384-4144-a183-0aa441fd6eec",
+      "verified_predictions": 4392
+    },
+    {
+      "site": 7,
+      "model": "physics",
+      "run_id": "9ee3f65e-e2f4-4c0d-bc10-43b3aa5beefd",
+      "verified_predictions": 4392
+    },
+    {
+      "site": 7,
+      "model": "residual",
+      "run_id": "16d0934f-4bdf-4c03-a4a6-a716778f5fe0",
+      "verified_predictions": 4392
+    },
+    {
+      "site": 7,
+      "model": "injected",
+      "run_id": "a7a8cfaa-972e-49cb-9456-e25534961611",
+      "verified_predictions": 4392
+    },
+    {
+      "site": 8,
+      "model": "baseline",
+      "run_id": "10c1e56d-2546-405f-a774-9060573b44dc",
+      "verified_predictions": 4392
+    },
+    {
+      "site": 8,
+      "model": "physics",
+      "run_id": "b35fb08a-9d1f-48f3-af7c-4bc1de6b6cb6",
+      "verified_predictions": 4392
+    },
+    {
+      "site": 8,
+      "model": "residual",
+      "run_id": "0365bf37-8fd3-4dd2-a3c2-2228a87a9060",
+      "verified_predictions": 4392
+    },
+    {
+      "site": 8,
+      "model": "injected",
+      "run_id": "00953db0-2ace-438a-8c11-f6b57aec4447",
+      "verified_predictions": 4392
+    },
+    {
+      "site": 9,
+      "model": "baseline",
+      "run_id": "1d0fee5b-5caf-4d37-b86b-a6c289e35a43",
+      "verified_predictions": 4392
+    },
+    {
+      "site": 9,
+      "model": "physics",
+      "run_id": "3ceaff19-3907-4bb1-a937-bb314e092e1d",
+      "verified_predictions": 4392
+    },
+    {
+      "site": 9,
+      "model": "residual",
+      "run_id": "3e514c1a-2c5d-4332-b4e0-7e84d1d09705",
+      "verified_predictions": 4392
+    },
+    {
+      "site": 9,
+      "model": "injected",
+      "run_id": "c17da879-738d-4bc5-b52e-f168b477bba6",
+      "verified_predictions": 4392
+    },
+    {
+      "site": 10,
+      "model": "baseline",
+      "run_id": "107a65ac-72f9-46d5-84dc-9305cc6ea2ec",
+      "verified_predictions": 4392
+    },
+    {
+      "site": 10,
+      "model": "physics",
+      "run_id": "d726e1ee-93b9-4831-843d-a26b679a7e06",
+      "verified_predictions": 4392
+    },
+    {
+      "site": 10,
+      "model": "residual",
+      "run_id": "f6e82ad1-52a9-4977-9306-8d80b8a06a30",
+      "verified_predictions": 4392
+    },
+    {
+      "site": 10,
+      "model": "injected",
+      "run_id": "f4ee96b2-81dd-4055-9a58-21f0045c1ce0",
+      "verified_predictions": 4392
+    }
+  ]
+}

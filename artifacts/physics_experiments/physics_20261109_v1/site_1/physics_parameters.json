@@ -1,0 +1,19 @@
+{
+  "cut_in": 0.0,
+  "rated": 9.25,
+  "plateau": 0.723629961176991,
+  "settings": {
+    "cut_in_min": 0.0,
+    "cut_in_max": 6.0,
+    "rated_min": 6.5,
+    "rated_max": 20.0,
+    "grid_step": 0.25,
+    "plateau_min": 0.3,
+    "plateau_max": 1.0,
+    "objective": "training MSE; analytic bounded plateau for each cut-in/rated grid pair",
+    "cut_out": null
+  },
+  "fit_partition": "train only",
+  "fit_samples": 8736,
+  "train_MSE": 0.03690562003614514
+}

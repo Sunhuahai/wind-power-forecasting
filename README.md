@@ -88,3 +88,14 @@ ORDER BY p.valid_at LIMIT 24;
 ## 实际执行范围
 
 请阅读 [实际验收与实验报告](docs/experiment-report.md)。Docker 在本机未安装，不能声称 Compose 路径已实际验证。本次以本机同版本 PostgreSQL 18.6 完成实验，具体完成项及真实数值见报告。原始数据和模型体积较大，默认不纳入版本控制。
+
+## 物理融合实验
+
+新增 [物理融合实验说明](docs/physics-experiment.md) 与独立 `physics-experiment` 命令，比较冻结 C、三参数场站等效物理曲线、物理残差学习和物理预测特征注入。先 Zone 1，再以相同实验标识续跑十站，不覆盖旧模型或报告。
+
+```sh
+uv run windpower physics-experiment --site 1 --experiment-id physics_20261109_v1
+uv run windpower physics-experiment --all-sites --experiment-id physics_20261109_v1
+```
+
+[本次完整实验报告及 44 张图](artifacts/physics_experiments/physics_20261109_v1/report.md)：残差学习改善 MAE（0.123454 → 0.121856），未改善 RMSE（0.170454 → 0.170535）；配对 RMSE 差的 95% 区间跨零，不能宣称全面超越旧 C。

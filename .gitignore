@@ -19,3 +19,11 @@ artifacts/site_*/*
 !artifacts/all_sites_comparison.png
 !artifacts/acceptance.json
 !artifacts/reproducibility.json
+!artifacts/physics_experiments/
+artifacts/physics_experiments/**
+!artifacts/physics_experiments/**/
+!artifacts/physics_experiments/**/*.json
+!artifacts/physics_experiments/**/*.csv
+!artifacts/physics_experiments/**/*.png
+!artifacts/physics_experiments/**/report.md
+artifacts/physics_experiments/**/predictions.csv
