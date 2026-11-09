@@ -153,6 +153,9 @@ def add_cross_site(frame: pl.DataFrame, cross: pl.DataFrame) -> pl.DataFrame:
     out = frame.join(cross, on=["origin", "valid_at"], how="left",
                      validate="1:1").sort(["origin", "valid_at"])
     cols = [f"stage1_{i}" for i in range(1, 11)]
+    missing = sorted(set(cols) - set(out.columns))
+    if missing:
+        raise ValueError(f"Missing cross-zone columns: {missing}")
     if out.select(pl.any_horizontal(pl.col(cols).is_null())).to_series().any():
         raise ValueError("Missing cross-zone OOF or inference features")
     return out
@@ -187,6 +190,8 @@ def run(sites: list[int], experiment_id: str) -> Path:
     summary = []
     for site in sites:
         # A single inner join restricts stage-two training to honest OOF periods.
+        # Fixed all-origin NWP availability is the original competition assumption;
+        # the source does not reveal actual issue/arrival timestamps.
         tr = parts[site]["train"].join(
             train_cross, on=["origin", "valid_at"], how="inner", validate="1:1"
         ).sort(["origin", "valid_at"])
@@ -226,7 +231,9 @@ def run(sites: list[int], experiment_id: str) -> Path:
         score = float(np.mean([
             pinball(yt, array[:, i], q) for i, q in enumerate(QUANTILES)
         ]))
-        row = dict(site=site, **s, pinball_3q=score,
+        old_score = metrics(yt, frozen["prediction"].to_numpy())
+        row = dict(site=site, **s, baseline_MAE=old_score["MAE"],
+                   baseline_RMSE=old_score["RMSE"], pinball_3q=score,
                    coverage80=float(np.mean((yt >= array[:, 0]) &
                                             (yt <= array[:, 2]))),
                    stage2_train_samples=tr.height, test_samples=te.height)
