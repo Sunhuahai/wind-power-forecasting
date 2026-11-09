@@ -10,7 +10,7 @@ from __future__ import annotations
 import argparse
 import json
 import uuid
-from datetime import datetime
+from datetime import datetime, timedelta
 from pathlib import Path
 
 import joblib
@@ -64,9 +64,6 @@ def nwp_panel(site: int) -> pl.DataFrame:
         e100 = np.array([np.hypot(day[h]["u100"], day[h]["v100"]) ** 3
                          for h in range(1, 25)])
         for lead in range(1, 25):
-            valid = origin + pl.duration(hours=lead).to_python() if False else None
-            # datetime arithmetic stays in Python rather than in a Polars expression.
-            from datetime import timedelta
             valid = origin + timedelta(hours=lead)
             r = dict(day[lead], origin=origin, valid_at=valid, lead=lead)
             for height in (10, 100):
@@ -189,9 +186,6 @@ def run(sites: list[int], experiment_id: str) -> Path:
     future_cross = combine(all_preds)
     summary = []
     for site in sites:
-        tr = add_cross_site(parts[site]["train"].join(
-            train_cross, on=["origin", "valid_at"], how="inner", validate="1:1"),
-            train_cross.select(["origin", "valid_at"])) if False else None
         # A single inner join restricts stage-two training to honest OOF periods.
         tr = parts[site]["train"].join(
             train_cross, on=["origin", "valid_at"], how="inner", validate="1:1"
@@ -203,6 +197,17 @@ def run(sites: list[int], experiment_id: str) -> Path:
         x, y = tr.select(STAGE2).to_numpy(), tr["actual"].to_numpy()
         xv, yv = va.select(STAGE2).to_numpy(), va["actual"].to_numpy()
         xt, yt = te.select(STAGE2).to_numpy(), te["actual"].to_numpy()
+        # Verify identical held-out targets against the frozen original C run.
+        old_ids = json.loads(Path(f"artifacts/site_{site}/latest_runs.json").read_text())
+        old_path = Path(f"artifacts/site_{site}/{old_ids[-1]}_predictions.csv")
+        if not old_path.exists():
+            raise FileNotFoundError(f"Frozen baseline CSV missing: {old_path}")
+        frozen = pl.read_csv(old_path, try_parse_dates=True).sort(
+            ["origin", "valid_at"])
+        if (frozen.select("origin", "valid_at").rows() !=
+                te.select("origin", "valid_at").rows() or
+                not np.array_equal(frozen["actual"].to_numpy(), yt)):
+            raise ValueError("Test keys/labels differ from frozen C baseline")
         point = LGBMRegressor(**cfg["lightgbm"])
         point.fit(x, y, eval_set=[(xv, yv)],
                   callbacks=[early_stopping(30, verbose=False)])
