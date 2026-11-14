@@ -121,5 +121,10 @@
     }
   },
   "validation_only_blend": true,
-  "caveat": "Fixed historical test; base models also use validation early stopping"
+  "caveat": "Fixed historical test; base models also use validation early stopping",
+  "training_data": "2012 OOF panel only (65,760 rows for pooled models; ~6.6k per site)",
+  "early_stopping": "2013 H1 validation",
+  "blend_weights": "2013 H1 validation, convex weights only",
+  "test_scoring": "single pass, no tuning",
+  "protocol_class": "strict: validation used for selection only, never as training data"
 }

@@ -142,5 +142,10 @@
   "baseline": "artifacts/kpower_ablation/ablation_20261114_v1/curve_residual_v1",
   "method": "Train-only StandardScaler and MLP on original honest OOF periods; fixed configuration, no parameter search",
   "selection": "MLP internal stopping uses only original training labels; external validation fits convex blend only",
-  "caveat": "Exploratory historical test, validation reused for early stopping"
+  "caveat": "Exploratory historical test, validation reused for early stopping",
+  "training_data": "2012 OOF panel only (65,760 rows for pooled models; ~6.6k per site)",
+  "early_stopping": "2013 H1 validation",
+  "blend_weights": "2013 H1 validation, convex weights only",
+  "test_scoring": "single pass, no tuning",
+  "protocol_class": "strict: validation used for selection only, never as training data"
 }

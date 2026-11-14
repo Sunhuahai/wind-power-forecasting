@@ -1,0 +1,8 @@
+{
+  "method": "Global convex blend of the three stage-two feature sets, weights fitted on validation MSE only",
+  "training_data": "none: the three component models were trained on 2012 OOF rows",
+  "early_stopping": "component models used 2013 H1 validation",
+  "blend_weights": "2013 H1 validation, nonnegative and summing to one",
+  "test_scoring": "single pass, no tuning",
+  "protocol_class": "strict: validation used for selection only, never as training data"
+}

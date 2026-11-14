@@ -7,11 +7,7 @@
     ],
     "alpha": 0.1
   },
-  "seeds": [
-    42,
-    7,
-    2024
-  ],
+  "seeds": "three seeds 42/7/2024 averaged, early stopping inside training rows only",
   "features": [
     "u10",
     "v10",
@@ -140,5 +136,11 @@
   "baseline": "artifacts/kpower_ablation/ablation_20261114_v1/curve_residual_v1",
   "method": "Architecture grid selected by external validation blend MSE; training rows stay the 2012 OOF panel",
   "selection": "Model config and convex blend both selected on validation (2013 H1); no validation labels enter training",
-  "caveat": "Validation is used twice (architecture and blend weight); test is scored once with frozen choices"
+  "caveat": "Validation is used twice (architecture and blend weight); test is scored once with frozen choices",
+  "training_data": "2012 OOF panel only (65,760 rows for pooled models; ~6.6k per site)",
+  "early_stopping": "2013 H1 validation",
+  "blend_weights": "2013 H1 validation, convex weights only",
+  "test_scoring": "single pass, no tuning",
+  "protocol_class": "strict: validation used for selection only, never as training data",
+  "architecture_selection": "validation grid of six candidates; single-seed winner only reached 0.156399 with CI crossing zero"
 }
