@@ -1,0 +1,80 @@
+{
+  "results": {
+    "resid_feat": {
+      "weight": 0.16161030774037843,
+      "scores": [
+        {
+          "model": "baseline",
+          "MAE": 0.10388044551023085,
+          "RMSE": 0.14501209473824758,
+          "nMAE": 0.10388044551023085,
+          "nRMSE": 0.14501209473824758,
+          "n": 43008
+        },
+        {
+          "model": "candidate",
+          "MAE": 0.10383617764450774,
+          "RMSE": 0.1448739046946479,
+          "nMAE": 0.10383617764450774,
+          "nRMSE": 0.1448739046946479,
+          "n": 43008
+        }
+      ],
+      "paired": {
+        "candidate": "candidate",
+        "baseline": "baseline",
+        "n": 43008,
+        "calendar_days": 181,
+        "delta_MAE": -4.426786572310162e-05,
+        "delta_RMSE": -0.00013819004359971743,
+        "delta_MAE_low": -0.0002027405367050815,
+        "delta_MAE_high": 0.00012202191178764127,
+        "delta_RMSE_low": -0.00034680488484867755,
+        "delta_RMSE_high": 7.22907387862881e-05,
+        "bootstrap_fraction_RMSE_better": 0.9065,
+        "replicates": 2000,
+        "block_days": 7,
+        "seed": 42
+      }
+    },
+    "shuffled": {
+      "weight": 0.16303000354667221,
+      "scores": [
+        {
+          "model": "baseline",
+          "MAE": 0.10388044551023085,
+          "RMSE": 0.14501209473824758,
+          "nMAE": 0.10388044551023085,
+          "nRMSE": 0.14501209473824758,
+          "n": 43008
+        },
+        {
+          "model": "candidate",
+          "MAE": 0.10391898545916325,
+          "RMSE": 0.1448712488007983,
+          "nMAE": 0.10391898545916325,
+          "nRMSE": 0.1448712488007983,
+          "n": 43008
+        }
+      ],
+      "paired": {
+        "candidate": "candidate",
+        "baseline": "baseline",
+        "n": 43008,
+        "calendar_days": 181,
+        "delta_MAE": 3.853994893238386e-05,
+        "delta_RMSE": -0.00014084593744931317,
+        "delta_MAE_low": -0.00012130130207092544,
+        "delta_MAE_high": 0.0002009618070083319,
+        "delta_RMSE_low": -0.0003402155658407055,
+        "delta_RMSE_high": 5.8850317467515344e-05,
+        "bootstrap_fraction_RMSE_better": 0.9205,
+        "replicates": 2000,
+        "block_days": 7,
+        "seed": 42
+      }
+    }
+  },
+  "gate": -0.0002,
+  "passed": false
+}
