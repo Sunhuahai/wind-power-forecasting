@@ -42,6 +42,10 @@ artifacts/kpower_ablation/**
 artifacts/kpower_ablation/**/paired_predictions.csv
 artifacts/kpower_ablation/**/predictions.csv
 # Discarded candidates stay local; only accepted progress is published.
+artifacts/kpower_ablation/**/shared_bagged_v1/
+artifacts/kpower_ablation/**/hurdle_shared_v1/
+artifacts/kpower_ablation/**/mlp_mixed_ensemble_v1/
+artifacts/kpower_ablation/**/pooled_base_v1/
 artifacts/kpower_ablation/**/site_blend_v1/
 artifacts/kpower_ablation/**/diversity_v1/
 artifacts/kpower_ablation/**/expanded_refit_v1/
