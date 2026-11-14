@@ -1,0 +1,26 @@
+{
+  "config": {
+    "hidden_layer_sizes": [
+      128,
+      64,
+      32
+    ],
+    "alpha": 0.1
+  },
+  "seeds": [
+    {
+      "seed": 42,
+      "iterations": 122
+    },
+    {
+      "seed": 7,
+      "iterations": 92
+    },
+    {
+      "seed": 2024,
+      "iterations": 114
+    }
+  ],
+  "blend_weight": 0.27488381573002063,
+  "validation_MSE": 0.021028507620374493
+}

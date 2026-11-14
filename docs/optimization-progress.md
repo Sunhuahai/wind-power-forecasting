@@ -15,8 +15,9 @@
 |跨站共享模型 + 验证集融合|2026-11-14|0.157582752|1.6802%|
 |场站曲线残差 + 验证集融合|2026-11-14|0.157320468|0.1664%|
 |标准化 MLP + 验证集融合|2026-11-14|0.156740139|0.3689%|
+|多种子平均 MLP（结构由验证集选）|2026-11-14|0.156009848|0.4659%|
 
-累计 RMSE 降低 **8.05%**。各节点均为同一十站、42,432 小时、2013 年下半年历史测试集。
+累计 RMSE 降低 **8.47%**。各节点均为同一十站、42,432 小时、2013 年下半年历史测试集。
 <!-- progress-table:end -->
 
 横轴是优化轮次（0 为原 C 基线），不表示训练步数或实际耗时；灰点为被否决候选，按其对照节点就近放置，仅表示搜索密度，不参与注册表。标签中的百分比相对上一节点。日期为可核实的实验记录日期，同一天的先后沿用实验记录顺序。
@@ -59,6 +60,14 @@
 
 RMSE 差 **-0.000580329**，七日块配对 95% 区间 **[-0.001119223, -0.000046356]**；MAE 差 **-0.000880314**，区间 **[-0.001307394, -0.000465185]**。可复用要点：标准化后的平滑神经网络可以以验证集确定的小权重补充树模型；本次有效的是整个组合，不能据此声称单独 MLP 更强。
 
+**多种子平均的标准化 MLP（严格协议下的第 1 个节点）。** 结构 `(128,64,32)`、`alpha=0.1` 先由验证集从 6 个候选结构中选出；单种子版本测试 RMSE 0.156399390（−0.22%），七日块区间 [-0.000717, +0.000028] 跨零，未通过。随后只改一件事：同一结构改用 3 个随机种子 **42 / 7 / 2024**，各自以训练期内 15% 留出提前停止（迭代 **122 / 92 / 114**），预测取均值。
+
+训练样本仍是 2012 年 OOF 的 **65,760 行**，验证集只用于拟合融合权重：前一最优 **0.725116**、种子平均 MLP **0.274884**，验证 MSE 0.0210285（单结构单种子为 0.0211401）。
+
+同样 42,432 个测试小时，RMSE **0.156740139 → 0.156009848**（降低 **0.4659%**），差值 **-0.000730290**，七日块配对 95% 区间 **[-0.001251885, -0.000228719]**。MAE 由 0.111645608 降到 0.111269185，差值区间 [-0.000831237, +0.000096002] 跨零，不声称 MAE 改善。
+
+可复用要点：这个分支的方差主要来自初始化；同结构多种子平均比继续换结构更有效（换结构 −0.22% 且跨零，种子平均 −0.47% 且区间不含零）。验证集同时用于结构选择与融合权重，存在乐观偏差，评价仍是同一历史测试集上的探索性结果。
+
 **已作废：三个最终重拟合节点。** 曾把 2013 上半年验证期标签并入训练，分别得到 0.156327568 / 0.155737496 / 0.155443654 三个节点。2026-11-14 起改为严格协议：只用 2012 年训练、验证集只用于选择和早停，因此这三个节点从进展图与注册表移除，证据仍保留在 `artifacts/kpower_ablation/ablation_20261114_v1/` 下的 `shared_final_refit_v1`、`mlp_final_refit_v1`、`temporal_final_refit_v1` 三个目录，仅供核对，不再作为当前最优，也不与新节点比较。
 
 严格协议下的当前最优是第 7 个节点 **0.156740139**，相对原 C 基线降低 **8.05%**；后续所有节点都必须在此协议下产生。
@@ -77,4 +86,4 @@ python scripts/plot_optimization_progress.py
 
 图、CSV 明细和本笔记同步更新到 Obsidian。精确数值直接从实验输出读取，避免手写维护导致漂移。
 
-[消融证据](../artifacts/kpower_ablation/ablation_20261114_v1/report.md) · [融合证据](../artifacts/kpower_ablation/ablation_20261114_v1/validation_blend/report.md) · [空间风场证据](../artifacts/kpower_ablation/ablation_20261114_v1/spatial_nwp_v1/report.md) · [风场时变证据](../artifacts/kpower_ablation/ablation_20261114_v1/temporal_nwp_v1/report.md) · [共享模型证据](../artifacts/kpower_ablation/ablation_20261114_v1/shared_model_v1/report.md) · [经验曲线残差证据](../artifacts/kpower_ablation/ablation_20261114_v1/curve_residual_v1/report.md) · [MLP 融合证据](../artifacts/kpower_ablation/ablation_20261114_v1/mlp_shared_v1/report.md) · [进展明细](figures/optimization-progress.csv)
+[消融证据](../artifacts/kpower_ablation/ablation_20261114_v1/report.md) · [融合证据](../artifacts/kpower_ablation/ablation_20261114_v1/validation_blend/report.md) · [空间风场证据](../artifacts/kpower_ablation/ablation_20261114_v1/spatial_nwp_v1/report.md) · [风场时变证据](../artifacts/kpower_ablation/ablation_20261114_v1/temporal_nwp_v1/report.md) · [共享模型证据](../artifacts/kpower_ablation/ablation_20261114_v1/shared_model_v1/report.md) · [经验曲线残差证据](../artifacts/kpower_ablation/ablation_20261114_v1/curve_residual_v1/report.md) · [MLP 融合证据](../artifacts/kpower_ablation/ablation_20261114_v1/mlp_shared_v1/report.md) · [种子平均 MLP 证据](../artifacts/kpower_ablation/ablation_20261114_v1/mlp_seedavg_tuned_v1/report.md) · [进展明细](figures/optimization-progress.csv)

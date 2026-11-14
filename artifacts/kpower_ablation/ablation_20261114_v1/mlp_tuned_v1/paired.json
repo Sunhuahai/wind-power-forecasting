@@ -1,0 +1,16 @@
+{
+  "candidate": "mlp_tuned_blend",
+  "baseline": "baseline",
+  "n": 42432,
+  "calendar_days": 183,
+  "delta_MAE": 0.00031283524559378437,
+  "delta_RMSE": -0.00034074913110562766,
+  "delta_MAE_low": -4.649634038257702e-05,
+  "delta_MAE_high": 0.0006814998337453372,
+  "delta_RMSE_low": -0.00071716886410335,
+  "delta_RMSE_high": 2.8256971402406943e-05,
+  "bootstrap_fraction_RMSE_better": 0.9635,
+  "replicates": 2000,
+  "block_days": 7,
+  "seed": 42
+}

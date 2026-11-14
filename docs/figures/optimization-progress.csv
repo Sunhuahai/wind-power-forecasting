@@ -7,3 +7,4 @@ step,date,method,MAE,RMSE,n,gain_vs_baseline_pct,source
 6,2026-11-14,跨站共享模型 + 验证集融合,0.11267985973040111,0.1575827519356464,42432,7.551267133447814,artifacts/kpower_ablation/ablation_20261114_v1/shared_model_v1/metrics.csv
 7,2026-11-14,场站曲线残差 + 验证集融合,0.11252592191257792,0.15732046775550623,42432,7.705140827155111,artifacts/kpower_ablation/ablation_20261114_v1/curve_residual_v1/metrics.csv
 8,2026-11-14,标准化 MLP + 验证集融合,0.11164560792946526,0.15674013868213607,42432,8.045601231734178,artifacts/kpower_ablation/ablation_20261114_v1/mlp_shared_v1/metrics.csv
+9,2026-11-14,多种子平均 MLP（结构由验证集选）,0.11126918531970578,0.1560098484603837,42432,8.474039019477663,artifacts/kpower_ablation/ablation_20261114_v1/mlp_seedavg_tuned_v1/metrics.csv

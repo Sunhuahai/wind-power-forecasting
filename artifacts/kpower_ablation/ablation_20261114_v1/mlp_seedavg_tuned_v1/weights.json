@@ -1,0 +1,20 @@
+{
+  "baseline": 0.7251161842699794,
+  "mlp_seedavg": 0.27488381573002063,
+  "seeds": [
+    42,
+    7,
+    2024
+  ],
+  "chosen": {
+    "hidden": [
+      128,
+      64,
+      32
+    ],
+    "alpha": 0.1
+  },
+  "validation_MSE": 0.021028507620374493,
+  "train_samples": 65760,
+  "validation_samples": 43008
+}

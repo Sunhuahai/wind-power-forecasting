@@ -1,0 +1,16 @@
+{
+  "candidate": "mlp_seedavg_blend",
+  "baseline": "baseline",
+  "n": 42432,
+  "calendar_days": 183,
+  "delta_MAE": -0.0003764226097595471,
+  "delta_RMSE": -0.000730290221752361,
+  "delta_MAE_low": -0.0008312374147883836,
+  "delta_MAE_high": 9.600214315376467e-05,
+  "delta_RMSE_low": -0.0012518850984173657,
+  "delta_RMSE_high": -0.0002287190631322671,
+  "bootstrap_fraction_RMSE_better": 0.9985,
+  "replicates": 2000,
+  "block_days": 7,
+  "seed": 42
+}

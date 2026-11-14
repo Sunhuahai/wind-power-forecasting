@@ -1,0 +1,15 @@
+{
+  "baseline": 0.8145267423690995,
+  "mlp_tuned": 0.18547325763090056,
+  "chosen": {
+    "hidden": [
+      128,
+      64,
+      32
+    ],
+    "alpha": 0.1
+  },
+  "validation_MSE": 0.021140123850201316,
+  "train_samples": 65760,
+  "validation_samples": 43008
+}

@@ -63,6 +63,7 @@ SHORT = {
     "shared_model_blend": ("跨站共享模型", "Shared model"),
     "curve_residual_blend": ("场站曲线残差", "Curve residual"),
     "mlp_shared_blend": ("标准化 MLP", "Standardized MLP"),
+    "mlp_seedavg_tuned": ("种子平均 MLP", "Seed-averaged MLP"),
     "shared_final_refit": ("共享重拟合*", "Shared refit*"),
     "mlp_final_refit": ("MLP 重拟合*", "MLP refit*"),
     "temporal_final_refit": ("时变重拟合*", "Temporal refit*"),

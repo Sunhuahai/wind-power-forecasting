@@ -76,6 +76,30 @@
       "json_key": "pooled",
       "model": "mlp_blend",
       "paired": "artifacts/kpower_ablation/ablation_20261114_v1/mlp_shared_v1/paired.json"
+    },
+    {
+      "id": "mlp_seedavg_tuned",
+      "date": "2026-11-14",
+      "label": "Seed-averaged MLP",
+      "label_zh": "多种子平均 MLP（结构由验证集选）",
+      "source": "artifacts/kpower_ablation/ablation_20261114_v1/mlp_seedavg_tuned_v1/metrics.csv",
+      "json_key": "pooled",
+      "model": "mlp_seedavg_blend",
+      "paired": "artifacts/kpower_ablation/ablation_20261114_v1/mlp_seedavg_tuned_v1/paired.json",
+      "selection_reference": "artifacts/kpower_ablation/ablation_20261114_v1/mlp_tuned_v1",
+      "seeds": [
+        42,
+        7,
+        2024
+      ],
+      "architecture": [
+        128,
+        64,
+        32
+      ],
+      "alpha": 0.1,
+      "validation_blend_weight": 0.27488381573002063,
+      "protocol": "Strict: 2012-only training; validation (2013 H1) used for architecture, blend weight and early stopping"
     }
   ]
 }
