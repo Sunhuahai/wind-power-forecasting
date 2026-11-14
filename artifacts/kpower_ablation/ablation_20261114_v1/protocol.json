@@ -1,0 +1,9 @@
+{
+  "postgres": "18.7 (Homebrew)",
+  "feature_sets": [
+    "C",
+    "neighbors",
+    "full"
+  ],
+  "selection": "No test-guided parameter selection; exploratory historical benchmark"
+}

@@ -1,0 +1,17 @@
+{
+  "weights": {
+    "C": 0.12228119788605393,
+    "neighbors": 0.08428624348834608,
+    "full": 0.7934325586255999
+  },
+  "objective": "pooled validation MSE; global nonnegative weights summing to one",
+  "validation_samples": 43008,
+  "validation_first": "2013-01-01 01:00:00",
+  "validation_last": "2013-07-01 00:00:00",
+  "source_folders": {
+    "C": "artifacts/kpower_reproduction/ablation_20261114_v1_C",
+    "neighbors": "artifacts/kpower_reproduction/ablation_20261114_v1_neighbors",
+    "full": "artifacts/kpower_reproduction/ablation_20261114_v1_full"
+  },
+  "caveat": "Validation also used for base-model early stopping; historical test already reported"
+}

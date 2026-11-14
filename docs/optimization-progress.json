@@ -1,0 +1,111 @@
+{
+  "metric": "RMSE",
+  "cohort": "GEFCom2014 Wind; ten zones; fixed Jul-Dec 2013 test; 42432 hours",
+  "milestones": [
+    {
+      "id": "baseline_C",
+      "date": "2026-11-09",
+      "label": "LightGBM C",
+      "label_zh": "原 C 基线",
+      "source": "artifacts/physics_experiments/physics_20261109_v1/summary.csv",
+      "model": "baseline"
+    },
+    {
+      "id": "kpower",
+      "date": "2026-11-09",
+      "label": "kPower two-stage",
+      "label_zh": "天气邻域 + OOF 跨站两层模型",
+      "source": "artifacts/kpower_reproduction/ci_kpower_10sites/summary.json",
+      "json_key": "pooled"
+    },
+    {
+      "id": "validation_blend",
+      "date": "2026-11-14",
+      "label": "Validation blend",
+      "label_zh": "验证集全站共享凸融合",
+      "source": "artifacts/kpower_ablation/ablation_20261114_v1/validation_blend/metrics.csv",
+      "model": "blend",
+      "paired": "artifacts/kpower_ablation/ablation_20261114_v1/validation_blend/paired.json"
+    },
+    {
+      "id": "spatial_nwp_blend",
+      "date": "2026-11-14",
+      "label": "Spatial NWP blend",
+      "label_zh": "十站原始风场 + 验证集融合",
+      "source": "artifacts/kpower_ablation/ablation_20261114_v1/spatial_nwp_v1/metrics.csv",
+      "json_key": "pooled",
+      "model": "spatial_blend",
+      "paired": "artifacts/kpower_ablation/ablation_20261114_v1/spatial_nwp_v1/paired.json"
+    },
+    {
+      "id": "temporal_nwp_blend",
+      "date": "2026-11-14",
+      "label": "Wind dynamics",
+      "label_zh": "跨站风速时变 + 验证集融合",
+      "source": "artifacts/kpower_ablation/ablation_20261114_v1/temporal_nwp_v1/metrics.csv",
+      "json_key": "pooled",
+      "model": "temporal_blend",
+      "paired": "artifacts/kpower_ablation/ablation_20261114_v1/temporal_nwp_v1/paired.json"
+    },
+    {
+      "id": "shared_model_blend",
+      "date": "2026-11-14",
+      "label": "Shared model",
+      "label_zh": "跨站共享模型 + 验证集融合",
+      "source": "artifacts/kpower_ablation/ablation_20261114_v1/shared_model_v1/metrics.csv",
+      "json_key": "pooled",
+      "model": "shared_blend",
+      "paired": "artifacts/kpower_ablation/ablation_20261114_v1/shared_model_v1/paired.json"
+    },
+    {
+      "id": "curve_residual_blend",
+      "date": "2026-11-14",
+      "label": "Curve correction",
+      "label_zh": "场站曲线残差 + 验证集融合",
+      "source": "artifacts/kpower_ablation/ablation_20261114_v1/curve_residual_v1/metrics.csv",
+      "json_key": "pooled",
+      "model": "curve_blend",
+      "paired": "artifacts/kpower_ablation/ablation_20261114_v1/curve_residual_v1/paired.json"
+    },
+    {
+      "id": "mlp_shared_blend",
+      "date": "2026-11-14",
+      "label": "MLP complement",
+      "label_zh": "标准化 MLP + 验证集融合",
+      "source": "artifacts/kpower_ablation/ablation_20261114_v1/mlp_shared_v1/metrics.csv",
+      "json_key": "pooled",
+      "model": "mlp_blend",
+      "paired": "artifacts/kpower_ablation/ablation_20261114_v1/mlp_shared_v1/paired.json"
+    },
+    {
+      "id": "shared_final_refit",
+      "date": "2026-11-14",
+      "label": "Final refit*",
+      "label_zh": "共享分支最终重拟合（扩展训练期）",
+      "source": "artifacts/kpower_ablation/ablation_20261114_v1/shared_final_refit_v1/metrics.csv",
+      "json_key": "pooled",
+      "model": "final_refit",
+      "paired": "artifacts/kpower_ablation/ablation_20261114_v1/shared_final_refit_v1/paired.json",
+      "protocol_note": "Final refit adds Jan-Jun 2013 fitting labels; selected rounds and combination weights stay frozen.",
+      "selection_reference": "artifacts/kpower_ablation/ablation_20261114_v1/mlp_shared_v1",
+      "uses_validation_for_final_fit": true,
+      "final_label_cutoff_exclusive": "2013-07-01T00:00:00"
+    },
+    {
+      "id": "mlp_final_refit",
+      "date": "2026-11-14",
+      "label": "MLP refit*",
+      "label_zh": "MLP 分支最终重拟合（冻结64轮）",
+      "source": "artifacts/kpower_ablation/ablation_20261114_v1/mlp_final_refit_v1/metrics.csv",
+      "json_key": "pooled",
+      "model": "mlp_final_refit",
+      "paired": "artifacts/kpower_ablation/ablation_20261114_v1/mlp_final_refit_v1/paired.json",
+      "protocol_note": "Final refits add Jan-Jun 2013 fitting labels; original rounds/epochs and combination weights stay frozen.",
+      "selection_reference": "artifacts/kpower_ablation/ablation_20261114_v1/mlp_shared_v1",
+      "uses_validation_for_final_fit": true,
+      "final_label_cutoff_exclusive": "2013-07-01T00:00:00",
+      "frozen_epochs": 64,
+      "replaces_branch": "mlp"
+    }
+  ]
+}

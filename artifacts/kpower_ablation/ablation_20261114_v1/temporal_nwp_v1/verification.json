@@ -1,0 +1,8 @@
+{
+  "test_hours": 42432,
+  "labels_and_keys_identical": true,
+  "baseline_replay": true,
+  "frozen_weight_replay": true,
+  "checkpoint_models": 10,
+  "inference_resumed_without_refitting": true
+}

@@ -1,0 +1,7 @@
+{
+  "baseline": 0.8738615113524384,
+  "curve_residual": 0.12613848864756158,
+  "train_samples": 65760,
+  "validation_samples": 43008,
+  "best_iteration": 772
+}

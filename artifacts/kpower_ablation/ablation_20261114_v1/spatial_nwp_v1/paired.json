@@ -1,0 +1,16 @@
+{
+  "candidate": "spatial_blend",
+  "baseline": "baseline",
+  "n": 42432,
+  "calendar_days": 183,
+  "delta_MAE": -0.0010141102803661202,
+  "delta_RMSE": -0.0009305371941643603,
+  "delta_MAE_low": -0.0013025450901121738,
+  "delta_MAE_high": -0.0007153127627151987,
+  "delta_RMSE_low": -0.0013093868732335103,
+  "delta_RMSE_high": -0.0005008034899266381,
+  "bootstrap_fraction_RMSE_better": 1.0,
+  "replicates": 2000,
+  "block_days": 7,
+  "seed": 42
+}

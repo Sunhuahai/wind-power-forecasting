@@ -1,0 +1,78 @@
+{
+  "scores": [
+    {
+      "model": "C",
+      "MAE": 0.12452487656112998,
+      "RMSE": 0.17182137729922284,
+      "nMAE": 0.12452487656112998,
+      "nRMSE": 0.17182137729922284,
+      "n": 42432
+    },
+    {
+      "model": "neighbors",
+      "MAE": 0.11983946087795946,
+      "RMSE": 0.167073931577929,
+      "nMAE": 0.11983946087795946,
+      "nRMSE": 0.167073931577929,
+      "n": 42432
+    },
+    {
+      "model": "full",
+      "MAE": 0.11598266592472992,
+      "RMSE": 0.16218023775760257,
+      "nMAE": 0.11598266592472992,
+      "nRMSE": 0.16218023775760257,
+      "n": 42432
+    }
+  ],
+  "pairs": [
+    {
+      "candidate": "neighbors",
+      "baseline": "C",
+      "n": 42432,
+      "calendar_days": 183,
+      "delta_MAE": -0.004685415683170536,
+      "delta_RMSE": -0.004747445721293875,
+      "delta_MAE_low": -0.0058472201136109785,
+      "delta_MAE_high": -0.003594338122699133,
+      "delta_RMSE_low": -0.006269744498058806,
+      "delta_RMSE_high": -0.003219281226835525,
+      "bootstrap_fraction_RMSE_better": 1.0,
+      "replicates": 2000,
+      "block_days": 7,
+      "seed": 42
+    },
+    {
+      "candidate": "full",
+      "baseline": "C",
+      "n": 42432,
+      "calendar_days": 183,
+      "delta_MAE": -0.008542210636400108,
+      "delta_RMSE": -0.009641139541620297,
+      "delta_MAE_low": -0.010050502290745032,
+      "delta_MAE_high": -0.007125184369098364,
+      "delta_RMSE_low": -0.011695468740419625,
+      "delta_RMSE_high": -0.007530676881624559,
+      "bootstrap_fraction_RMSE_better": 1.0,
+      "replicates": 2000,
+      "block_days": 7,
+      "seed": 42
+    },
+    {
+      "candidate": "full",
+      "baseline": "neighbors",
+      "n": 42432,
+      "calendar_days": 183,
+      "delta_MAE": -0.003856794953229572,
+      "delta_RMSE": -0.004893693820326422,
+      "delta_MAE_low": -0.0047145906302209694,
+      "delta_MAE_high": -0.0030784956250431137,
+      "delta_RMSE_low": -0.006190093965829638,
+      "delta_RMSE_high": -0.003657589187828966,
+      "bootstrap_fraction_RMSE_better": 1.0,
+      "replicates": 2000,
+      "block_days": 7,
+      "seed": 42
+    }
+  ]
+}

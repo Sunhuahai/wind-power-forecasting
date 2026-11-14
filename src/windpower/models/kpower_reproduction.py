@@ -8,6 +8,7 @@ predictions, never observed power at the target timestamp.
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import uuid
 from datetime import datetime, timedelta
@@ -166,12 +167,24 @@ def pinball(y: np.ndarray, q: np.ndarray, alpha: float) -> float:
     return float(np.mean(np.maximum(alpha*d, (alpha-1)*d)))
 
 
-def run(sites: list[int], experiment_id: str) -> Path:
+def stage2_columns(feature_set: str) -> list[str]:
+    """Predeclared ablations; all use identical OOF-restricted training rows."""
+    return {"C": C, "neighbors": C + EXTRA, "full": STAGE2}[feature_set].copy()
+
+
+def run(sites: list[int], experiment_id: str, feature_set: str = "full") -> Path:
+    columns = stage2_columns(feature_set)
     cfg = config()
     out = Path("artifacts/kpower_reproduction") / experiment_id
     if out.exists():
         raise FileExistsError(f"Experiment already exists: {out}")
     out.mkdir(parents=True)
+    (out / "manifest.json").write_text(json.dumps(dict(
+        feature_set=feature_set, columns=columns, sites=sites, config=cfg,
+        created_at=datetime.now().isoformat(),
+        source_sha256=hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
+        protocol="All feature sets use identical OOF-restricted stage-two training rows",
+    ), indent=2), encoding="utf-8")
     panels, parts, stage1_models, oofs, all_preds = {}, {}, {}, [], []
     for site in range(1, 11):
         panels[site] = nwp_panel(site)
@@ -199,9 +212,9 @@ def run(sites: list[int], experiment_id: str) -> Path:
         te = add_cross_site(parts[site]["test"], future_cross)
         if tr.is_empty():
             raise ValueError(f"No OOF stage-two examples for site {site}")
-        x, y = tr.select(STAGE2).to_numpy(), tr["actual"].to_numpy()
-        xv, yv = va.select(STAGE2).to_numpy(), va["actual"].to_numpy()
-        xt, yt = te.select(STAGE2).to_numpy(), te["actual"].to_numpy()
+        x, y = tr.select(columns).to_numpy(), tr["actual"].to_numpy()
+        xv, yv = va.select(columns).to_numpy(), va["actual"].to_numpy()
+        xt, yt = te.select(columns).to_numpy(), te["actual"].to_numpy()
         # Verify identical held-out targets against the frozen original C run.
         old_ids = json.loads(Path(f"artifacts/site_{site}/latest_runs.json").read_text())
         old_path = Path(f"artifacts/site_{site}/{old_ids[-1]}_predictions.csv")
@@ -232,7 +245,7 @@ def run(sites: list[int], experiment_id: str) -> Path:
             pinball(yt, array[:, i], q) for i, q in enumerate(QUANTILES)
         ]))
         old_score = metrics(yt, frozen["prediction"].to_numpy())
-        row = dict(site=site, **s, baseline_MAE=old_score["MAE"],
+        row = dict(site=site, feature_set=feature_set, **s, baseline_MAE=old_score["MAE"],
                    baseline_RMSE=old_score["RMSE"], pinball_3q=score,
                    coverage80=float(np.mean((yt >= array[:, 0]) &
                                             (yt <= array[:, 2]))),
@@ -240,9 +253,21 @@ def run(sites: list[int], experiment_id: str) -> Path:
         summary.append(row)
         site_out = out / f"site_{site}"
         site_out.mkdir()
+        # Preserve validation outputs for subsequent validation-only selection.
+        # All quantiles receive the same monotonic projection as at test time.
+        va_array = np.maximum.accumulate(np.column_stack([
+            np.clip(qs[q].predict(xv), 0, 1) for q in QUANTILES
+        ]), axis=1)
+        va.select("origin", "valid_at", "lead", "actual").with_columns(
+            pl.Series("prediction", np.clip(point.predict(xv), 0, 1)),
+            *[pl.Series(f"q{int(q*100)}", va_array[:, i])
+              for i, q in enumerate(QUANTILES)],
+        ).write_csv(site_out / "validation_predictions.csv")
+        tr.select("origin", "valid_at").write_csv(site_out / "train_keys.csv")
         run_id = str(uuid.uuid4())
         bundle = dict(point=point, quantiles=qs, stage1=stage1_models,
-                      stage1_columns=STAGE1, stage2_columns=STAGE2,
+                      stage1_columns=STAGE1, stage2_columns=columns,
+                      feature_set=feature_set,
                       algorithm="kPower-inspired, not authors original code",
                       oof=dict(min_train_days=MIN_TRAIN_DAYS,
                                block_days=OOF_BLOCK_DAYS, trees=OOF_TREES))
@@ -258,9 +283,10 @@ def run(sites: list[int], experiment_id: str) -> Path:
         with engine().begin() as c:
             upsert(c, model_runs, [dict(
                 id=run_id, farm_id=site, model="kpower_inspired_point",
-                feature_group="NWP-neighbors+cross-zone-OOF+C",
+                feature_group=feature_set,
                 created_at=datetime.now(), config=dict(
-                    base_config=cfg, stage1_columns=STAGE1, stage2_columns=STAGE2,
+                    base_config=cfg, stage1_columns=STAGE1, stage2_columns=columns,
+                    feature_set=feature_set,
                     oof_start_days=MIN_TRAIN_DAYS,
                     oof_block_days=OOF_BLOCK_DAYS,
                     note="3 quantiles only; not the original 99-quantile contest score"),
@@ -277,7 +303,7 @@ def run(sites: list[int], experiment_id: str) -> Path:
     pooled = pooled_metrics(summary)
     pl.DataFrame(summary).write_csv(out / "site_metrics.csv")
     (out / "summary.json").write_text(json.dumps(dict(
-        sites=sites, pooled=pooled,
+        sites=sites, feature_set=feature_set, stage2_columns=columns, pooled=pooled,
         pinball_3q_weighted=float(sum(v["pinball_3q"]*v["n"] for v in summary) /
                                   sum(v["n"] for v in summary)),
         protocol="fixed project train/val/test; expanding-fold stage-one OOF",
@@ -291,6 +317,7 @@ def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--sites", default="1", help="Comma-separated zone IDs or all")
     ap.add_argument("--experiment-id", default=None)
+    ap.add_argument("--feature-set", choices=["C", "neighbors", "full"], default="full")
     args = ap.parse_args()
     sites = list(range(1, 11)) if args.sites == "all" else [
         int(i) for i in args.sites.split(",")]
@@ -298,7 +325,7 @@ def main() -> None:
         ap.error("sites must be 1..10")
     experiment_id = args.experiment_id or (
         "kpower_" + datetime.now().strftime("%Y%m%dT%H%M%S") + "_" + uuid.uuid4().hex[:6])
-    print(run(sites, experiment_id))
+    print(run(sites, experiment_id, args.feature_set))
 
 
 if __name__ == "__main__":

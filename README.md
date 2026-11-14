@@ -4,6 +4,8 @@
 
 ## 实验结果
 
+[持续优化进展图与有效技巧](docs/optimization-progress.md)：只展示确认改善的节点，当前十站 RMSE 为 **0.155737**，相对原 C 基线降低 **8.63%**。最新两个节点在冻结原选轮数与组合权重后，将原验证期标签用于共享分支和 MLP 的最终重拟合；图中已标明训练协议变化。
+
 [图表完整实验报告](docs/paper-report.md) 直接展示数据字段、训练特征、真实训练样例及十站结果图。仓库包含汇总指标和图表；原始数据、模型权重和逐小时预测 CSV 在本地运行后生成。
 
 ## 环境与运行
@@ -35,7 +37,15 @@ uv run pytest
 WINDPOWER_TEST_DB=1 uv run pytest
 ```
 
-本机项目位于 iCloud 目录，实际运行发现它会将 `_editable_impl_*.pth` 自动标记隐藏，Python 3.13 因而忽略 editable 包路径。当前 `.venv` 链接到 `/private/tmp/windpower-repro-venv` 避开该问题；临时目录清理后可重新设置 `export UV_PROJECT_ENVIRONMENT="$HOME/.local/share/windpower-venv"` 并运行 `uv sync --extra dev`。普通非同步目录不需要此操作。
+本机项目位于 iCloud 目录，实际运行发现它会将 `_editable_impl_*.pth` 自动标记隐藏，Python 3.13 因而忽略 editable 包路径。当前 `.venv` 链接到 `~/.local/share/windpower-venv`（家目录，不在 iCloud 与临时目录内，不会被系统清理），普通 `uv run` 可直接使用。若换机器或该目录被删，重建一次即可：
+
+```sh
+export UV_PROJECT_ENVIRONMENT="$HOME/.local/share/windpower-venv"
+uv sync --extra dev
+rm -f .venv && ln -s "$UV_PROJECT_ENVIRONMENT" .venv
+```
+
+不要放进 `/private/tmp`：macOS 会定期清理临时目录，软链悬空后 `uv run` 会报 `File exists`。普通非同步目录不需要此操作。
 
 `run-sites` 先完成 Zone 1，再依次完成 2–10，输出跨站指标。`predict` 是固定独立测试集的逐日回放；`forecast` 为单一起点的 24 小时预测，未来标签可缺失，但必须已有完整 NWP 和过去 24 小时功率。离线数据只能预测其覆盖的有效时间，不能凭空生成当前日期的 NWP。
 

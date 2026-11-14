@@ -1,0 +1,10 @@
+{
+  "version": "18.7 (Homebrew)",
+  "counts": {
+    "power_observations": 175440,
+    "nwp_forecasts": 175440,
+    "model_runs": 30,
+    "predictions": 127296
+  },
+  "invalid_predictions": 0
+}

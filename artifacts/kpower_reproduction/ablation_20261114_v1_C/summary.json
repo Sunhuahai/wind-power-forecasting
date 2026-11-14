@@ -1,0 +1,53 @@
+{
+  "sites": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10
+  ],
+  "feature_set": "C",
+  "stage2_columns": [
+    "u10",
+    "v10",
+    "u100",
+    "v100",
+    "speed10",
+    "speed100",
+    "dir10_sin",
+    "dir10_cos",
+    "dir100_sin",
+    "dir100_cos",
+    "speed100_cube",
+    "shear",
+    "hour_sin",
+    "hour_cos",
+    "year_sin",
+    "year_cos",
+    "lead",
+    "lag1",
+    "lag2",
+    "lag24",
+    "mean24",
+    "std24",
+    "min24",
+    "max24",
+    "trend"
+  ],
+  "pooled": {
+    "MAE": 0.12452487656112997,
+    "RMSE": 0.17182137729922284,
+    "nMAE": 0.12452487656112997,
+    "nRMSE": 0.17182137729922284,
+    "n": 42432
+  },
+  "pinball_3q_weighted": 0.03862648509807893,
+  "protocol": "fixed project train/val/test; expanding-fold stage-one OOF",
+  "non_equivalence": "not original winner code, 99q score, or 12 rolling tasks",
+  "original_baseline_RMSE": 0.17045420423783827
+}

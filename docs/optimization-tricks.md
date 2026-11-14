@@ -1,0 +1,70 @@
+# 风电预测优化记录
+
+> 当前展示与后续维护以[仅含有效节点的优化进展](optimization-progress.md)为准。下文保留历史实验核对材料；未改善主指标的方案停止推进，不进入进展图。
+
+更新：2026-11-14。只把实际运行过的方法标为有效。
+
+## 已验证：天气邻域 + 时间顺序 OOF 跨站两层模型（整体方案）
+
+- 同样 42,432 个测试小时，冻结 C 的 RMSE 0.170454204 → 0.162180238（降低 4.8541%），MAE 0.123454374 → 0.115982666（降低 6.0522%）。十站中八站 RMSE 降低，Zone 2、8 上升。
+- 方法：24 小时预报日内的风能邻域、跨站第一层预测、第二层 LightGBM；第一层时间顺序 OOF 保证第二层训练输入不读取该时段标签。
+- 2026-11-14 重新下载成功工作流的指标，并由逐站样本数加权平方误差重算合并 RMSE，与 summary.json 一致至 1e-12。
+- [运行证据](https://github.com/Sunhuahai/wind-power-forecasting/actions/runs/42624048464)，下载 artifact 名 `kpower-replay-results`；详细逐站结果见 [[kpower-reproduction-results]]。
+- 边界：这是整体方案效果，尚不能归因于单独的邻域或跨站特征；不是冠军源码或原比赛分数。已有测试集已用于报告，后续结果应标为同一历史基准上的探索性评价，不能当作全新盲测。
+
+## 已验证：物理残差降低 MAE
+
+十站 MAE 0.123454 → 0.121856，RMSE 0.170454 → 0.170535。适合作为 MAE 导向候选；不能宣称改善 RMSE。物理直接注入 RMSE 的微小差异置信区间跨零。见 [实验协议与报告](physics-experiment.md)。
+
+## 已验证：相同样本的特征消融
+
+新增 `--feature-set C|neighbors|full`。三组第二层都使用相同 OOF 时间段、相同超参数和验证早停；C 组也仅用该时间段，因此必须与这里的新 C 对照比较，不能把旧全年训练 C 当作唯一消融对照。第一层计算仍保留，以固定样本交集。
+
+```sh
+uv run python -m windpower.models.kpower_reproduction --sites all --feature-set C --experiment-id ablation_C_v1
+uv run python -m windpower.models.kpower_reproduction --sites all --feature-set neighbors --experiment-id ablation_neighbors_v1
+uv run python -m windpower.models.kpower_reproduction --sites all --feature-set full --experiment-id ablation_full_v1
+```
+
+已恢复 PostgreSQL 和十站数据，执行三组训练。区间覆盖率 73.19% 是另一个待解决问题，校准需要从拟合/早停中隔离出的校准时段。
+
+2026-11-14 已恢复独立临时环境和十站官方数据，本轮使用 PostgreSQL **18.7**、LightGBM **4.7.0**（旧报告为各自历史环境）。批量实验标识 `ablation_20261114_v1`；环境详情保存在 `artifacts/kpower_ablation/ablation_20261114_v1/environment.json`。运行命令：
+
+```sh
+python scripts/run_kpower_ablation.py --experiment-id ablation_20261114_v1
+```
+
+十站 42,432 个相同测试小时结果：
+
+|方案|MAE|RMSE|
+|---|---:|---:|
+|C（OOF 同时间段训练对照）|0.124524877|0.171821377|
+|C + 天气邻域|0.119839461|0.167073932|
+|完整两层（再加跨站预测）|0.115982666|0.162180238|
+
+天气邻域相对 C 的 RMSE 差为 -0.004747446，七日块配对 95% 区间 [-0.006269744, -0.003219281]；完整两层相对邻域的差为 -0.004893694，区间 [-0.006190094, -0.003657589]。训练样本键和测试标签逐行完全一致。支持这两组特征在当前配对设计下有贡献，不能推断其他年份或任意学习器上的普遍收益。完整模型重跑指标与之前远端结果一致。
+
+[本轮消融报告](../artifacts/kpower_ablation/ablation_20261114_v1/report.md)
+
+## 已验证的新 trick：验证集全站共享凸融合
+
+固定候选为以上 C、neighbors、full 三组预测，仅最小化合并验证 MSE；全站共享三个非负权重，和为一。权重文件写入后才加载测试预测，禁止测试集选择权重。验证集已用于各基模型早停，故不能把该验证误差视为独立泛化误差。测试评价仍为探索性的历史基准。
+
+```sh
+python scripts/run_validation_blend.py --ablation-id ablation_20261114_v1
+```
+
+2026-11-14 已完成：43,008 个验证小时拟合出的权重为 **C 0.122281198、neighbors 0.084286243、full 0.793432559**。权重先写入文件，然后加载测试集。
+
+|方案|测试 MAE|测试 RMSE|
+|---|---:|---:|
+|完整两层|0.115982666|0.162180238|
+|验证集凸融合|0.115904742|**0.161552864**|
+
+相对完整两层 RMSE 再降低 **0.3868%**；相对最初冻结 C 降低约 **5.22%**。融合−完整两层 RMSE 差 -0.000627374，2000 次七日连续日历块配对 95% 区间 **[-0.000963197, -0.000286049]**。MAE 差 -0.000077924，区间 [-0.000326755, 0.000176262]，尚不能声称 MAE 稳定改善。
+
+实用要点：保留有差异但单独较弱的模型，使用验证集确定凸融合权重，可能降低最强单模型的误差；本次只试这个预先固定的全站共享方案，未按测试集搜索权重。区间仅反映固定模型在当前历史测试期的日块不确定性，不包括重新训练和新年份。
+
+[融合报告](../artifacts/kpower_ablation/ablation_20261114_v1/validation_blend/report.md) · [冻结权重](../artifacts/kpower_ablation/ablation_20261114_v1/validation_blend/weights.json)
+
+当前代码离线测试 **26 passed, 1 skipped**；跳过项要求旧的 PostgreSQL 18.6 精确版本。本轮数据库 18.7 的迁移、十站导入、120 次第二层模型拟合和30组点预测写库均已实际执行，不能将此表述为旧数据库版本门禁通过。

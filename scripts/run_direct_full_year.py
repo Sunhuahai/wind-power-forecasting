@@ -1,0 +1,88 @@
+"""Direct pooled model on the full original training year, without stacked prediction inputs."""
+import json
+from pathlib import Path
+
+import joblib
+import numpy as np
+import polars as pl
+from lightgbm import LGBMRegressor,early_stopping
+
+from windpower.features.build import build
+from windpower.features.cross_nwp import temporal_spatial_panel,attach_temporal,COLUMNS,TEMPORAL_COLUMNS
+from windpower.models.train import config,partitions
+from windpower.models import kpower_reproduction as kp
+from windpower.models.validation_blend import fit_weights
+from windpower.evaluation.metrics import metrics
+from windpower.evaluation.paired import paired_comparison
+
+ID='ablation_20261114_v1'
+PARENT=Path('artifacts/kpower_ablation')/ID
+BASE=PARENT/'mlp_shared_v1'
+OUT=PARENT/'direct_full_year_v1'
+FEATURES=[name for name in kp.STAGE2 if not name.startswith('stage1_')]+COLUMNS+TEMPORAL_COLUMNS+['farm']
+KEYS=['origin','valid_at','lead','actual','site']
+
+
+def main():
+    OUT.mkdir(exist_ok=False)
+    cfg=config()
+    params=dict(cfg['lightgbm'],num_leaves=31,min_child_samples=80,n_estimators=800)
+    protocol=dict(params=params,features=FEATURES,categorical_feature='farm',baseline=str(BASE),
+        method='Direct pooled model with raw NWP, forecast neighborhoods and own history on full original training year; all stage1 predictions removed',
+        selection='Validation early stopping and global convex MSE blend; freeze before test scoring',
+        caveat='Exploratory historical test, validation reused for early stopping')
+    (OUT/'protocol.json').write_text(json.dumps(protocol,indent=2))
+    panels,parts={},{}
+    for site in range(1,11):
+        panel=kp.nwp_panel(site); panels[site]=panel
+        parts[site]={k:kp.attach(v,panel) for k,v in partitions(build(site)).items()}
+        print(f'Prepared zone {site}',flush=True)
+    spatial=temporal_spatial_panel(panels)
+    trains,validations=[],[]
+    for site in range(1,11):
+        tr=parts[site]['train']
+        trains.append(attach_temporal(tr,spatial).with_columns(pl.lit(site).alias('farm')))
+        validations.append(attach_temporal(parts[site]['validation'],spatial)
+            .with_columns(pl.lit(site).alias('farm'),pl.lit(site).alias('site')))
+    tr,va=pl.concat(trains),pl.concat(validations)
+    model=LGBMRegressor(**params)
+    model.fit(tr.select(FEATURES).to_numpy(),tr['actual'].to_numpy(),
+        categorical_feature=[len(FEATURES)-1],eval_set=[(va.select(FEATURES).to_numpy(),va['actual'].to_numpy())],
+        callbacks=[early_stopping(30,verbose=False)])
+    joblib.dump(dict(model=model,columns=FEATURES,protocol=protocol),OUT/'model.joblib')
+    candidate=np.clip(model.predict(va.select(FEATURES).to_numpy()),0,1)
+    old=pl.read_csv(BASE/'validation_predictions.csv',try_parse_dates=True)
+    if not va.select(KEYS).equals(old.select(KEYS)):raise ValueError('Validation keys/labels differ')
+    baseline_v=old['mlp_blend'].to_numpy()
+    weights=fit_weights(np.column_stack([baseline_v,candidate]),va['actual'].to_numpy())
+    (OUT/'weights.json').write_text(json.dumps(dict(baseline=float(weights[0]),direct=float(weights[1]),
+        train_samples=tr.height,validation_samples=va.height,best_iteration=model.best_iteration_),indent=2))
+    if weights[1] < 1e-8:
+        (OUT/'decision.json').write_text(json.dumps(dict(accepted=False,reason='Validation chose zero candidate weight'),indent=2))
+        print('Discarded at validation gate; test unopened.',flush=True)
+        return
+    # All model rounds and weights fixed before test inference.
+    tests=[]
+    for site in range(1,11):
+        tests.append(attach_temporal(parts[site]['test'],spatial)
+            .with_columns(pl.lit(site).alias('farm'),pl.lit(site).alias('site')))
+    te=pl.concat(tests)
+    previous=pl.read_csv(BASE/'predictions.csv',try_parse_dates=True)
+    if not te.select(KEYS).equals(previous.select(KEYS)):raise ValueError('Test keys/labels differ')
+    test=te.select(KEYS).with_columns(pl.Series('baseline',previous['mlp_blend']),
+        pl.Series('direct',np.clip(model.predict(te.select(FEATURES).to_numpy()),0,1)))
+    test=test.with_columns((pl.col('baseline')*weights[0]+pl.col('direct')*weights[1]).alias('direct_blend'))
+    scores=[dict(model=n,**metrics(test['actual'],test[n])) for n in ['baseline','direct','direct_blend']]
+    paired=paired_comparison(test,'direct_blend')
+    accepted=scores[-1]['RMSE']<scores[0]['RMSE'] and paired['delta_RMSE_high']<0
+    pl.DataFrame(scores).write_csv(OUT/'metrics.csv')
+    (OUT/'paired.json').write_text(json.dumps(paired,indent=2))
+    (OUT/'decision.json').write_text(json.dumps(dict(accepted=accepted,scores=scores),indent=2))
+    if accepted:
+        test.write_csv(OUT/'predictions.csv')
+        va.select(KEYS).with_columns(pl.Series('baseline',baseline_v),pl.Series('direct',candidate),
+            pl.Series('direct_blend',baseline_v*weights[0]+candidate*weights[1])).write_csv(OUT/'validation_predictions.csv')
+    print(json.dumps(dict(accepted=accepted,weights=weights.tolist(),scores=scores,paired=paired),indent=2),flush=True)
+
+
+if __name__=='__main__':main()

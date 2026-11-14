@@ -1,0 +1,6 @@
+{
+  "baseline": 0.5464978358782425,
+  "spatial": 0.45350216412175753,
+  "validation_samples": 43008,
+  "validation_MSE": 0.021988992973322817
+}

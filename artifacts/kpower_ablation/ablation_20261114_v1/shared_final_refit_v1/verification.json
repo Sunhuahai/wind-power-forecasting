@@ -1,0 +1,11 @@
+{
+  "test_hours": 42432,
+  "train_hours": 106310,
+  "oof_blocks": 158,
+  "labels_and_keys_identical": true,
+  "frozen_branch_replacement_verified": true,
+  "all_oof_labels_strictly_past": true,
+  "final_labels_before_test_origin": true,
+  "all_rounds_frozen": true,
+  "no_independent_validation_predictions_published": true
+}

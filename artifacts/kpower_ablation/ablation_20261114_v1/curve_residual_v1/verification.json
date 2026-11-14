@@ -1,0 +1,8 @@
+{
+  "test_hours": 42432,
+  "train_hours": 65760,
+  "validation_hours": 43008,
+  "labels_and_keys_identical": true,
+  "baseline_replay": true,
+  "frozen_weight_replay": true
+}

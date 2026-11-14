@@ -1,0 +1,11 @@
+step,date,method,MAE,RMSE,n,gain_vs_baseline_pct,source
+1,2026-11-09,原 C 基线,0.12345437385813622,0.17045420423783827,42432,0.0,artifacts/physics_experiments/physics_20261109_v1/summary.csv
+2,2026-11-09,天气邻域 + OOF 跨站两层模型,0.1159826659247299,0.16218023775760257,42432,4.854070051971771,artifacts/kpower_reproduction/ci_kpower_10sites/summary.json
+3,2026-11-14,验证集全站共享凸融合,0.11590474154436065,0.16155286389296095,42432,5.222130122679225,artifacts/kpower_ablation/ablation_20261114_v1/validation_blend/metrics.csv
+4,2026-11-14,十站原始风场 + 验证集融合,0.11489063126399446,0.1606223266987965,42432,5.768046369406732,artifacts/kpower_ablation/ablation_20261114_v1/spatial_nwp_v1/metrics.csv
+5,2026-11-14,跨站风速时变 + 验证集融合,0.11449010359656756,0.16027563401166875,42432,5.97143981967565,artifacts/kpower_ablation/ablation_20261114_v1/temporal_nwp_v1/metrics.csv
+6,2026-11-14,跨站共享模型 + 验证集融合,0.11267985973040111,0.1575827519356464,42432,7.551267133447814,artifacts/kpower_ablation/ablation_20261114_v1/shared_model_v1/metrics.csv
+7,2026-11-14,场站曲线残差 + 验证集融合,0.11252592191257792,0.15732046775550623,42432,7.705140827155111,artifacts/kpower_ablation/ablation_20261114_v1/curve_residual_v1/metrics.csv
+8,2026-11-14,标准化 MLP + 验证集融合,0.11164560792946526,0.15674013868213607,42432,8.045601231734178,artifacts/kpower_ablation/ablation_20261114_v1/mlp_shared_v1/metrics.csv
+9,2026-11-14,共享分支最终重拟合（扩展训练期）,0.11111253419483598,0.15632756799594683,42432,8.287643185485916,artifacts/kpower_ablation/ablation_20261114_v1/shared_final_refit_v1/metrics.csv
+10,2026-11-14,MLP 分支最终重拟合（冻结64轮）,0.11110833850414355,0.155737496157799,42432,8.633819356843054,artifacts/kpower_ablation/ablation_20261114_v1/mlp_final_refit_v1/metrics.csv

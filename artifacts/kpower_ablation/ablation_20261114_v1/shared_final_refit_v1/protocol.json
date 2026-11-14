@@ -1,0 +1,22 @@
+{
+  "method": "Replace only the accepted shared branch after final train+validation refit",
+  "cutoff": "2013-07-01 00:00:00",
+  "label_rule": "All final fitting labels strictly before first test origin",
+  "rounds": 709,
+  "first_rounds": {
+    "1": 92,
+    "2": 268,
+    "3": 206,
+    "4": 171,
+    "5": 283,
+    "6": 193,
+    "7": 289,
+    "8": 118,
+    "9": 107,
+    "10": 165
+  },
+  "fixed_branch_coefficient": 0.2986264654614326,
+  "selection": "No new model/round/weight selection; original selected rounds and combination coefficients frozen",
+  "protocol_change": "Former validation labels become final fitting data; no independent validation remains for this refit",
+  "caveat": "Exploratory fixed historical test; NWP issue and observation arrival timestamps unknown"
+}

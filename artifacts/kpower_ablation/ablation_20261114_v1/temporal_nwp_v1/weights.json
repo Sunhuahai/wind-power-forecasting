@@ -1,0 +1,6 @@
+{
+  "baseline": 0.5442112832981765,
+  "temporal": 0.4557887167018235,
+  "validation_samples": 43008,
+  "validation_MSE": 0.021895767735661306
+}

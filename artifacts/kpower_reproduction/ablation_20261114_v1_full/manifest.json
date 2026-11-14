@@ -1,0 +1,96 @@
+{
+  "feature_set": "full",
+  "columns": [
+    "u10",
+    "v10",
+    "u100",
+    "v100",
+    "speed10",
+    "speed100",
+    "dir10_sin",
+    "dir10_cos",
+    "dir100_sin",
+    "dir100_cos",
+    "speed100_cube",
+    "shear",
+    "hour_sin",
+    "hour_cos",
+    "year_sin",
+    "year_cos",
+    "lead",
+    "lag1",
+    "lag2",
+    "lag24",
+    "mean24",
+    "std24",
+    "min24",
+    "max24",
+    "trend",
+    "energy100_shift_-3",
+    "energy100_shift_-1",
+    "energy100_shift_+1",
+    "energy100_shift_+3",
+    "energy100_mean3",
+    "energy100_mean5",
+    "energy100_gradient",
+    "stage1_1",
+    "stage1_2",
+    "stage1_3",
+    "stage1_4",
+    "stage1_5",
+    "stage1_6",
+    "stage1_7",
+    "stage1_8",
+    "stage1_9",
+    "stage1_10"
+  ],
+  "sites": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10
+  ],
+  "config": {
+    "splits": {
+      "train": [
+        "2012-01-01",
+        "2013-01-01"
+      ],
+      "validation": [
+        "2013-01-01",
+        "2013-07-01"
+      ],
+      "test": [
+        "2013-07-01",
+        "2014-01-01"
+      ]
+    },
+    "origin_hour": 0,
+    "history_strictly_before_origin": true,
+    "ridge_alphas": [
+      0.1,
+      1,
+      10,
+      100
+    ],
+    "lightgbm": {
+      "n_estimators": 400,
+      "learning_rate": 0.04,
+      "num_leaves": 15,
+      "min_child_samples": 40,
+      "reg_lambda": 1.0,
+      "random_state": 42,
+      "n_jobs": 2,
+      "verbosity": -1
+    }
+  },
+  "created_at": "2026-11-14T16:08:30.101489",
+  "source_sha256": "d133edf793c35ecd874a45254692053f285f413ac21fce61672d91eccfff2500",
+  "protocol": "All feature sets use identical OOF-restricted stage-two training rows"
+}

@@ -1,0 +1,16 @@
+{
+  "candidate": "final_refit",
+  "baseline": "baseline",
+  "n": 42432,
+  "calendar_days": 183,
+  "delta_MAE": -0.0005330737346292947,
+  "delta_RMSE": -0.0004125706861892453,
+  "delta_MAE_low": -0.0008301519514939993,
+  "delta_MAE_high": -0.0002395750581217972,
+  "delta_RMSE_low": -0.0007782412841503501,
+  "delta_RMSE_high": -2.504642696996835e-05,
+  "bootstrap_fraction_RMSE_better": 0.9825,
+  "replicates": 2000,
+  "block_days": 7,
+  "seed": 42
+}

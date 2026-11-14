@@ -1,0 +1,7 @@
+{
+  "shared_branch": 0.2986264654614326,
+  "frozen_rounds": 709,
+  "train_samples": 106310,
+  "train_first": "2012-04-02 01:00:00",
+  "train_last": "2013-06-30 23:00:00"
+}
