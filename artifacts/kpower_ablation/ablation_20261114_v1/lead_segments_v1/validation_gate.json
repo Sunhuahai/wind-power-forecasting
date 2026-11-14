@@ -1,0 +1,72 @@
+{
+  "weights": {
+    "baseline": 0.7674563666618102,
+    "segmented": 0.23254363333818978
+  },
+  "scores": [
+    {
+      "model": "baseline",
+      "MAE": 0.10388044551023085,
+      "RMSE": 0.14501209473824758,
+      "nMAE": 0.10388044551023085,
+      "nRMSE": 0.14501209473824758,
+      "n": 43008
+    },
+    {
+      "model": "segmented",
+      "MAE": 0.10807434391307573,
+      "RMSE": 0.14933546578732915,
+      "nMAE": 0.10807434391307573,
+      "nRMSE": 0.14933546578732915,
+      "n": 43008
+    },
+    {
+      "model": "candidate",
+      "MAE": 0.10382497578248047,
+      "RMSE": 0.14456783140659776,
+      "nMAE": 0.10382497578248047,
+      "nRMSE": 0.14456783140659776,
+      "n": 43008
+    }
+  ],
+  "paired": {
+    "candidate": "candidate",
+    "baseline": "baseline",
+    "n": 43008,
+    "calendar_days": 181,
+    "delta_MAE": -5.5469727750316146e-05,
+    "delta_RMSE": -0.0004442633316499023,
+    "delta_MAE_low": -0.000254142802690899,
+    "delta_MAE_high": 0.0001498876099848773,
+    "delta_RMSE_low": -0.0006940937048278799,
+    "delta_RMSE_high": -0.00020286911650254836,
+    "bootstrap_fraction_RMSE_better": 1.0,
+    "replicates": 2000,
+    "block_days": 7,
+    "seed": 42
+  },
+  "passed": true,
+  "by_segment": [
+    {
+      "segment": "1-8",
+      "n": 14336,
+      "baseline_rmse": 0.12777991005278186,
+      "segmented_rmse": 0.13326599081786372,
+      "blended_rmse": 0.12751786231752144
+    },
+    {
+      "segment": "17-24",
+      "n": 14336,
+      "baseline_rmse": 0.14949753118686548,
+      "segmented_rmse": 0.15397523414745706,
+      "blended_rmse": 0.1489719731165676
+    },
+    {
+      "segment": "9-16",
+      "n": 14336,
+      "baseline_rmse": 0.15623157688847233,
+      "segmented_rmse": 0.15948368877827132,
+      "blended_rmse": 0.15571165546787344
+    }
+  ]
+}
