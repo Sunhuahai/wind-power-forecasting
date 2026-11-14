@@ -11,6 +11,7 @@ from pathlib import Path
 import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
+from matplotlib.font_manager import FontProperties
 from matplotlib.ticker import MultipleLocator, FormatStrFormatter
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -54,47 +55,159 @@ def resolve(registry):
     return rows
 
 
+SHORT = {
+    "kpower": ("邻域 + 跨站 OOF", "Neighborhood + OOF"),
+    "validation_blend": ("验证集凸融合", "Validation blend"),
+    "spatial_nwp_blend": ("十站原始风场", "Spatial wind field"),
+    "temporal_nwp_blend": ("风速时变", "Wind dynamics"),
+    "shared_model_blend": ("跨站共享模型", "Shared model"),
+    "curve_residual_blend": ("场站曲线残差", "Curve residual"),
+    "mlp_shared_blend": ("标准化 MLP", "Standardized MLP"),
+    "shared_final_refit": ("共享重拟合*", "Shared refit*"),
+    "mlp_final_refit": ("MLP 重拟合*", "MLP refit*"),
+    "temporal_final_refit": ("时变重拟合*", "Temporal refit*"),
+}
+
+# Candidates that were evaluated on the same frozen test set and rejected.
+# Only candidates with a recorded test score appear; validation-gated ones do not.
+CANDIDATES = [
+    "site_blend_v1", "diversity_v1", "expanded_refit_v1", "cross_history_v1",
+    "vertical_shared_v1", "day_context_shared_v1", "extra_trees_v1", "joint_blend_v1",
+    "prediction_calibration_v1", "hist_gradient_v1", "kernel_ridge_v1",
+    "mlp_seed_ensemble_v1", "shared_median_v1", "direct_full_year_v1",
+    "shared_capacity_search_v1", "forecast_bias_shared_v1", "direction_shared_v1",
+    "lead_blend_v1",
+]
+ABLATION = ROOT / "artifacts/kpower_ablation/ablation_20261114_v1"
+
+CJK_CANDIDATES = (
+    "/System/Library/Fonts/Supplemental/Arial Unicode.ttf",
+    "/System/Library/Fonts/Hiragino Sans GB.ttc",
+    "C:/Windows/Fonts/msyh.ttc",
+    "/usr/share/fonts/opentype/noto/NotoSansCJK-Regular.ttc",
+)
+GREEN = "#2f9e62"
+
+
+def cjk_font():
+    for path in CJK_CANDIDATES:
+        if Path(path).exists():
+            try:
+                return FontProperties(fname=path)
+            except Exception:
+                continue
+    return None
+
+
+def candidate_points(rows):
+    """Rejected candidates, placed just after the milestone they were tested against."""
+    out = []
+    for name in CANDIDATES:
+        path = ABLATION / name / "metrics.csv"
+        if not path.exists():
+            continue
+        with path.open() as file:
+            records = list(csv.DictReader(file))
+        if len(records) < 2:
+            continue
+        base, cand = records[0], records[-1]
+        try:
+            base_rmse, cand_rmse = float(base["RMSE"]), float(cand["RMSE"])
+        except (KeyError, ValueError):
+            continue
+        slot = next((i for i, r in enumerate(rows) if abs(r["RMSE"] - base_rmse) < 1e-9), None)
+        if slot is None:
+            continue
+        out.append(dict(path=name, slot=slot, rmse=cand_rmse, model=cand["model"]))
+    buckets = {}
+    for item in out:
+        buckets.setdefault(item["slot"], []).append(item)
+    placed = []
+    for slot, items in buckets.items():
+        for k, item in enumerate(sorted(items, key=lambda r: r["path"])):
+            placed.append(dict(item, x=slot + 0.16 + 0.11 * k))
+    return placed
+
+
 def render(rows, cohort):
-    OUT.parent.mkdir(parents=True, exist_ok=True)
+    fp = cjk_font()
+    zh = fp is not None
+    if not zh:
+        fp = FontProperties(family="DejaVu Sans")
     plt.rcParams.update({"font.family": "sans-serif", "font.sans-serif": ["DejaVu Sans"], "font.size": 10,
                          "pdf.fonttype": 42, "svg.fonttype": "none",
                          "axes.spines.top": False, "axes.spines.right": False})
-    fig, ax = plt.subplots(figsize=(min(12,max(10,1.9*len(rows))), 5.8), facecolor="white")
-    fig.subplots_adjust(left=.12, right=.94, bottom=.32, top=.75)
+    fig, ax = plt.subplots(figsize=(13, 6.2), facecolor="white")
+    fig.subplots_adjust(left=.068, right=.985, bottom=.115, top=.885)
     x = list(range(len(rows)))
     y = [r["RMSE"] for r in rows]
     gain = (1 - y[-1] / y[0]) * 100
-    fig.text(.12, .92, "Wind power forecasting", size=20, weight="bold", color="#182b3a")
-    fig.text(.12, .865, "Optimization progress  /  successful milestones only", size=11, color="#5b6874")
-    fig.text(.94, .92, f"{y[-1]:.6f}", ha="right", size=24, weight="bold", color="#087f6f")
-    fig.text(.94, .865, f"Best RMSE  |  {gain:.2f}% lower than baseline", ha="right", size=10, color="#087f6f")
-    ax.step(x, y, where="post", color="#087f6f", lw=2.4, zorder=2)
-    ax.scatter(x, y, color="#087f6f", s=68, edgecolors="white", linewidths=1.4, zorder=3)
-    labels=[]
-    for i,r in enumerate(rows):
-        lines=textwrap.wrap(f"{i+1:02d}  {r['label']}",width=16,break_long_words=False,break_on_hyphens=False)
-        method='\n'.join(lines+['']*(2-len(lines)))
-        labels.append(f"{method}\n{r['date']}\n{r['RMSE']:.6f}")
-    ax.set_xticks(x, labels)
-    ax.tick_params(axis="x", length=0, pad=15, labelsize=9 if len(rows)>=9 else 10)
+    kept_label = "成功节点" if zh else "Kept"
+    cand_label = "候选（未采纳）" if zh else "Discarded"
+    line_label = "最优序列" if zh else "Running best"
+
+    cands = candidate_points(rows)
+    if cands:
+        ax.scatter([c["x"] for c in cands], [c["rmse"] for c in cands], s=26,
+                   color="#c2c8cc", edgecolors="none", zorder=2, label=cand_label)
+    ax.step(x, y, where="post", color=GREEN, lw=2.1, zorder=3, label=line_label)
+    ax.scatter(x, y, s=58, facecolors="white", edgecolors=GREEN, linewidths=1.7,
+               zorder=4, label=kept_label)
+
+    for i, row in enumerate(rows):
+        if i == 0:
+            continue
+        bare = (1 - row["RMSE"] / rows[i - 1]["RMSE"]) * 100
+        label = SHORT.get(row["id"])
+        if not label:
+            label = (row["label_zh"], row["label"])
+        text = f"{label[0] if zh else label[1]}  −{bare:.2f}%"
+        last = i == len(rows) - 1
+        ax.annotate(text, xy=(x[i], y[i]), xytext=(-26 if last else 6, 12),
+                    textcoords="offset points", ha="left", va="bottom",
+                    rotation=26, rotation_mode="anchor", fontsize=8.2, color="#333f47",
+                    fontproperties=fp, zorder=5)
+    ax.annotate("原 C 基线" if zh else "baseline", xy=(0, y[0]), xytext=(8, 10),
+                textcoords="offset points", ha="left", va="bottom", fontsize=8.4,
+                color="#7d8892", fontproperties=fp)
+    if zh:
+        subtitle = ("风电功率预测优化进展："
+                    f"{len(rows) - 1} 次改进、{len(rows)} 个成功节点" + (f"，{len(cands)} 个候选被否决" if cands else ""))
+        best = f"最优 RMSE {y[-1]:.6f}  |  较原 C 基线低 {gain:.2f}%"
+        xlabel = "优化轮次"
+        ylabel = "测试 RMSE（越低越好）"
+        foot = (f"同一历史测试集：十站 / {rows[0]['n']:,} 小时 / 2013 年 7–12 月。"
+                "灰点为同测试集上被否决的候选；* 为最终重拟合（冻结原选轮数，把 2013 上半年标签并入训练，协议变化）。")
+    else:
+        subtitle = (f"Wind power optimization: {len(rows) - 1} improvements, {len(rows)} kept nodes")
+        best = f"Best RMSE {y[-1]:.6f}  |  {gain:.2f}% below the original C baseline"
+        xlabel, ylabel = "Optimization round", "Test RMSE  (lower is better)"
+        foot = (f"Same historical test: 10 zones / {rows[0]['n']:,} hours / Jul-Dec 2013. "
+                "Grey dots: rejected candidates scored on the same test set; * final refit (frozen rounds, Jan-Jun 2013 labels).")
+    ax.set_title(subtitle, fontsize=14, color="#1b2733", pad=10, loc="left", fontproperties=fp)
+    ax.text(1.0, 1.045, best, transform=ax.transAxes, ha="right", va="bottom",
+            fontsize=10, color=GREEN, fontproperties=fp)
+    ax.set_xticks(x, (["0"] + [str(i) for i in range(1, len(rows))]))
+    ax.tick_params(axis="x", length=0, pad=6, labelsize=9.5)
+    ax.set_xlabel(xlabel, fontproperties=fp, color="#5b6874")
+    ax.set_ylabel(ylabel, fontproperties=fp)
     span = max(y) - min(y)
-    ax.set_ylim(min(y)-max(span*.25, .001), max(y)+max(span*.32, .001))
-    ax.set_xlim(-.22, len(rows)-.78)
-    ax.set_ylabel("Test RMSE  (lower is better)", labelpad=12)
+    ax.set_ylim(min(y) - span * .06, max(y) + span * .10)
+    ax.set_xlim(-.45, len(rows) - .35)
     ax.yaxis.set_major_locator(MultipleLocator(.002 if span < .015 else .005))
     ax.yaxis.set_major_formatter(FormatStrFormatter("%.3f"))
-    ax.grid(axis="y", color="#e5e9ec", lw=.8)
+    ax.grid(axis="y", color="#eceff1", lw=.8)
     ax.set_axisbelow(True)
-    ax.spines[["left", "bottom"]].set_color("#bac4cb")
-    notes=[r['protocol_note'] for r in rows if r.get('protocol_note')]
-    fig.text(.12, .105 if notes else .09, f"Same historical test: 10 zones / {rows[0]['n']:,} hours / Jul-Dec 2013", size=9, color="#5b6874")
-    fig.text(.12, .065 if notes else .045, "Exploratory benchmark. Steps show completed milestones, not elapsed time or learning curves.", size=8.5, color="#5b6874")
-    if notes:
-        fig.text(.12,.025,'* '+notes[-1],size=8.5,color='#795a20')
+    for side in ("left", "bottom"):
+        ax.spines[side].set_color("#c8d0d6")
+    leg = ax.legend(loc="upper right", bbox_to_anchor=(0.995, 0.94), frameon=False,
+                    fontsize=9, prop=fp, handletextpad=.6, borderaxespad=0)
+    fig.text(.068, .022, foot, size=8, color="#6b7680", fontproperties=fp)
     fig.savefig(f"{OUT}.png", dpi=300, facecolor="white")
     fig.savefig(f"{OUT}.pdf", facecolor="white")
     fig.savefig(f"{OUT}.svg", facecolor="white")
     plt.close(fig)
+
     fields = ["step", "date", "method", "MAE", "RMSE", "n", "gain_vs_baseline_pct", "source"]
     with OUT.with_suffix(".csv").open("w") as file:
         writer = csv.DictWriter(file, fieldnames=fields)

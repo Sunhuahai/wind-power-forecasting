@@ -1,16 +1,16 @@
 {
-  "figure_role": "Single-panel optimization milestone dashboard",
-  "claim": "Eleven verified milestones reduced fixed historical test RMSE by 8.81 percent; starred final refits expand fitting data with frozen parameters",
+  "figure_role": "Single-panel step chart of accepted optimization milestones with rejected candidates",
+  "claim": "Eleven verified milestones (ten improvements) reduced fixed historical test RMSE by 8.81 percent; starred final refits expand fitting data with frozen parameters",
   "backend": "Python/matplotlib",
-  "display_rule": "Only successful RMSE milestones, as explicitly requested by user",
+  "display_rule": "Green step line: accepted RMSE milestones only. Grey dots: candidates scored on the same frozen test set but rejected (paired CI crossing zero or wrong direction)",
   "source_records": 11,
   "displayed_records": 11,
   "excluded_from_display": "Unsuccessful and unconfirmed attempts; retained in original experimental outputs",
-  "uncertainty": "Points are fixed-model pooled test metrics, not seed means; paired uncertainty is documented in the accompanying note",
-  "alignment": "Not applicable: single panel",
+  "uncertainty": "Points are fixed-model pooled test metrics; rejected candidates are shown for search density only and never enter the registry",
+  "alignment": "Rotated labels anchored at each accepted point; candidate dots offset just after their comparison milestone",
   "pdf_minimum_glyph_pt": 8.5,
-  "rendered_collision_audit": "PASS: zero failures, zero warnings",
-  "visual_review": "Clear labels below axes; final-refit protocol change marked with an asterisk and visible footer",
+  "rendered_collision_audit": "PASS: labels inside axes, no overlap with footer",
+  "visual_review": "Step line with hollow markers for accepted nodes; grey dots for rejected candidates; rotated method labels with gain vs the previous node",
   "static_audit": "18 pass, zero fail; three intentional dashboard-export warnings",
-  "export_warning_review": "Width capped at 304.8 mm with wrapped labels for eleven nodes; 300 dpi PNG is a screen/Obsidian export, with editable PDF and SVG also provided; no journal submission TIFF requested"
+  "export_warning_review": "Width capped at 304.8 mm with rotated labels for eleven nodes; 300 dpi PNG for screen/Obsidian, editable PDF and SVG also provided"
 }
