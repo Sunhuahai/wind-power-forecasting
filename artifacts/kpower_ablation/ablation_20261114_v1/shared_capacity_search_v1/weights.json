@@ -1,0 +1,11 @@
+{
+  "baseline": 0.9172161770713868,
+  "capacity": 0.08278382292861315,
+  "selected": {
+    "num_leaves": 127,
+    "min_child_samples": 80
+  },
+  "train_samples": 65760,
+  "validation_samples": 43008,
+  "best_iteration": 514
+}

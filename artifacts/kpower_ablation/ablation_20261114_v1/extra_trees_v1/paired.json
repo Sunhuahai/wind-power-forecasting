@@ -1,0 +1,16 @@
+{
+  "candidate": "forest_blend",
+  "baseline": "baseline",
+  "n": 42432,
+  "calendar_days": 183,
+  "delta_MAE": 6.740389734328287e-05,
+  "delta_RMSE": 1.3109189722637637e-06,
+  "delta_MAE_low": 1.9739439355650188e-05,
+  "delta_MAE_high": 0.00011613012543256153,
+  "delta_RMSE_low": -6.420908754220938e-05,
+  "delta_RMSE_high": 6.899309559612938e-05,
+  "bootstrap_fraction_RMSE_better": 0.494,
+  "replicates": 2000,
+  "block_days": 7,
+  "seed": 42
+}

@@ -1,0 +1,7 @@
+{
+  "baseline": 0.9541905669086816,
+  "bias": 0.04580943309131841,
+  "train_samples": 65760,
+  "validation_samples": 43008,
+  "best_iteration": 799
+}

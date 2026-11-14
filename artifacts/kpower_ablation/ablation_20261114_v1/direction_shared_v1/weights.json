@@ -1,0 +1,7 @@
+{
+  "baseline": 0.9829783340768565,
+  "direction": 0.017021665923143442,
+  "train_samples": 65760,
+  "validation_samples": 43008,
+  "best_iteration": 792
+}

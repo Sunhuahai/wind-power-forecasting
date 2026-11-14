@@ -1,0 +1,56 @@
+{
+  "method": "Global monotone prediction calibration",
+  "baseline": "artifacts/kpower_ablation/ablation_20261114_v1/curve_residual_v1",
+  "grid": [
+    0.0,
+    0.25,
+    0.5,
+    0.75,
+    1.0
+  ],
+  "split": "Jan-Mar curve fitting, Apr-Jun strength selection, then Jan-Jun curve refit",
+  "candidates": [
+    {
+      "strength": 0.0,
+      "MAE": 0.10035558917694064,
+      "RMSE": 0.14081372552854904,
+      "nMAE": 0.10035558917694064,
+      "nRMSE": 0.14081372552854904,
+      "n": 21408
+    },
+    {
+      "strength": 0.25,
+      "MAE": 0.10030858086269849,
+      "RMSE": 0.1406668366816098,
+      "nMAE": 0.10030858086269849,
+      "nRMSE": 0.1406668366816098,
+      "n": 21408
+    },
+    {
+      "strength": 0.5,
+      "MAE": 0.10033000578516277,
+      "RMSE": 0.14062222718904263,
+      "nMAE": 0.10033000578516277,
+      "nRMSE": 0.14062222718904263,
+      "n": 21408
+    },
+    {
+      "strength": 0.75,
+      "MAE": 0.10042654131054277,
+      "RMSE": 0.14067999434893938,
+      "nMAE": 0.10042654131054277,
+      "nRMSE": 0.14067999434893938,
+      "n": 21408
+    },
+    {
+      "strength": 1.0,
+      "MAE": 0.10060308379709566,
+      "RMSE": 0.14084001218845227,
+      "nMAE": 0.10060308379709566,
+      "nRMSE": 0.14084001218845227,
+      "n": 21408
+    }
+  ],
+  "selected_strength": 0.5,
+  "caveat": "Base models and blend used full validation; fixed historical test is exploratory"
+}

@@ -1,0 +1,61 @@
+{
+  "baseline": "artifacts/kpower_ablation/ablation_20261114_v1/mlp_shared_v1",
+  "bins": [
+    "1-6",
+    "7-12",
+    "13-18",
+    "19-24"
+  ],
+  "grid": [
+    0.0,
+    0.25,
+    0.5,
+    0.75,
+    1.0
+  ],
+  "candidates": [
+    {
+      "strength": 0.0,
+      "MAE": 0.09937845150684316,
+      "RMSE": 0.14030267705076876,
+      "nMAE": 0.09937845150684316,
+      "nRMSE": 0.14030267705076876,
+      "n": 21408
+    },
+    {
+      "strength": 0.25,
+      "MAE": 0.09934283930131571,
+      "RMSE": 0.1402423934185039,
+      "nMAE": 0.09934283930131571,
+      "nRMSE": 0.1402423934185039,
+      "n": 21408
+    },
+    {
+      "strength": 0.5,
+      "MAE": 0.09932606925640838,
+      "RMSE": 0.1402072878917981,
+      "nMAE": 0.09932606925640838,
+      "nRMSE": 0.1402072878917981,
+      "n": 21408
+    },
+    {
+      "strength": 0.75,
+      "MAE": 0.09932853959840604,
+      "RMSE": 0.14019737938450094,
+      "nMAE": 0.09932853959840604,
+      "nRMSE": 0.14019737938450094,
+      "n": 21408
+    },
+    {
+      "strength": 1.0,
+      "MAE": 0.09934599027369567,
+      "RMSE": 0.1402126732384589,
+      "nMAE": 0.09934599027369567,
+      "nRMSE": 0.1402126732384589,
+      "n": 21408
+    }
+  ],
+  "selected_strength": 0.75,
+  "selection": "Jan-Mar weights -> Apr-Jun shrinkage selection; then refit bins Jan-Jun",
+  "caveat": "Base models and original blend reused full validation; historical test is exploratory"
+}

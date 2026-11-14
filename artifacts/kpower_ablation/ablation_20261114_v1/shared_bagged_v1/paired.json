@@ -1,0 +1,16 @@
+{
+  "candidate": "shared_bagged_chain",
+  "baseline": "baseline",
+  "n": 42432,
+  "calendar_days": 183,
+  "delta_MAE": 4.749888911187129e-05,
+  "delta_RMSE": 8.072358142507952e-05,
+  "delta_MAE_low": -6.12145403242952e-05,
+  "delta_MAE_high": 0.00016116873239211283,
+  "delta_RMSE_low": -6.257791233376941e-05,
+  "delta_RMSE_high": 0.00023208160074936684,
+  "bootstrap_fraction_RMSE_better": 0.141,
+  "replicates": 2000,
+  "block_days": 7,
+  "seed": 42
+}

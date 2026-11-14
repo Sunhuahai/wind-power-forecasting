@@ -1,0 +1,16 @@
+{
+  "candidate": "diversity_blend",
+  "baseline": "baseline",
+  "n": 42432,
+  "calendar_days": 183,
+  "delta_MAE": -0.0005748818735169208,
+  "delta_RMSE": -0.00025924602081392467,
+  "delta_MAE_low": -0.0008301879552272114,
+  "delta_MAE_high": -0.0003291326527663117,
+  "delta_RMSE_low": -0.000590972124081459,
+  "delta_RMSE_high": 5.9501658521798186e-05,
+  "bootstrap_fraction_RMSE_better": 0.94,
+  "replicates": 2000,
+  "block_days": 7,
+  "seed": 42
+}

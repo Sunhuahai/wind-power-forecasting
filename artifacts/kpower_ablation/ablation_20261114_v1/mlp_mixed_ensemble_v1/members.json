@@ -1,0 +1,66 @@
+{
+  "members": [
+    {
+      "hidden": [
+        128,
+        64,
+        32
+      ],
+      "seed": 42,
+      "iterations": 122
+    },
+    {
+      "hidden": [
+        128,
+        64,
+        32
+      ],
+      "seed": 7,
+      "iterations": 92
+    },
+    {
+      "hidden": [
+        128,
+        64,
+        32
+      ],
+      "seed": 2024,
+      "iterations": 114
+    },
+    {
+      "hidden": [
+        128,
+        64,
+        32
+      ],
+      "seed": 101,
+      "iterations": 100
+    },
+    {
+      "hidden": [
+        128,
+        64
+      ],
+      "seed": 42,
+      "iterations": 80
+    },
+    {
+      "hidden": [
+        128,
+        64
+      ],
+      "seed": 7,
+      "iterations": 57
+    },
+    {
+      "hidden": [
+        128,
+        64
+      ],
+      "seed": 2024,
+      "iterations": 77
+    }
+  ],
+  "blend_weight": 0.29051527469176036,
+  "validation_MSE": 0.021087385530008624
+}

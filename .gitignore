@@ -41,27 +41,15 @@ artifacts/kpower_ablation/**
 !artifacts/kpower_ablation/**/report.md
 artifacts/kpower_ablation/**/paired_predictions.csv
 artifacts/kpower_ablation/**/predictions.csv
-# Discarded candidates stay local; only accepted progress is published.
-artifacts/kpower_ablation/**/shared_bagged_v1/
-artifacts/kpower_ablation/**/hurdle_shared_v1/
-artifacts/kpower_ablation/**/mlp_mixed_ensemble_v1/
-artifacts/kpower_ablation/**/pooled_base_v1/
-artifacts/kpower_ablation/**/site_blend_v1/
-artifacts/kpower_ablation/**/diversity_v1/
-artifacts/kpower_ablation/**/expanded_refit_v1/
-artifacts/kpower_ablation/**/cross_history_v1/
-artifacts/kpower_ablation/**/vertical_shared_v1/
-artifacts/kpower_ablation/**/day_context_shared_v1/
-artifacts/kpower_ablation/**/extra_trees_v1/
-artifacts/kpower_ablation/**/joint_blend_v1/
-artifacts/kpower_ablation/**/prediction_calibration_v1/
-artifacts/kpower_ablation/**/hist_gradient_v1/
-artifacts/kpower_ablation/**/kernel_ridge_v1/
-artifacts/kpower_ablation/**/mlp_seed_ensemble_v1/
-artifacts/kpower_ablation/**/shared_median_v1/
-artifacts/kpower_ablation/**/direct_full_year_v1/
-artifacts/kpower_ablation/**/shared_capacity_search_v1/
-artifacts/kpower_ablation/**/forecast_bias_shared_v1/
-artifacts/kpower_ablation/**/direction_shared_v1/
-artifacts/kpower_ablation/**/mean_stack_shared_v1/
-artifacts/kpower_ablation/**/lead_blend_v1/
+# Uniform experiment-evidence policy: keep small protocol/metric/decision evidence for
+# every round (accepted and rejected) so the notes stay auditable; never commit models or
+# per-hour prediction dumps.
+artifacts/kpower_ablation/**/*.joblib
+artifacts/kpower_ablation/**/predictions.csv
+artifacts/kpower_ablation/**/validation_predictions.csv
+artifacts/kpower_ablation/**/paired_predictions.csv
+artifacts/kpower_ablation/**/oof_components.csv
+artifacts/kpower_reproduction/**/*.joblib
+artifacts/kpower_reproduction/**/predictions.csv
+artifacts/kpower_reproduction/**/validation_predictions.csv
+artifacts/kpower_reproduction/**/train_keys.csv

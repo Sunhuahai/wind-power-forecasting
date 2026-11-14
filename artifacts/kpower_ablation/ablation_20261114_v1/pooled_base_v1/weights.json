@@ -1,0 +1,11 @@
+{
+  "full_branch": 0.08778601011853192,
+  "pooling_weights": {
+    "C": 0.12228119788605393,
+    "neighbors": 0.08428624348834608,
+    "full": 0.7934325586255999
+  },
+  "rounds": 151,
+  "train_samples": 65760,
+  "validation_samples": 43008
+}

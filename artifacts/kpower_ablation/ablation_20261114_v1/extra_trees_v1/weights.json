@@ -1,0 +1,7 @@
+{
+  "baseline": 0.9675224335757185,
+  "forest": 0.03247756642428157,
+  "train_samples": 65760,
+  "validation_samples": 43008,
+  "tree_count": 256
+}

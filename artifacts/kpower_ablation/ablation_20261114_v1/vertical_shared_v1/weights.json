@@ -1,0 +1,7 @@
+{
+  "baseline": 1.0,
+  "vertical": 1.1102230246251565e-16,
+  "train_samples": 65760,
+  "validation_samples": 43008,
+  "best_iteration": 446
+}

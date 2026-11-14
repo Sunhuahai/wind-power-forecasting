@@ -1,0 +1,7 @@
+{
+  "baseline": 0.9811005106303201,
+  "kernel": 0.018899489369679945,
+  "train_samples": 65760,
+  "validation_samples": 43008,
+  "landmarks": 1024
+}

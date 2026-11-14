@@ -1,0 +1,14 @@
+{
+  "components": [
+    "C",
+    "neighbors",
+    "full",
+    "spatial",
+    "temporal",
+    "shared",
+    "curve_residual"
+  ],
+  "baseline": "artifacts/kpower_ablation/ablation_20261114_v1/curve_residual_v1",
+  "method": "One simultaneous nonnegative sum-to-one validation MSE fit across accepted components",
+  "caveat": "Same historical test; validation reused by base-model stopping"
+}

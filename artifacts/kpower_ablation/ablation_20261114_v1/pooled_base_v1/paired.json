@@ -1,0 +1,16 @@
+{
+  "candidate": "pooled_chain",
+  "baseline": "baseline",
+  "n": 42432,
+  "calendar_days": 183,
+  "delta_MAE": 0.00014409519742617532,
+  "delta_RMSE": 7.822431417170428e-06,
+  "delta_MAE_low": 2.0984621245201984e-05,
+  "delta_MAE_high": 0.0002678006698946775,
+  "delta_RMSE_low": -0.0001841061942030077,
+  "delta_RMSE_high": 0.00017041334979914834,
+  "bootstrap_fraction_RMSE_better": 0.4505,
+  "replicates": 2000,
+  "block_days": 7,
+  "seed": 42
+}

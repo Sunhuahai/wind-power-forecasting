@@ -1,0 +1,9 @@
+{
+  "shared_branch": 0.26163710710502186,
+  "threshold": 0.005,
+  "mean_calm": 0.00047572836065175284,
+  "classifier_rounds": 166,
+  "regressor_rounds": 424,
+  "train_samples": 65760,
+  "calm_share": 0.11780717761557177
+}
