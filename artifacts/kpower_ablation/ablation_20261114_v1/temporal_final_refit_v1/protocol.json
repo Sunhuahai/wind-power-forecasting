@@ -1,0 +1,21 @@
+{
+  "method": "Replace only the accepted temporal-NWP branch after final train+validation refit",
+  "cutoff": "2013-07-01 00:00:00",
+  "label_rule": "All final fitting labels strictly before first test origin",
+  "frozen_rounds": {
+    "1": 296,
+    "2": 110,
+    "3": 103,
+    "4": 92,
+    "5": 89,
+    "6": 152,
+    "7": 250,
+    "8": 272,
+    "9": 52,
+    "10": 91
+  },
+  "fixed_branch_coefficient": 0.1935315744445138,
+  "selection": "No new model/round/weight selection; original selected rounds and combination coefficients frozen",
+  "protocol_change": "Former validation labels become final fitting data; no independent validation remains for this refit",
+  "caveat": "Exploratory fixed historical test; NWP issue and observation arrival timestamps unknown"
+}

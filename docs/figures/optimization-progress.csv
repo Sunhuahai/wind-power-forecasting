@@ -9,3 +9,4 @@ step,date,method,MAE,RMSE,n,gain_vs_baseline_pct,source
 8,2026-11-14,标准化 MLP + 验证集融合,0.11164560792946526,0.15674013868213607,42432,8.045601231734178,artifacts/kpower_ablation/ablation_20261114_v1/mlp_shared_v1/metrics.csv
 9,2026-11-14,共享分支最终重拟合（扩展训练期）,0.11111253419483598,0.15632756799594683,42432,8.287643185485916,artifacts/kpower_ablation/ablation_20261114_v1/shared_final_refit_v1/metrics.csv
 10,2026-11-14,MLP 分支最终重拟合（冻结64轮）,0.11110833850414355,0.155737496157799,42432,8.633819356843054,artifacts/kpower_ablation/ablation_20261114_v1/mlp_final_refit_v1/metrics.csv
+11,2026-11-14,跨站风速时变分支最终重拟合（冻结轮数）,0.11084525530850411,0.15544365396393317,42432,8.806207122330978,artifacts/kpower_ablation/ablation_20261114_v1/temporal_final_refit_v1/metrics.csv

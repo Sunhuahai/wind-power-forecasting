@@ -17,8 +17,9 @@
 |标准化 MLP + 验证集融合|2026-11-14|0.156740139|0.3689%|
 |共享分支最终重拟合（扩展训练期）|2026-11-14|0.156327568|0.2632%|
 |MLP 分支最终重拟合（冻结64轮）|2026-11-14|0.155737496|0.3775%|
+|跨站风速时变分支最终重拟合（冻结轮数）|2026-11-14|0.155443654|0.1887%|
 
-累计 RMSE 降低 **8.63%**。各节点均为同一十站、42,432 小时、2013 年下半年历史测试集。
+累计 RMSE 降低 **8.81%**。各节点均为同一十站、42,432 小时、2013 年下半年历史测试集。
 <!-- progress-table:end -->
 
 横轴是成功节点顺序，不表示训练步数或实际耗时；图中不展示失败尝试。日期为可核实的实验记录日期，同一天的先后沿用实验记录顺序。
@@ -77,6 +78,14 @@ RMSE 差 **-0.000580329**，七日块配对 95% 区间 **[-0.001119223, -0.00004
 
 本节点同样把原验证期标签用于最终拟合，属于扩大过去数据覆盖后的完整配方；不能再用该分支在旧验证期的训练内预测调参。原 2012 训练/2013 上半年验证的选择路径与旧模型仍保留，后续必须先选择、后冻结、再执行独立的最终重拟合。
 
+**跨站风速时变分支最终重拟合（冻结每站轮数）。** 三轮重拟合中最缺数据的一个分支：十个分站各自训练，每站原训练样本约 6,576 小时。完全沿用节点 9 的替换机制，只换 temporal 分支：冻结原验证早停选出的每站轮数 **296 / 110 / 103 / 92 / 89 / 152 / 250 / 272 / 52 / 91**，冻结它在当前组合中的系数 **0.193531574**（由 0.455788717 × 0.587095964 × 0.873861511 × 0.827630628 相乘得到），扩训后每站样本增至 **12,839–13,079** 小时。
+
+第一层直接复用共享分支的冻结重拟合版本，训练 OOF 仍逐块重建并核验 **158 个块**的标签可用性，最晚标签严格止于 **2013-06-30 23:00**。替换公式 `前一组合 + 固定系数 × (新时变预测 − 原时变预测)`，未用测试集选轮数或权重。
+
+同样 42,432 个测试小时，RMSE **0.155737496 → 0.155443654**（再降低 **0.1887%**），MAE **0.111108339 → 0.110845255**。RMSE 差 **-0.000293842**，七日块配对 95% 区间 **[-0.000494150, -0.000106038]**；MAE 差 **-0.000263083**，区间 **[-0.000421531, -0.000111254]**，两者均不含零。十站中九站 RMSE 改善，仅 Zone 8 小幅上升 **+0.000191**。
+
+本节点仍是训练协议变化：原验证期标签参与最终拟合，不能作为同训练量下的算法消融。但三轮重拟合合在一起给出一个可复用结论：**同一扩训协议下，每站独立、样本最少的分支获益相对最大**（共享分支 −0.26%、MLP −0.38%、分站时变 −0.19%），而扩训带来的增益逐轮递减，说明这条路线接近饱和。
+
 这是已报告历史测试集上的探索性评价；既有第一层和基模型已复用验证集做早停。NWP 实际发布时间未知，沿用原竞赛回放假设。区间不涵盖重训或新年份的不确定性。
 
 ## 后续更新
@@ -91,4 +100,4 @@ python scripts/plot_optimization_progress.py
 
 图、CSV 明细和本笔记同步更新到 Obsidian。精确数值直接从实验输出读取，避免手写维护导致漂移。
 
-[消融证据](../artifacts/kpower_ablation/ablation_20261114_v1/report.md) · [融合证据](../artifacts/kpower_ablation/ablation_20261114_v1/validation_blend/report.md) · [空间风场证据](../artifacts/kpower_ablation/ablation_20261114_v1/spatial_nwp_v1/report.md) · [风场时变证据](../artifacts/kpower_ablation/ablation_20261114_v1/temporal_nwp_v1/report.md) · [共享模型证据](../artifacts/kpower_ablation/ablation_20261114_v1/shared_model_v1/report.md) · [经验曲线残差证据](../artifacts/kpower_ablation/ablation_20261114_v1/curve_residual_v1/report.md) · [MLP 融合证据](../artifacts/kpower_ablation/ablation_20261114_v1/mlp_shared_v1/report.md) · [共享最终重拟合证据](../artifacts/kpower_ablation/ablation_20261114_v1/shared_final_refit_v1/report.md) · [MLP 最终重拟合证据](../artifacts/kpower_ablation/ablation_20261114_v1/mlp_final_refit_v1/report.md) · [进展明细](figures/optimization-progress.csv)
+[消融证据](../artifacts/kpower_ablation/ablation_20261114_v1/report.md) · [融合证据](../artifacts/kpower_ablation/ablation_20261114_v1/validation_blend/report.md) · [空间风场证据](../artifacts/kpower_ablation/ablation_20261114_v1/spatial_nwp_v1/report.md) · [风场时变证据](../artifacts/kpower_ablation/ablation_20261114_v1/temporal_nwp_v1/report.md) · [共享模型证据](../artifacts/kpower_ablation/ablation_20261114_v1/shared_model_v1/report.md) · [经验曲线残差证据](../artifacts/kpower_ablation/ablation_20261114_v1/curve_residual_v1/report.md) · [MLP 融合证据](../artifacts/kpower_ablation/ablation_20261114_v1/mlp_shared_v1/report.md) · [共享最终重拟合证据](../artifacts/kpower_ablation/ablation_20261114_v1/shared_final_refit_v1/report.md) · [MLP 最终重拟合证据](../artifacts/kpower_ablation/ablation_20261114_v1/mlp_final_refit_v1/report.md) · [时变分支最终重拟合证据](../artifacts/kpower_ablation/ablation_20261114_v1/temporal_final_refit_v1/report.md) · [进展明细](figures/optimization-progress.csv)

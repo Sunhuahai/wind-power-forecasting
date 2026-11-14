@@ -1,0 +1,20 @@
+{
+  "test_hours": 42432,
+  "frozen_branch_replacement_verified": true,
+  "all_oof_labels_strictly_past": true,
+  "final_labels_before_test_origin": true,
+  "final_train_last": "2013-06-30 23:00:00",
+  "frozen_rounds": {
+    "1": 296,
+    "2": 110,
+    "3": 103,
+    "4": 92,
+    "5": 89,
+    "6": 152,
+    "7": 250,
+    "8": 272,
+    "9": 52,
+    "10": 91
+  },
+  "no_independent_validation_predictions_published": true
+}
