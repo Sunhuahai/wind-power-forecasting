@@ -76,63 +76,6 @@
       "json_key": "pooled",
       "model": "mlp_blend",
       "paired": "artifacts/kpower_ablation/ablation_20261114_v1/mlp_shared_v1/paired.json"
-    },
-    {
-      "id": "shared_final_refit",
-      "date": "2026-11-14",
-      "label": "Final refit*",
-      "label_zh": "共享分支最终重拟合（扩展训练期）",
-      "source": "artifacts/kpower_ablation/ablation_20261114_v1/shared_final_refit_v1/metrics.csv",
-      "json_key": "pooled",
-      "model": "final_refit",
-      "paired": "artifacts/kpower_ablation/ablation_20261114_v1/shared_final_refit_v1/paired.json",
-      "protocol_note": "Final refit adds Jan-Jun 2013 fitting labels; selected rounds and combination weights stay frozen.",
-      "selection_reference": "artifacts/kpower_ablation/ablation_20261114_v1/mlp_shared_v1",
-      "uses_validation_for_final_fit": true,
-      "final_label_cutoff_exclusive": "2013-07-01T00:00:00"
-    },
-    {
-      "id": "mlp_final_refit",
-      "date": "2026-11-14",
-      "label": "MLP refit*",
-      "label_zh": "MLP 分支最终重拟合（冻结64轮）",
-      "source": "artifacts/kpower_ablation/ablation_20261114_v1/mlp_final_refit_v1/metrics.csv",
-      "json_key": "pooled",
-      "model": "mlp_final_refit",
-      "paired": "artifacts/kpower_ablation/ablation_20261114_v1/mlp_final_refit_v1/paired.json",
-      "protocol_note": "Final refits add Jan-Jun 2013 fitting labels; original rounds/epochs and combination weights stay frozen.",
-      "selection_reference": "artifacts/kpower_ablation/ablation_20261114_v1/mlp_shared_v1",
-      "uses_validation_for_final_fit": true,
-      "final_label_cutoff_exclusive": "2013-07-01T00:00:00",
-      "frozen_epochs": 64,
-      "replaces_branch": "mlp"
-    },
-    {
-      "id": "temporal_final_refit",
-      "date": "2026-11-14",
-      "label": "Temporal refit*",
-      "label_zh": "跨站风速时变分支最终重拟合（冻结轮数）",
-      "source": "artifacts/kpower_ablation/ablation_20261114_v1/temporal_final_refit_v1/metrics.csv",
-      "json_key": "pooled",
-      "model": "final_refit",
-      "paired": "artifacts/kpower_ablation/ablation_20261114_v1/temporal_final_refit_v1/paired.json",
-      "protocol_note": "Final refits add Jan-Jun 2013 fitting labels; frozen rounds and combination weights stay frozen.",
-      "selection_reference": "artifacts/kpower_ablation/ablation_20261114_v1/temporal_nwp_v1",
-      "uses_validation_for_final_fit": true,
-      "final_label_cutoff_exclusive": "2013-07-01T00:00:00",
-      "frozen_rounds": {
-        "1": 296,
-        "2": 110,
-        "3": 103,
-        "4": 92,
-        "5": 89,
-        "6": 152,
-        "7": 250,
-        "8": 272,
-        "9": 52,
-        "10": 91
-      },
-      "replaces_branch": "temporal_nwp"
     }
   ]
 }

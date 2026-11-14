@@ -177,13 +177,17 @@ def render(rows, cohort):
         xlabel = "优化轮次"
         ylabel = "测试 RMSE（越低越好）"
         foot = (f"同一历史测试集：十站 / {rows[0]['n']:,} 小时 / 2013 年 7–12 月。"
-                "灰点为同测试集上被否决的候选；* 为最终重拟合（冻结原选轮数，把 2013 上半年标签并入训练，协议变化）。")
+                "严格协议：只用 2012 年训练、验证集只做选择与早停。灰点为同测试集上被否决的候选。")
+        if any(r.get("protocol_note") for r in rows):
+            foot += " * 为最终重拟合（冻结原选轮数，把 2013 上半年标签并入训练，协议变化）。"
     else:
         subtitle = (f"Wind power optimization: {len(rows) - 1} improvements, {len(rows)} kept nodes")
         best = f"Best RMSE {y[-1]:.6f}  |  {gain:.2f}% below the original C baseline"
         xlabel, ylabel = "Optimization round", "Test RMSE  (lower is better)"
         foot = (f"Same historical test: 10 zones / {rows[0]['n']:,} hours / Jul-Dec 2013. "
-                "Grey dots: rejected candidates scored on the same test set; * final refit (frozen rounds, Jan-Jun 2013 labels).")
+                "Strict protocol: 2012-only training, validation for selection only. Grey dots: rejected candidates.")
+        if any(r.get("protocol_note") for r in rows):
+            foot += " * final refit (frozen rounds, Jan-Jun 2013 labels)."
     ax.set_title(subtitle, fontsize=14, color="#1b2733", pad=10, loc="left", fontproperties=fp)
     ax.text(1.0, 1.045, best, transform=ax.transAxes, ha="right", va="bottom",
             fontsize=10, color=GREEN, fontproperties=fp)
