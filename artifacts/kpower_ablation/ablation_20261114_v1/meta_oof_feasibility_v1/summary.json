@@ -1,0 +1,12 @@
+{
+  "oof_rows": 65760,
+  "folds": 3,
+  "rounds": {
+    "base": 400,
+    "spatial": 281,
+    "temporal": 400,
+    "shared": 709,
+    "curve": 772
+  },
+  "note": "In-period OOF only; validation and test labels untouched"
+}
