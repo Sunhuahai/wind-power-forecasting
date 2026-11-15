@@ -1,0 +1,20 @@
+{
+  "_comment": "ZONEID -> 站点坐标。GEFCom2014 风电的十个 zone 是匿名站，官方未公布坐标；请填入真实坐标后运行 scripts/fetch_reanalysis.py。经纬度用十进制度，北纬/东经为正。",
+  "reanalysis": {
+    "source": "NASA POWER hourly (power.larc.nasa.gov), community=RE",
+    "parameters": ["T2M", "PS", "WS10M", "WD10M", "WS50M"],
+    "timezone_note": "POWER 返回 UTC；本项目数据为无时区源时钟，需在 configs/sites.json 里给出 utc_offset_hours 做平移"
+  },
+  "sites": {
+    "1": {"latitude": null, "longitude": null, "utc_offset_hours": 0},
+    "2": {"latitude": null, "longitude": null, "utc_offset_hours": 0},
+    "3": {"latitude": null, "longitude": null, "utc_offset_hours": 0},
+    "4": {"latitude": null, "longitude": null, "utc_offset_hours": 0},
+    "5": {"latitude": null, "longitude": null, "utc_offset_hours": 0},
+    "6": {"latitude": null, "longitude": null, "utc_offset_hours": 0},
+    "7": {"latitude": null, "longitude": null, "utc_offset_hours": 0},
+    "8": {"latitude": null, "longitude": null, "utc_offset_hours": 0},
+    "9": {"latitude": null, "longitude": null, "utc_offset_hours": 0},
+    "10": {"latitude": null, "longitude": null, "utc_offset_hours": 0}
+  }
+}

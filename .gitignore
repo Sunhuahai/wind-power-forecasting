@@ -53,3 +53,4 @@ artifacts/kpower_reproduction/**/*.joblib
 artifacts/kpower_reproduction/**/predictions.csv
 artifacts/kpower_reproduction/**/validation_predictions.csv
 artifacts/kpower_reproduction/**/train_keys.csv
+data/external/
