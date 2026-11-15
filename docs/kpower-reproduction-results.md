@@ -1,5 +1,7 @@
 # kPower 风格两层 LightGBM：首轮独立运行结果
 
+> **口径说明**：本文档记录的是**优化前的基线实验**（十站合并 RMSE 0.170454）。经过 9 个优化节点后的当前结果为 **0.156009848**，见 [optimization-progress.md](optimization-progress.md)；两者不可混用。
+
 > **2026-11-09；GitHub Actions 实际运行，不是估算。** 代码分支 `experiment/gefcom2014-kpower-reproduction`，本轮提交 `fcdc1626a873f96077f0aad4459b5d0cd7a6ff44`。
 > [完整工作流](https://github.com/Sunhuahai/wind-power-forecasting/actions/runs/42624048464) · [指标 ZIP](https://github.com/Sunhuahai/wind-power-forecasting/actions/runs/42624048464/artifacts/13676999575)
 
