@@ -6,6 +6,7 @@
 
 | 文档 | 内容 |
 |---|---|
+| [project-summary.md](project-summary.md) | **一页读懂**：从零到现在做了什么、9 个节点、走过的弯路、定下的规则、实时预测准备 |
 | [optimization-progress.md](optimization-progress.md) | 优化进展：9 个成功节点、进展图、每个有效方法的具体做法与区间；当前最优 **0.156009848** |
 | [optimization-progress.json](optimization-progress.json) | 进展注册表（机器可读，进展图与表格的唯一数据源） |
 | [optimization-saturation.md](optimization-saturation.md) | 饱和评估：最近 5 轮效应量、余量测算、已封路线清单、继续涨分的先决条件 |
