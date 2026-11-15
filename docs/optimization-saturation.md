@@ -47,6 +47,7 @@
 ## 要继续涨分，先决条件（都不在当前协议内）
 
 1. **新信息源**：GEFCom2014 风电只有 u10/v10/u100/v100 四个 NWP 分量，已全部使用；温度、气压、机组布局、真实并网限电记录都没有。
+   - **外部再分析这条路已确认走不通（2026-11-15）**：十个 ZONEID 是匿名站，官方无经纬度，用户也没有坐标映射；NASA POWER 取数管线（`configs/sites.json` + `scripts/fetch_reanalysis.py`）已就绪，一旦拿到 `zone → 纬度/经度/UTC 偏移` 即可直接跑，见 [reanalysis-ingestion.md](reanalysis-ingestion.md)。
 2. **扩大训练数据**：把 2013 上半年并入拟合——用户明确否决。
 3. **改评价口径**：如按提前量分段的 RMSE、按功率区间指标——不改变主指标。
 
