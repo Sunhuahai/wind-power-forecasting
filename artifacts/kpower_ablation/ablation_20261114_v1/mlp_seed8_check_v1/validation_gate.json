@@ -1,0 +1,39 @@
+{
+  "weight": 0.3255923981696225,
+  "scores": [
+    {
+      "model": "baseline",
+      "MAE": 0.10388044551023085,
+      "RMSE": 0.14501209473824758,
+      "nMAE": 0.10388044551023085,
+      "nRMSE": 0.14501209473824758,
+      "n": 43008
+    },
+    {
+      "model": "candidate",
+      "MAE": 0.10345210556703971,
+      "RMSE": 0.14474583285606643,
+      "nMAE": 0.10345210556703971,
+      "nRMSE": 0.14474583285606643,
+      "n": 43008
+    }
+  ],
+  "paired": {
+    "candidate": "candidate",
+    "baseline": "baseline",
+    "n": 43008,
+    "calendar_days": 181,
+    "delta_MAE": -0.00042833994319116256,
+    "delta_RMSE": -0.0002662618821811513,
+    "delta_MAE_low": -0.0006520104464035456,
+    "delta_MAE_high": -0.0001968162905063867,
+    "delta_RMSE_low": -0.0005506130273339918,
+    "delta_RMSE_high": 2.7950322345847414e-05,
+    "bootstrap_fraction_RMSE_better": 0.9585,
+    "replicates": 2000,
+    "block_days": 7,
+    "seed": 42
+  },
+  "gate": -0.0002,
+  "passed": false
+}

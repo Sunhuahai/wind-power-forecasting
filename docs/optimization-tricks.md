@@ -166,3 +166,11 @@ python scripts/run_validation_blend.py --ablation-id ablation_20261114_v1
 **设计弱点**（下次若再碰）2012 只有 9 个 30 天块，每个场站每段只有 9 个不同取值，分辨率太低；若要重做应改用 7 天块（27 个取值）并同时检验块长敏感性。
 
 证据：`artifacts/kpower_ablation/ablation_20261114_v1/rolling_residual_features_v1/validation_gate.json`。
+
+## 未通过：MLP 种子数 3 → 8（验证集门禁）
+
+在已选结构 `(128,64,32)` 上再加 5 个种子（555/777/888/999/1234），与原有 3 个组成 8 成员平均；训练仍只用 2012 OOF，融合权重只用验证集。
+
+验证集：现行最优 0.145012 → 0.144746，差 **−0.000266**，七日块区间 **[-0.000551, +0.000028]** 跨零，未达到 −0.0002 上界门禁。**测试集未打开。**
+
+证据：`artifacts/kpower_ablation/ablation_20261114_v1/mlp_seed8_check_v1/validation_gate.json`。可复用要点：种子平均的边际收益递减很快——3 种子时 −0.47%，扩到 8 种子再降不到 0.02%；这条链在现有数据上已经到底。
