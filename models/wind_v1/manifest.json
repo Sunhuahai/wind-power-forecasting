@@ -1,0 +1,1159 @@
+{
+  "bundle_version": "wind_v1",
+  "created_at": "2026-11-15T08:45:08.933203+00:00",
+  "protocol": "strict: components trained on 2012 OOF rows; validation 2013 H1 used for early stopping and convex weights only; test 2013 H2 scored once",
+  "registry_milestone": "mlp_seedavg_tuned",
+  "components": {
+    "C": {
+      "kind": "per_site_lgbm",
+      "stage": "stage2",
+      "files": {
+        "1": {
+          "path": "../../artifacts/kpower_reproduction/ablation_20261114_v1_C/site_1/acd48e4c-d822-49e4-8a63-bff9d90f4ed6.joblib",
+          "sha256": "c99f4a3ee54b414a34669a47347e7af1cdf8793b9a00a05abb829b903976c894",
+          "bytes": 3471680
+        },
+        "2": {
+          "path": "../../artifacts/kpower_reproduction/ablation_20261114_v1_C/site_2/8ca6da58-cdbf-429a-86e6-3eac4b5be9e9.joblib",
+          "sha256": "13cdcef145914deb5c995cba785289baa590572d51fcde61c43bc26bef533b4b",
+          "bytes": 3931451
+        },
+        "3": {
+          "path": "../../artifacts/kpower_reproduction/ablation_20261114_v1_C/site_3/3f1a2b25-5750-4e52-ade6-dda9961868b7.joblib",
+          "sha256": "c9eba9e7f191205d8740351b3b05f9b1dec1c79ad2d0c9e13af3b27358b44e5a",
+          "bytes": 3965975
+        },
+        "4": {
+          "path": "../../artifacts/kpower_reproduction/ablation_20261114_v1_C/site_4/1431fea4-a81e-4426-a94c-cae1a84cbe3f.joblib",
+          "sha256": "184dce23df4d51fd94245e1af4f7c585e0202bb41ccefa6978b1e1b25fa686dc",
+          "bytes": 3718241
+        },
+        "5": {
+          "path": "../../artifacts/kpower_reproduction/ablation_20261114_v1_C/site_5/d4eed335-2566-48fb-a0f9-f1d883762543.joblib",
+          "sha256": "f54fdb1a8d2b292eb22de0555fe724be209bedb3a18541b08639d0ad2bb02bd7",
+          "bytes": 3924017
+        },
+        "6": {
+          "path": "../../artifacts/kpower_reproduction/ablation_20261114_v1_C/site_6/c92c1872-d762-47e2-ad39-d38d5a3a4008.joblib",
+          "sha256": "84b60b179c3a2e224a03e8844fdf493527a6705026847e622db0f6023557c9a9",
+          "bytes": 3914147
+        },
+        "7": {
+          "path": "../../artifacts/kpower_reproduction/ablation_20261114_v1_C/site_7/58fa0b0d-df1d-47d1-b46d-575c69e5656f.joblib",
+          "sha256": "2cac9ae1524ea07bb5dd613e2130a355b309ed5b98d178e1b6afbf82c8f72a63",
+          "bytes": 4199893
+        },
+        "8": {
+          "path": "../../artifacts/kpower_reproduction/ablation_20261114_v1_C/site_8/2147bc78-f1a4-4a31-904d-75b94a235ee2.joblib",
+          "sha256": "69516275cdb66fbc6d1efb54d5c0c86d7eef09ea0ff67788e70312ed67fa3a32",
+          "bytes": 3920527
+        },
+        "9": {
+          "path": "../../artifacts/kpower_reproduction/ablation_20261114_v1_C/site_9/832c6bbf-e196-4bf4-b2b3-9b2124059b17.joblib",
+          "sha256": "ab0f6230776fecd468a755cf06477e0563eeecfd316f30b72c721eedae610f02",
+          "bytes": 3804032
+        },
+        "10": {
+          "path": "../../artifacts/kpower_reproduction/ablation_20261114_v1_C/site_10/68c72198-ad86-48c7-aa4a-0587bac3da22.joblib",
+          "sha256": "b49ea1428adfd5d68411111596aff7e9513e5ef09503755d37fc031b03d26804",
+          "bytes": 3994132
+        }
+      },
+      "columns": [
+        "u10",
+        "v10",
+        "u100",
+        "v100",
+        "speed10",
+        "speed100",
+        "dir10_sin",
+        "dir10_cos",
+        "dir100_sin",
+        "dir100_cos",
+        "speed100_cube",
+        "shear",
+        "hour_sin",
+        "hour_cos",
+        "year_sin",
+        "year_cos",
+        "lead",
+        "lag1",
+        "lag2",
+        "lag24",
+        "mean24",
+        "std24",
+        "min24",
+        "max24",
+        "trend"
+      ]
+    },
+    "neighbors": {
+      "kind": "per_site_lgbm",
+      "stage": "stage2",
+      "files": {
+        "1": {
+          "path": "../../artifacts/kpower_reproduction/ablation_20261114_v1_neighbors/site_1/2ca1a9c3-03bf-424d-a8a7-f5fd2a297242.joblib",
+          "sha256": "45f9f41f18b113044e1f4bc515855fb05782ed6e8404cdb7ce044a17277840a2",
+          "bytes": 3701631
+        },
+        "2": {
+          "path": "../../artifacts/kpower_reproduction/ablation_20261114_v1_neighbors/site_2/1d673da7-7a07-44b4-aa1f-8a2b13a7d9a8.joblib",
+          "sha256": "6c5dd45544340f17852bb8f7f6fcc901d91a22f92b37f7790ae2a324acf02dd6",
+          "bytes": 4063034
+        },
+        "3": {
+          "path": "../../artifacts/kpower_reproduction/ablation_20261114_v1_neighbors/site_3/1a5d5162-1e84-413a-8399-9f507cbe73ae.joblib",
+          "sha256": "db684c686d313b24d209f6653e1bc0fb261c5b596701b8ede11ecc8a9b45991b",
+          "bytes": 3918406
+        },
+        "4": {
+          "path": "../../artifacts/kpower_reproduction/ablation_20261114_v1_neighbors/site_4/cf6b93cc-111d-4caa-ad56-434f50f847ff.joblib",
+          "sha256": "9773b650fbc0be9f559026218a257e5f9016bea5e647e17b5b5a5f5f3db5fd11",
+          "bytes": 3734295
+        },
+        "5": {
+          "path": "../../artifacts/kpower_reproduction/ablation_20261114_v1_neighbors/site_5/3c257b1c-7450-40d4-80f8-3aa39de124b0.joblib",
+          "sha256": "e0c4424138fdbe2673fdb7b8e60fc391fe3819b4f46d942783c5371b04a16a2c",
+          "bytes": 4088766
+        },
+        "6": {
+          "path": "../../artifacts/kpower_reproduction/ablation_20261114_v1_neighbors/site_6/e2cf4e3d-71d8-45f8-8da7-32caa435be79.joblib",
+          "sha256": "aa96c6549952cae9210b42b78162fbaf994a30a4ebc96fa272eeaf6af631dfdc",
+          "bytes": 3878323
+        },
+        "7": {
+          "path": "../../artifacts/kpower_reproduction/ablation_20261114_v1_neighbors/site_7/a178206e-39d2-42e9-b66b-78a32d229a3c.joblib",
+          "sha256": "ed46c1a79573506be238e3780c3648bf29529f66c173fa2c0bab3453b5ec41ad",
+          "bytes": 4088471
+        },
+        "8": {
+          "path": "../../artifacts/kpower_reproduction/ablation_20261114_v1_neighbors/site_8/c0725178-7e53-439e-893f-89bc2864eca3.joblib",
+          "sha256": "f07294c081043df483199bccd57f03b7ba9ef859dfae530ce3fed73cd2897002",
+          "bytes": 4173722
+        },
+        "9": {
+          "path": "../../artifacts/kpower_reproduction/ablation_20261114_v1_neighbors/site_9/346aa6e5-5b62-4173-933a-72503604998f.joblib",
+          "sha256": "fb59e0d888b0738a621913312e0550736e5f31aef58f28e885e8a677ffc96531",
+          "bytes": 3429484
+        },
+        "10": {
+          "path": "../../artifacts/kpower_reproduction/ablation_20261114_v1_neighbors/site_10/41ec1c8a-bd75-4cd3-a62d-6e3eff85ca06.joblib",
+          "sha256": "e512a15f21ec101314f2dc9bc85f0c8e93d9b66b92e576017ae05972096dcc3f",
+          "bytes": 4063700
+        }
+      },
+      "columns": [
+        "u10",
+        "v10",
+        "u100",
+        "v100",
+        "speed10",
+        "speed100",
+        "dir10_sin",
+        "dir10_cos",
+        "dir100_sin",
+        "dir100_cos",
+        "speed100_cube",
+        "shear",
+        "hour_sin",
+        "hour_cos",
+        "year_sin",
+        "year_cos",
+        "lead",
+        "lag1",
+        "lag2",
+        "lag24",
+        "mean24",
+        "std24",
+        "min24",
+        "max24",
+        "trend",
+        "energy100_shift_-3",
+        "energy100_shift_-1",
+        "energy100_shift_+1",
+        "energy100_shift_+3",
+        "energy100_mean3",
+        "energy100_mean5",
+        "energy100_gradient"
+      ]
+    },
+    "full": {
+      "kind": "per_site_lgbm",
+      "stage": "stage2",
+      "files": {
+        "1": {
+          "path": "../../artifacts/kpower_reproduction/ablation_20261114_v1_full/site_1/b71e1163-bf0c-449a-af37-06b9e281d4e1.joblib",
+          "sha256": "2445325a6a5d8ec2f12a4352a3329dc761c351e56bc1bc759ed521df34247824",
+          "bytes": 4117019
+        },
+        "2": {
+          "path": "../../artifacts/kpower_reproduction/ablation_20261114_v1_full/site_2/6f975c83-b321-49bc-851d-e8b06a33e55f.joblib",
+          "sha256": "b125a14fe4b536c6c4104bb85ed75d4e2a6e71fbbb0e113dc76ae900f8139cbc",
+          "bytes": 3612091
+        },
+        "3": {
+          "path": "../../artifacts/kpower_reproduction/ablation_20261114_v1_full/site_3/3c869c48-19fc-4c75-b73a-576d1a7746a3.joblib",
+          "sha256": "06d36ecc426fdb75cad39759a25ad27b175d3a14ce334bd2c66a446aba410d1e",
+          "bytes": 3840091
+        },
+        "4": {
+          "path": "../../artifacts/kpower_reproduction/ablation_20261114_v1_full/site_4/0969ae31-d895-4dd5-b096-4ace6ba719c2.joblib",
+          "sha256": "dc9c4586e8becca9bce0f175f4e07ee274d0f6e282e79a5543ab793a80107ddb",
+          "bytes": 3754271
+        },
+        "5": {
+          "path": "../../artifacts/kpower_reproduction/ablation_20261114_v1_full/site_5/ace6a774-7ecd-4161-b47a-20ded39a0464.joblib",
+          "sha256": "e4c341fd362b036ab04c1a2d10318633360aecebc38ad36be052f19e766041d9",
+          "bytes": 3790193
+        },
+        "6": {
+          "path": "../../artifacts/kpower_reproduction/ablation_20261114_v1_full/site_6/a7b6fcb2-d657-4f27-835d-9eab499551ce.joblib",
+          "sha256": "d4b1aacf91a619f97f64e5a3d722747904872c8bff6aad39190989c88ff81f9e",
+          "bytes": 3808109
+        },
+        "7": {
+          "path": "../../artifacts/kpower_reproduction/ablation_20261114_v1_full/site_7/c4079e1a-418f-4c21-bad0-3ca3b4efe427.joblib",
+          "sha256": "5183d855b066eada16d434bd8d5cc7c99e2ab9bb0e635e7d90f2fdcf0b46f137",
+          "bytes": 3858607
+        },
+        "8": {
+          "path": "../../artifacts/kpower_reproduction/ablation_20261114_v1_full/site_8/a2548fd7-8477-43ea-a31a-b84811b9cf40.joblib",
+          "sha256": "561911adcafab3fa4922458f2a4c35d4d5db90ac524df5d378b97ab78dd52d3b",
+          "bytes": 3871790
+        },
+        "9": {
+          "path": "../../artifacts/kpower_reproduction/ablation_20261114_v1_full/site_9/43c203e9-4273-4954-bc25-8602af9c37ac.joblib",
+          "sha256": "dbc749971d5e1d73a7a5f78fa552351de7bb88add6fe94c5a76286ceef722be9",
+          "bytes": 3368389
+        },
+        "10": {
+          "path": "../../artifacts/kpower_reproduction/ablation_20261114_v1_full/site_10/ef930786-9bf4-4360-9504-edbe5b0b9c37.joblib",
+          "sha256": "2aff8ca7554791803553fb4e2c0abb72a426d354dd6fce7525d8d491a73a3297",
+          "bytes": 3933325
+        }
+      },
+      "columns": [
+        "u10",
+        "v10",
+        "u100",
+        "v100",
+        "speed10",
+        "speed100",
+        "dir10_sin",
+        "dir10_cos",
+        "dir100_sin",
+        "dir100_cos",
+        "speed100_cube",
+        "shear",
+        "hour_sin",
+        "hour_cos",
+        "year_sin",
+        "year_cos",
+        "lead",
+        "lag1",
+        "lag2",
+        "lag24",
+        "mean24",
+        "std24",
+        "min24",
+        "max24",
+        "trend",
+        "energy100_shift_-3",
+        "energy100_shift_-1",
+        "energy100_shift_+1",
+        "energy100_shift_+3",
+        "energy100_mean3",
+        "energy100_mean5",
+        "energy100_gradient",
+        "stage1_1",
+        "stage1_2",
+        "stage1_3",
+        "stage1_4",
+        "stage1_5",
+        "stage1_6",
+        "stage1_7",
+        "stage1_8",
+        "stage1_9",
+        "stage1_10"
+      ]
+    },
+    "spatial": {
+      "kind": "per_site_lgbm",
+      "stage": "stage2",
+      "files": {
+        "1": {
+          "path": "../../artifacts/kpower_ablation/ablation_20261114_v1/spatial_nwp_v1/site_1.joblib",
+          "sha256": "ea2354321dd1dd75c5199848f584756fcc62de0a7159f11a2746ae22d69dda13",
+          "bytes": 440734
+        },
+        "2": {
+          "path": "../../artifacts/kpower_ablation/ablation_20261114_v1/spatial_nwp_v1/site_2.joblib",
+          "sha256": "d63ddc9d75fa71e3cd9ae5c1de3b2f2f8f27d94283990722eca9a88f0d786a43",
+          "bytes": 157518
+        },
+        "3": {
+          "path": "../../artifacts/kpower_ablation/ablation_20261114_v1/spatial_nwp_v1/site_3.joblib",
+          "sha256": "d18bd286db5325b0d728a692960be2e8cb12606c8f519d20639114229bbdadec",
+          "bytes": 170312
+        },
+        "4": {
+          "path": "../../artifacts/kpower_ablation/ablation_20261114_v1/spatial_nwp_v1/site_4.joblib",
+          "sha256": "f5d89d431e26eaec188bb405d832ac94d99e08b6790b7069d9c8467f64583019",
+          "bytes": 189290
+        },
+        "5": {
+          "path": "../../artifacts/kpower_ablation/ablation_20261114_v1/spatial_nwp_v1/site_5.joblib",
+          "sha256": "d87374fd7a2d68d9fd04fc1756cd37e468047c572dd08b5604dc5779982d51fb",
+          "bytes": 135898
+        },
+        "6": {
+          "path": "../../artifacts/kpower_ablation/ablation_20261114_v1/spatial_nwp_v1/site_6.joblib",
+          "sha256": "6dfa3f7bce0d7fd99c0e3f6f9e982f71bc0fb043f5af227204d27b1236ad0614",
+          "bytes": 144937
+        },
+        "7": {
+          "path": "../../artifacts/kpower_ablation/ablation_20261114_v1/spatial_nwp_v1/site_7.joblib",
+          "sha256": "dacc42e5fc760fe8ed873490a4d4e237ca885ec971b2ae0b21c9ee985b96c9f0",
+          "bytes": 353338
+        },
+        "8": {
+          "path": "../../artifacts/kpower_ablation/ablation_20261114_v1/spatial_nwp_v1/site_8.joblib",
+          "sha256": "4ec53c721b0578cca6446e17de9dafae2a138d0b13fc6a08a8139c30f42092a8",
+          "bytes": 225433
+        },
+        "9": {
+          "path": "../../artifacts/kpower_ablation/ablation_20261114_v1/spatial_nwp_v1/site_9.joblib",
+          "sha256": "136f6c024f4a1731be375c775774a2a0ada40ec63b84763b782a93e4dcdf0d6a",
+          "bytes": 97060
+        },
+        "10": {
+          "path": "../../artifacts/kpower_ablation/ablation_20261114_v1/spatial_nwp_v1/site_10.joblib",
+          "sha256": "3274ee1991e3d05ba11ff2837bc77aac1c34ad2ffdd782c6a9da2a8d758b20eb",
+          "bytes": 147898
+        }
+      },
+      "columns": [
+        "u10",
+        "v10",
+        "u100",
+        "v100",
+        "speed10",
+        "speed100",
+        "dir10_sin",
+        "dir10_cos",
+        "dir100_sin",
+        "dir100_cos",
+        "speed100_cube",
+        "shear",
+        "hour_sin",
+        "hour_cos",
+        "year_sin",
+        "year_cos",
+        "lead",
+        "lag1",
+        "lag2",
+        "lag24",
+        "mean24",
+        "std24",
+        "min24",
+        "max24",
+        "trend",
+        "energy100_shift_-3",
+        "energy100_shift_-1",
+        "energy100_shift_+1",
+        "energy100_shift_+3",
+        "energy100_mean3",
+        "energy100_mean5",
+        "energy100_gradient",
+        "stage1_1",
+        "stage1_2",
+        "stage1_3",
+        "stage1_4",
+        "stage1_5",
+        "stage1_6",
+        "stage1_7",
+        "stage1_8",
+        "stage1_9",
+        "stage1_10",
+        "nwp_1_u100",
+        "nwp_1_v100",
+        "nwp_1_speed100",
+        "nwp_2_u100",
+        "nwp_2_v100",
+        "nwp_2_speed100",
+        "nwp_3_u100",
+        "nwp_3_v100",
+        "nwp_3_speed100",
+        "nwp_4_u100",
+        "nwp_4_v100",
+        "nwp_4_speed100",
+        "nwp_5_u100",
+        "nwp_5_v100",
+        "nwp_5_speed100",
+        "nwp_6_u100",
+        "nwp_6_v100",
+        "nwp_6_speed100",
+        "nwp_7_u100",
+        "nwp_7_v100",
+        "nwp_7_speed100",
+        "nwp_8_u100",
+        "nwp_8_v100",
+        "nwp_8_speed100",
+        "nwp_9_u100",
+        "nwp_9_v100",
+        "nwp_9_speed100",
+        "nwp_10_u100",
+        "nwp_10_v100",
+        "nwp_10_speed100"
+      ]
+    },
+    "temporal": {
+      "kind": "per_site_lgbm",
+      "stage": "stage2",
+      "files": {
+        "1": {
+          "path": "../../artifacts/kpower_ablation/ablation_20261114_v1/temporal_nwp_v1/site_1.joblib",
+          "sha256": "85b5584a8e59e4be1d2d27ab0ea900d63d7cde6b510bcaf1aea8b9abd70cf28a",
+          "bytes": 468208
+        },
+        "2": {
+          "path": "../../artifacts/kpower_ablation/ablation_20261114_v1/temporal_nwp_v1/site_2.joblib",
+          "sha256": "d4995ef590d6a502b3e44d04255c19f6f558385f7d77af7153204b21522a51aa",
+          "bytes": 183468
+        },
+        "3": {
+          "path": "../../artifacts/kpower_ablation/ablation_20261114_v1/temporal_nwp_v1/site_3.joblib",
+          "sha256": "50b0f2bd50a1d0be0d8c2e109f6a6d70f5e70ba81d849527bc683c55b9aaa636",
+          "bytes": 173179
+        },
+        "4": {
+          "path": "../../artifacts/kpower_ablation/ablation_20261114_v1/temporal_nwp_v1/site_4.joblib",
+          "sha256": "7dc20cf606e5a2c92863381aeab5049cd6841c28cb2fd1a72b47a79310695deb",
+          "bytes": 155196
+        },
+        "5": {
+          "path": "../../artifacts/kpower_ablation/ablation_20261114_v1/temporal_nwp_v1/site_5.joblib",
+          "sha256": "60e739916add5d4f8dae9fe5c7377ce27d816b8d56c68df88136aeafb8baaabf",
+          "bytes": 151048
+        },
+        "6": {
+          "path": "../../artifacts/kpower_ablation/ablation_20261114_v1/temporal_nwp_v1/site_6.joblib",
+          "sha256": "f381f317a09b162650221d5faebfc361f9bb1edf0405af2f4a6664738271df0b",
+          "bytes": 247765
+        },
+        "7": {
+          "path": "../../artifacts/kpower_ablation/ablation_20261114_v1/temporal_nwp_v1/site_7.joblib",
+          "sha256": "639dde40b98363bb6a6c4188d6b1f44a85e1d7b018000c89eabfcfadecb212c6",
+          "bytes": 398151
+        },
+        "8": {
+          "path": "../../artifacts/kpower_ablation/ablation_20261114_v1/temporal_nwp_v1/site_8.joblib",
+          "sha256": "1314fbdb69b8bbeb8417beeeeaa35d659e2380fe705266f1f2e9ab96a71bea01",
+          "bytes": 430147
+        },
+        "9": {
+          "path": "../../artifacts/kpower_ablation/ablation_20261114_v1/temporal_nwp_v1/site_9.joblib",
+          "sha256": "c72686c25ace8fc949850811537247f88a9da6f5e801b3aed2c62b6e42b2edd2",
+          "bytes": 93534
+        },
+        "10": {
+          "path": "../../artifacts/kpower_ablation/ablation_20261114_v1/temporal_nwp_v1/site_10.joblib",
+          "sha256": "5a833f578e6451d8c9f7686d6834cb9945919cff82c8cc42915094518e1bf445",
+          "bytes": 153877
+        }
+      },
+      "columns": [
+        "u10",
+        "v10",
+        "u100",
+        "v100",
+        "speed10",
+        "speed100",
+        "dir10_sin",
+        "dir10_cos",
+        "dir100_sin",
+        "dir100_cos",
+        "speed100_cube",
+        "shear",
+        "hour_sin",
+        "hour_cos",
+        "year_sin",
+        "year_cos",
+        "lead",
+        "lag1",
+        "lag2",
+        "lag24",
+        "mean24",
+        "std24",
+        "min24",
+        "max24",
+        "trend",
+        "energy100_shift_-3",
+        "energy100_shift_-1",
+        "energy100_shift_+1",
+        "energy100_shift_+3",
+        "energy100_mean3",
+        "energy100_mean5",
+        "energy100_gradient",
+        "stage1_1",
+        "stage1_2",
+        "stage1_3",
+        "stage1_4",
+        "stage1_5",
+        "stage1_6",
+        "stage1_7",
+        "stage1_8",
+        "stage1_9",
+        "stage1_10",
+        "nwp_1_u100",
+        "nwp_1_v100",
+        "nwp_1_speed100",
+        "nwp_2_u100",
+        "nwp_2_v100",
+        "nwp_2_speed100",
+        "nwp_3_u100",
+        "nwp_3_v100",
+        "nwp_3_speed100",
+        "nwp_4_u100",
+        "nwp_4_v100",
+        "nwp_4_speed100",
+        "nwp_5_u100",
+        "nwp_5_v100",
+        "nwp_5_speed100",
+        "nwp_6_u100",
+        "nwp_6_v100",
+        "nwp_6_speed100",
+        "nwp_7_u100",
+        "nwp_7_v100",
+        "nwp_7_speed100",
+        "nwp_8_u100",
+        "nwp_8_v100",
+        "nwp_8_speed100",
+        "nwp_9_u100",
+        "nwp_9_v100",
+        "nwp_9_speed100",
+        "nwp_10_u100",
+        "nwp_10_v100",
+        "nwp_10_speed100",
+        "nwp_1_speed_shift_-3",
+        "nwp_1_speed_shift_-1",
+        "nwp_1_speed_shift_+1",
+        "nwp_1_speed_shift_+3",
+        "nwp_2_speed_shift_-3",
+        "nwp_2_speed_shift_-1",
+        "nwp_2_speed_shift_+1",
+        "nwp_2_speed_shift_+3",
+        "nwp_3_speed_shift_-3",
+        "nwp_3_speed_shift_-1",
+        "nwp_3_speed_shift_+1",
+        "nwp_3_speed_shift_+3",
+        "nwp_4_speed_shift_-3",
+        "nwp_4_speed_shift_-1",
+        "nwp_4_speed_shift_+1",
+        "nwp_4_speed_shift_+3",
+        "nwp_5_speed_shift_-3",
+        "nwp_5_speed_shift_-1",
+        "nwp_5_speed_shift_+1",
+        "nwp_5_speed_shift_+3",
+        "nwp_6_speed_shift_-3",
+        "nwp_6_speed_shift_-1",
+        "nwp_6_speed_shift_+1",
+        "nwp_6_speed_shift_+3",
+        "nwp_7_speed_shift_-3",
+        "nwp_7_speed_shift_-1",
+        "nwp_7_speed_shift_+1",
+        "nwp_7_speed_shift_+3",
+        "nwp_8_speed_shift_-3",
+        "nwp_8_speed_shift_-1",
+        "nwp_8_speed_shift_+1",
+        "nwp_8_speed_shift_+3",
+        "nwp_9_speed_shift_-3",
+        "nwp_9_speed_shift_-1",
+        "nwp_9_speed_shift_+1",
+        "nwp_9_speed_shift_+3",
+        "nwp_10_speed_shift_-3",
+        "nwp_10_speed_shift_-1",
+        "nwp_10_speed_shift_+1",
+        "nwp_10_speed_shift_+3",
+        "nwp_1_speed_gradient",
+        "nwp_2_speed_gradient",
+        "nwp_3_speed_gradient",
+        "nwp_4_speed_gradient",
+        "nwp_5_speed_gradient",
+        "nwp_6_speed_gradient",
+        "nwp_7_speed_gradient",
+        "nwp_8_speed_gradient",
+        "nwp_9_speed_gradient",
+        "nwp_10_speed_gradient"
+      ]
+    },
+    "shared": {
+      "kind": "pooled_model",
+      "files": {
+        "all": {
+          "path": "../../artifacts/kpower_ablation/ablation_20261114_v1/shared_model_v1/model.joblib",
+          "sha256": "0ed857dde0c9db04edb78e8a6c71a1081730c13d1b3729e921fc64a25128e380",
+          "bytes": 2165844
+        }
+      },
+      "columns": [
+        "u10",
+        "v10",
+        "u100",
+        "v100",
+        "speed10",
+        "speed100",
+        "dir10_sin",
+        "dir10_cos",
+        "dir100_sin",
+        "dir100_cos",
+        "speed100_cube",
+        "shear",
+        "hour_sin",
+        "hour_cos",
+        "year_sin",
+        "year_cos",
+        "lead",
+        "lag1",
+        "lag2",
+        "lag24",
+        "mean24",
+        "std24",
+        "min24",
+        "max24",
+        "trend",
+        "energy100_shift_-3",
+        "energy100_shift_-1",
+        "energy100_shift_+1",
+        "energy100_shift_+3",
+        "energy100_mean3",
+        "energy100_mean5",
+        "energy100_gradient",
+        "stage1_1",
+        "stage1_2",
+        "stage1_3",
+        "stage1_4",
+        "stage1_5",
+        "stage1_6",
+        "stage1_7",
+        "stage1_8",
+        "stage1_9",
+        "stage1_10",
+        "nwp_1_u100",
+        "nwp_1_v100",
+        "nwp_1_speed100",
+        "nwp_2_u100",
+        "nwp_2_v100",
+        "nwp_2_speed100",
+        "nwp_3_u100",
+        "nwp_3_v100",
+        "nwp_3_speed100",
+        "nwp_4_u100",
+        "nwp_4_v100",
+        "nwp_4_speed100",
+        "nwp_5_u100",
+        "nwp_5_v100",
+        "nwp_5_speed100",
+        "nwp_6_u100",
+        "nwp_6_v100",
+        "nwp_6_speed100",
+        "nwp_7_u100",
+        "nwp_7_v100",
+        "nwp_7_speed100",
+        "nwp_8_u100",
+        "nwp_8_v100",
+        "nwp_8_speed100",
+        "nwp_9_u100",
+        "nwp_9_v100",
+        "nwp_9_speed100",
+        "nwp_10_u100",
+        "nwp_10_v100",
+        "nwp_10_speed100",
+        "nwp_1_speed_shift_-3",
+        "nwp_1_speed_shift_-1",
+        "nwp_1_speed_shift_+1",
+        "nwp_1_speed_shift_+3",
+        "nwp_2_speed_shift_-3",
+        "nwp_2_speed_shift_-1",
+        "nwp_2_speed_shift_+1",
+        "nwp_2_speed_shift_+3",
+        "nwp_3_speed_shift_-3",
+        "nwp_3_speed_shift_-1",
+        "nwp_3_speed_shift_+1",
+        "nwp_3_speed_shift_+3",
+        "nwp_4_speed_shift_-3",
+        "nwp_4_speed_shift_-1",
+        "nwp_4_speed_shift_+1",
+        "nwp_4_speed_shift_+3",
+        "nwp_5_speed_shift_-3",
+        "nwp_5_speed_shift_-1",
+        "nwp_5_speed_shift_+1",
+        "nwp_5_speed_shift_+3",
+        "nwp_6_speed_shift_-3",
+        "nwp_6_speed_shift_-1",
+        "nwp_6_speed_shift_+1",
+        "nwp_6_speed_shift_+3",
+        "nwp_7_speed_shift_-3",
+        "nwp_7_speed_shift_-1",
+        "nwp_7_speed_shift_+1",
+        "nwp_7_speed_shift_+3",
+        "nwp_8_speed_shift_-3",
+        "nwp_8_speed_shift_-1",
+        "nwp_8_speed_shift_+1",
+        "nwp_8_speed_shift_+3",
+        "nwp_9_speed_shift_-3",
+        "nwp_9_speed_shift_-1",
+        "nwp_9_speed_shift_+1",
+        "nwp_9_speed_shift_+3",
+        "nwp_10_speed_shift_-3",
+        "nwp_10_speed_shift_-1",
+        "nwp_10_speed_shift_+1",
+        "nwp_10_speed_shift_+3",
+        "nwp_1_speed_gradient",
+        "nwp_2_speed_gradient",
+        "nwp_3_speed_gradient",
+        "nwp_4_speed_gradient",
+        "nwp_5_speed_gradient",
+        "nwp_6_speed_gradient",
+        "nwp_7_speed_gradient",
+        "nwp_8_speed_gradient",
+        "nwp_9_speed_gradient",
+        "nwp_10_speed_gradient",
+        "farm"
+      ]
+    },
+    "curve": {
+      "kind": "pooled_model",
+      "files": {
+        "all": {
+          "path": "../../artifacts/kpower_ablation/ablation_20261114_v1/curve_residual_v1/model.joblib",
+          "sha256": "cee07a30c1e57b4e1ce86b9ccc7d106553806e57a75a4782d62a3dc6cd349354",
+          "bytes": 2391468
+        }
+      },
+      "columns": [
+        "u10",
+        "v10",
+        "u100",
+        "v100",
+        "speed10",
+        "speed100",
+        "dir10_sin",
+        "dir10_cos",
+        "dir100_sin",
+        "dir100_cos",
+        "speed100_cube",
+        "shear",
+        "hour_sin",
+        "hour_cos",
+        "year_sin",
+        "year_cos",
+        "lead",
+        "lag1",
+        "lag2",
+        "lag24",
+        "mean24",
+        "std24",
+        "min24",
+        "max24",
+        "trend",
+        "energy100_shift_-3",
+        "energy100_shift_-1",
+        "energy100_shift_+1",
+        "energy100_shift_+3",
+        "energy100_mean3",
+        "energy100_mean5",
+        "energy100_gradient",
+        "stage1_1",
+        "stage1_2",
+        "stage1_3",
+        "stage1_4",
+        "stage1_5",
+        "stage1_6",
+        "stage1_7",
+        "stage1_8",
+        "stage1_9",
+        "stage1_10",
+        "nwp_1_u100",
+        "nwp_1_v100",
+        "nwp_1_speed100",
+        "nwp_2_u100",
+        "nwp_2_v100",
+        "nwp_2_speed100",
+        "nwp_3_u100",
+        "nwp_3_v100",
+        "nwp_3_speed100",
+        "nwp_4_u100",
+        "nwp_4_v100",
+        "nwp_4_speed100",
+        "nwp_5_u100",
+        "nwp_5_v100",
+        "nwp_5_speed100",
+        "nwp_6_u100",
+        "nwp_6_v100",
+        "nwp_6_speed100",
+        "nwp_7_u100",
+        "nwp_7_v100",
+        "nwp_7_speed100",
+        "nwp_8_u100",
+        "nwp_8_v100",
+        "nwp_8_speed100",
+        "nwp_9_u100",
+        "nwp_9_v100",
+        "nwp_9_speed100",
+        "nwp_10_u100",
+        "nwp_10_v100",
+        "nwp_10_speed100",
+        "nwp_1_speed_shift_-3",
+        "nwp_1_speed_shift_-1",
+        "nwp_1_speed_shift_+1",
+        "nwp_1_speed_shift_+3",
+        "nwp_2_speed_shift_-3",
+        "nwp_2_speed_shift_-1",
+        "nwp_2_speed_shift_+1",
+        "nwp_2_speed_shift_+3",
+        "nwp_3_speed_shift_-3",
+        "nwp_3_speed_shift_-1",
+        "nwp_3_speed_shift_+1",
+        "nwp_3_speed_shift_+3",
+        "nwp_4_speed_shift_-3",
+        "nwp_4_speed_shift_-1",
+        "nwp_4_speed_shift_+1",
+        "nwp_4_speed_shift_+3",
+        "nwp_5_speed_shift_-3",
+        "nwp_5_speed_shift_-1",
+        "nwp_5_speed_shift_+1",
+        "nwp_5_speed_shift_+3",
+        "nwp_6_speed_shift_-3",
+        "nwp_6_speed_shift_-1",
+        "nwp_6_speed_shift_+1",
+        "nwp_6_speed_shift_+3",
+        "nwp_7_speed_shift_-3",
+        "nwp_7_speed_shift_-1",
+        "nwp_7_speed_shift_+1",
+        "nwp_7_speed_shift_+3",
+        "nwp_8_speed_shift_-3",
+        "nwp_8_speed_shift_-1",
+        "nwp_8_speed_shift_+1",
+        "nwp_8_speed_shift_+3",
+        "nwp_9_speed_shift_-3",
+        "nwp_9_speed_shift_-1",
+        "nwp_9_speed_shift_+1",
+        "nwp_9_speed_shift_+3",
+        "nwp_10_speed_shift_-3",
+        "nwp_10_speed_shift_-1",
+        "nwp_10_speed_shift_+1",
+        "nwp_10_speed_shift_+3",
+        "nwp_1_speed_gradient",
+        "nwp_2_speed_gradient",
+        "nwp_3_speed_gradient",
+        "nwp_4_speed_gradient",
+        "nwp_5_speed_gradient",
+        "nwp_6_speed_gradient",
+        "nwp_7_speed_gradient",
+        "nwp_8_speed_gradient",
+        "nwp_9_speed_gradient",
+        "nwp_10_speed_gradient",
+        "curve",
+        "farm"
+      ],
+      "extra": "adds the per-site isotonic curve value before the residual model"
+    },
+    "mlp": {
+      "kind": "pooled_model",
+      "files": {
+        "all": {
+          "path": "../../artifacts/kpower_ablation/ablation_20261114_v1/mlp_seedavg_tuned_v1/model.joblib",
+          "sha256": "2eee38eca302f83d1709500a574db4d0229dd1bd8f36d166712ba757bdf71be3",
+          "bytes": 2016040
+        }
+      },
+      "columns": [
+        "u10",
+        "v10",
+        "u100",
+        "v100",
+        "speed10",
+        "speed100",
+        "dir10_sin",
+        "dir10_cos",
+        "dir100_sin",
+        "dir100_cos",
+        "speed100_cube",
+        "shear",
+        "hour_sin",
+        "hour_cos",
+        "year_sin",
+        "year_cos",
+        "lead",
+        "lag1",
+        "lag2",
+        "lag24",
+        "mean24",
+        "std24",
+        "min24",
+        "max24",
+        "trend",
+        "energy100_shift_-3",
+        "energy100_shift_-1",
+        "energy100_shift_+1",
+        "energy100_shift_+3",
+        "energy100_mean3",
+        "energy100_mean5",
+        "energy100_gradient",
+        "stage1_1",
+        "stage1_2",
+        "stage1_3",
+        "stage1_4",
+        "stage1_5",
+        "stage1_6",
+        "stage1_7",
+        "stage1_8",
+        "stage1_9",
+        "stage1_10",
+        "nwp_1_u100",
+        "nwp_1_v100",
+        "nwp_1_speed100",
+        "nwp_2_u100",
+        "nwp_2_v100",
+        "nwp_2_speed100",
+        "nwp_3_u100",
+        "nwp_3_v100",
+        "nwp_3_speed100",
+        "nwp_4_u100",
+        "nwp_4_v100",
+        "nwp_4_speed100",
+        "nwp_5_u100",
+        "nwp_5_v100",
+        "nwp_5_speed100",
+        "nwp_6_u100",
+        "nwp_6_v100",
+        "nwp_6_speed100",
+        "nwp_7_u100",
+        "nwp_7_v100",
+        "nwp_7_speed100",
+        "nwp_8_u100",
+        "nwp_8_v100",
+        "nwp_8_speed100",
+        "nwp_9_u100",
+        "nwp_9_v100",
+        "nwp_9_speed100",
+        "nwp_10_u100",
+        "nwp_10_v100",
+        "nwp_10_speed100",
+        "nwp_1_speed_shift_-3",
+        "nwp_1_speed_shift_-1",
+        "nwp_1_speed_shift_+1",
+        "nwp_1_speed_shift_+3",
+        "nwp_2_speed_shift_-3",
+        "nwp_2_speed_shift_-1",
+        "nwp_2_speed_shift_+1",
+        "nwp_2_speed_shift_+3",
+        "nwp_3_speed_shift_-3",
+        "nwp_3_speed_shift_-1",
+        "nwp_3_speed_shift_+1",
+        "nwp_3_speed_shift_+3",
+        "nwp_4_speed_shift_-3",
+        "nwp_4_speed_shift_-1",
+        "nwp_4_speed_shift_+1",
+        "nwp_4_speed_shift_+3",
+        "nwp_5_speed_shift_-3",
+        "nwp_5_speed_shift_-1",
+        "nwp_5_speed_shift_+1",
+        "nwp_5_speed_shift_+3",
+        "nwp_6_speed_shift_-3",
+        "nwp_6_speed_shift_-1",
+        "nwp_6_speed_shift_+1",
+        "nwp_6_speed_shift_+3",
+        "nwp_7_speed_shift_-3",
+        "nwp_7_speed_shift_-1",
+        "nwp_7_speed_shift_+1",
+        "nwp_7_speed_shift_+3",
+        "nwp_8_speed_shift_-3",
+        "nwp_8_speed_shift_-1",
+        "nwp_8_speed_shift_+1",
+        "nwp_8_speed_shift_+3",
+        "nwp_9_speed_shift_-3",
+        "nwp_9_speed_shift_-1",
+        "nwp_9_speed_shift_+1",
+        "nwp_9_speed_shift_+3",
+        "nwp_10_speed_shift_-3",
+        "nwp_10_speed_shift_-1",
+        "nwp_10_speed_shift_+1",
+        "nwp_10_speed_shift_+3",
+        "nwp_1_speed_gradient",
+        "nwp_2_speed_gradient",
+        "nwp_3_speed_gradient",
+        "nwp_4_speed_gradient",
+        "nwp_5_speed_gradient",
+        "nwp_6_speed_gradient",
+        "nwp_7_speed_gradient",
+        "nwp_8_speed_gradient",
+        "nwp_9_speed_gradient",
+        "nwp_10_speed_gradient"
+      ],
+      "extra": "needs one-hot farm identity appended; ensemble of ",
+      "members": 3
+    }
+  },
+  "compose": {
+    "op": "clip",
+    "lo": 0.0,
+    "hi": 1.0,
+    "node": {
+      "op": "add",
+      "terms": [
+        {
+          "coef": 0.7251161842699794,
+          "node": {
+            "op": "add",
+            "terms": [
+              {
+                "coef": 0.8738615113524384,
+                "node": {
+                  "op": "add",
+                  "terms": [
+                    {
+                      "coef": 0.5870959635208068,
+                      "node": {
+                        "op": "add",
+                        "terms": [
+                          {
+                            "coef": 0.5442112832981765,
+                            "node": {
+                              "op": "add",
+                              "terms": [
+                                {
+                                  "coef": 0.5464978358782425,
+                                  "node": {
+                                    "op": "add",
+                                    "terms": [
+                                      {
+                                        "coef": 0.12228119788605393,
+                                        "node": {
+                                          "op": "component",
+                                          "id": "C"
+                                        }
+                                      },
+                                      {
+                                        "coef": 0.08428624348834608,
+                                        "node": {
+                                          "op": "component",
+                                          "id": "neighbors"
+                                        }
+                                      },
+                                      {
+                                        "coef": 0.7934325586255999,
+                                        "node": {
+                                          "op": "component",
+                                          "id": "full"
+                                        }
+                                      }
+                                    ]
+                                  }
+                                },
+                                {
+                                  "coef": 0.45350216412175753,
+                                  "node": {
+                                    "op": "component",
+                                    "id": "spatial"
+                                  }
+                                }
+                              ]
+                            }
+                          },
+                          {
+                            "coef": 0.4557887167018235,
+                            "node": {
+                              "op": "component",
+                              "id": "temporal"
+                            }
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "coef": 0.41290403647919316,
+                      "node": {
+                        "op": "component",
+                        "id": "shared"
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "coef": 0.12613848864756158,
+                "node": {
+                  "op": "component",
+                  "id": "curve"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "coef": 0.27488381573002063,
+          "node": {
+            "op": "component",
+            "id": "mlp"
+          }
+        }
+      ]
+    }
+  },
+  "weights": {
+    "validation_blend": {
+      "C": 0.12228119788605393,
+      "neighbors": 0.08428624348834608,
+      "full": 0.7934325586255999
+    },
+    "spatial": {
+      "baseline": 0.5464978358782425,
+      "spatial": 0.45350216412175753,
+      "validation_samples": 43008,
+      "validation_MSE": 0.021988992973322817
+    },
+    "temporal": {
+      "baseline": 0.5442112832981765,
+      "temporal": 0.4557887167018235,
+      "validation_samples": 43008,
+      "validation_MSE": 0.021895767735661306
+    },
+    "shared": {
+      "baseline": 0.5870959635208068,
+      "shared": 0.41290403647919316,
+      "train_samples": 65760,
+      "validation_samples": 43008,
+      "best_iteration": 709
+    },
+    "curve": {
+      "baseline": 0.8738615113524384,
+      "curve_residual": 0.12613848864756158,
+      "train_samples": 65760,
+      "validation_samples": 43008,
+      "best_iteration": 772
+    },
+    "mlp": {
+      "baseline": 0.7251161842699794,
+      "mlp_seedavg": 0.27488381573002063,
+      "seeds": [
+        42,
+        7,
+        2024
+      ],
+      "chosen": {
+        "hidden": [
+          128,
+          64,
+          32
+        ],
+        "alpha": 0.1
+      },
+      "validation_MSE": 0.021028507620374493,
+      "train_samples": 65760,
+      "validation_samples": 43008
+    }
+  },
+  "notes": "per-site components are keyed by zone id; pooled components carry a single artifact; mlp needs one-hot farm identity and averages its members"
+}
