@@ -377,19 +377,27 @@ SELECT add_columnstore_policy('nwp_revisions', INTERVAL '90 days');
 
 ---
 
-## 九、下一步（可执行，按顺序）
+## 九、下一步：备而不发（用户 2026-11-16 决定）
 
-**P0｜真机验证（1 天）**：在目标 Linux 机器起 `timescale/timescaledb-ha:pg18`（对应 PG 18.6），把本地三张大表导进去，量三件事——迁移耗时、实际压缩率（`hypertable_columnstore_stats`）、5 条典型查询的 P50/P95。这一步把本文所有"官方口径"换成"我们的数字"。
+用户决定：**先不做真机验证，等真实数据到位再迁移**。所以本轮停在"设计 + 草案"，不碰任何实例，本地开发库继续用裸 PostgreSQL 18.7。
 
-**P1｜迁移脚本（半天）**：新增 Alembic 迁移 `0003_timescaledb`，含 `CREATE EXTENSION` + 四张 `create_hypertable`（幂等、可重复执行），并在 `docs/realtime-readiness.md` 补一节"生产库形态"。
+**已备好**
+- 迁移草案：[timescaledb-migration-draft.sql](timescaledb-migration-draft.sql)。含前置检查（版本、预加载、主键是否含时间列、时间列非空）、四张 `create_hypertable`、列存策略、保留策略（默认注释）、两张连续聚合、迁移后四项校验与运维口径。
+- **故意不注册为 Alembic 版本**：`alembic upgrade head` 不会执行它，避免在不受支持的实例上误跑。
+- 生产形态已定：**PostgreSQL 18.6 + TimescaleDB 2.32.x**；升级顺序"先升扩展、再升 PG"。
 
-**P2｜策略与报表（1 天）**：三张表的列存/保留策略 + 两张连续聚合（分站×提前量误差、日可用率），采集一周作业历史。
+**启动条件（满足任一条就开 P0，不必再讨论）**
+1. 真实数据接入后日均新增 > 10 万行，或任一表 > 5,000 万行；
+2. 需要看板类聚合查询（分站×提前量×按周的误差、可用率）；
+3. 需要按年限自动清理历史数据。
 
-**P3｜演练回滚**：用 `pg_dump` 恢复一次，确认 RTO 数字真实。
+**P0｜真机验证（1 天）**：在目标 Linux 机器起 `timescale/timescaledb-ha:pg18`（对应 PG 18.6），灌现有三张大表，量三件事——迁移耗时、实际压缩率（`hypertable_columnstore_stats`）、5 条典型查询的 P50/P95。把本文的"官方口径 + 代理实测"换成"我们的真机数字"。
 
-**我需要你确认的两件事**（决定 P0 在哪跑）：
-1. 目标环境：自有 Linux 服务器 / 云主机 / K8s？操作系统与内存规格？
-2. 是否接受"生产起步用 PG 18.6 + TimescaleDB 2.32.0"（而不是追最新的 18.7）？
+**P1｜迁移落地（半天）**：把草案转成 Alembic 迁移（幂等、可重复执行），并在 [realtime-readiness.md](realtime-readiness.md) 补一节"生产库形态"。
+
+**P2｜策略与报表（1 天）**：开列存与保留策略，接两张连续聚合，采集一周作业历史。
+
+**P3｜回滚演练**：用 `pg_dump` 恢复一次，确认 RTO 数字真实（TimescaleDB 无法"撤销 hypertable"，这一步是唯一退路）。
 
 ---
 

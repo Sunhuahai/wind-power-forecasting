@@ -14,7 +14,7 @@
 | [session-summary-2026-11-14.md](session-summary-2026-11-14.md) | 本轮总结：现状数字、时间线、被否路线、可复用经验、协议红线、下一步所需新数据 |
 | [realtime-readiness.md](realtime-readiness.md) | 实时预测准备：差距分析、接口契约、分阶段上线计划、已知风险 |
 | [database-selection.md](database-selection.md) | 数据库选型调研：候选对比与加权适配度、PostgreSQL 生产部署方案 |
-| [timescaledb-evaluation.md](timescaledb-evaluation.md) | TimescaleDB 深度评估：相对其他关系型库的逐项优势、实测压缩比、许可证、生产部署与迁移方案（生产主库定为此形态） |
+| [timescaledb-evaluation.md](timescaledb-evaluation.md) | TimescaleDB 深度评估：相对其他关系型库的逐项优势、实测压缩比、许可证、生产部署与迁移方案（生产主库定为此形态；[迁移草案](timescaledb-migration-draft.sql) 备而不发） |
 | [figures/](figures/) | 进展图（png/pdf/svg/csv）与原始实验图 |
 
 ## 历史实验报告
