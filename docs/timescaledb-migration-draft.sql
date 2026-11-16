@@ -167,3 +167,24 @@ SELECT hypertable_name, pg_size_pretty(before_compression_total_bytes) AS before
 -- 作业监控：timescaledb_information.job_stats 里 last_run_status 非 Success 即告警。
 -- 应用侧注意：upsert 不得修改时间列（跨 chunk 更新不支持）；
 --             现有 windpower.db.core.upsert() 主键含时间列，安全。
+
+-- ---------------------------------------------------------------------
+-- 8. 生产新表规范（真实数据接入时按这套建，不要沿用 2012 实验表的类型）
+-- ---------------------------------------------------------------------
+-- 8.1 时间列一律 TIMESTAMPTZ（官方对时间维度列的首选），
+--     不要在应用层心算时区；展示层再做本地化。
+-- 8.2 高频 upsert 的行存 chunk：fillfactor 90 + 激进 autovacuum。
+--     ALTER TABLE predictions SET (
+--         fillfactor = 90,
+--         autovacuum_vacuum_scale_factor = 0.02,
+--         autovacuum_analyze_scale_factor = 0.01
+--     );
+-- 8.3 入库时间（received_at / arrival_time）建 BRIN：
+--     CREATE INDEX IF NOT EXISTS ix_nwp_revisions_received_brin
+--         ON nwp_revisions USING BRIN (received_at);
+-- 8.4 风向不要存 0~360 的角度：存 u/v 分量（现有 2012 表已是 u100/v100），
+--     角度在 0/360 处不连续，模型与统计都会被带偏。
+-- 8.5 空气密度这类派生量用 GENERATED ALWAYS AS 生成列，
+--     不要独立落库，避免与温度/气压不一致。
+-- 8.6 概率预测（p10/p90）与点预测同表落库，方便按区间评分；
+--     模型权重存文件系统 + sha256，库里只存路径（现有 bundle manifest 已是此形态）。

@@ -281,7 +281,24 @@ TimescaleDB 有两个版本（官方文档口径）：
 
 安装后先跑 `timescaledb-tune`，再按上表覆盖。
 
+**表级设置（高频 upsert 的行存 chunk 上仍要设）**：
+
+```sql
+-- 预测表：重跑频繁，靠 HOT 更新减少膨胀
+ALTER TABLE predictions SET (
+    fillfactor = 90,
+    autovacuum_vacuum_scale_factor = 0.02,   -- 默认 0.2
+    autovacuum_analyze_scale_factor = 0.01
+);
+
+-- 入库时间单调递增，BRIN 几十 KB 就够
+CREATE INDEX IF NOT EXISTS ix_nwp_revisions_received_brin
+    ON nwp_revisions USING BRIN (received_at);
+```
+
 ### 7.4 对象设计：我们这些表怎么改造
+
+**生产新表的时间列一律用 `TIMESTAMPTZ`**（官方对时间维度列也是这个建议）。现有开发库是 `timestamp`（不带时区）——迁移时改类型，不要在应用层心算时区。
 
 原则：**时间序列大表转 hypertable，小维表/实验表保持普通表**。
 
@@ -401,7 +418,60 @@ SELECT add_columnstore_policy('nwp_revisions', INTERVAL '90 days');
 
 ---
 
-## 十、参考
+## 十、评审：另一版「PostgreSQL-only」报告（2026-11-16 收到）
+
+收到一份把项目包袱剥离、按通用风电业务写的报告，结论是"PostgreSQL 为唯一主库，TimescaleDB 等到亿级再挂"。它的内核对比（B-Tree vs LSM vs 列存、MVCC 膨胀、BRIN、`ReplacingMergeTree` 异步去重）写得扎实，三条工程细节我采纳了；但有**两处事实错误**和**一处结构性误判**，不改变本文结论。
+
+### 10.1 站得住的部分（照单采纳）
+
+1. **时间列统一 `TIMESTAMPTZ`**。官方 TimescaleDB 文档同样建议时间维度列优先用 `timestamptz`；我们现有表是 `timestamp`（不带时区），迁移时改。
+2. **入库时间建 BRIN**（`nwp_revisions.received_at`）：单调递增、与物理顺序一致，索引只有几十 KB。
+3. **高频 upsert 表用 `fillfactor=90` + 激进 autovacuum**（`scale_factor=0.02`），行存 chunk 上仍适用。
+4. **模型权重存文件系统 + `sha256`，库里只存路径**——我们的 `models/wind_v1/manifest.json` 本来就是这形态，一条都不用改。
+
+### 10.2 事实问题一：规模估算错了约 5 倍，还漏了最大的一张表
+
+它写"50 场站、2000 台风机，场站级数据年增量仅千万行级"。实算：
+
+| 口径 | 计算 | 每年行数 |
+|---|---|---:|
+| 场站级功率（15 分钟） | 50 × 96 × 365 | **175 万**（百万级，不是千万级） |
+| 机组级（2000 台 × 96 点） | 2000 × 96 × 365 | 7,000 万 |
+| **NWP（50 站 × 4 次/天 × 72 提前量）** | 50 × 4 × 72 × 365 | **526 万** |
+
+关键在最后一行：**预测系统里行数最大的通常是 NWP，不是功率观测**，是它的 3 倍。而 NWP 与预测明细恰恰是"按时间查、按时间删、按时间压"最典型的表。用"观测才百万级、不用着急"来推迟时序层，等于看错了增长最快的那张表。
+
+### 10.3 事实问题二：「以后平滑挂载 TimescaleDB」在它自己的表设计下不成立
+
+它给三张时序表设计了**原生 `PARTITION BY RANGE` 月分区**，又主张以后 `CREATE EXTENSION` 升级。两者冲突，官方 `create_hypertable()` 文档原文：
+
+> You cannot run `create_hypertable()` on a table that is already partitioned using declarative partitioning or inheritance.
+
+（[TimescaleDB 参考文档](https://www.tigerdata.com/docs/reference/timescaledb/hypertables)）
+
+也就是说，按那份设计落地之后想换 TimescaleDB，得先拆分区、重建表、重灌数据。**"以后再挂"不是加一个扩展，是一次停机迁移**；再叠加"官方不推荐逻辑复制"和"hypertable 没有官方撤销路径"，这个"以后"的成本被严重低估。
+
+### 10.4 结构性误判：把 TimescaleDB 归到"专用时序库"
+
+它把 TimescaleDB 与 InfluxDB、ClickHouse 并列，于是推出"等规模大了再说"。但 TimescaleDB 是 **PostgreSQL 扩展**：同一套事务、外键、JSONB、索引、备份、HA、ORM。**它和 PostgreSQL 不是二选一**——"现在装"与"以后装"的真实差异只有两条：版本耦合（2.32.0 只支持到 PG 18.6）与许可证（TSL 不能当服务卖）。这两条它一个字没提，而那才是选它真正要认下的代价。
+
+结论对照一句话：
+
+- 那份报告：先裸 PG，规模到了再迁（隐含一次停机迁移）。
+- 本文：生产实例直接装扩展，任何时候都还是 PostgreSQL（没有"迁移"这一步）。
+
+### 10.5 顺带纠正四个设计细节
+
+| 它的写法 | 问题 | 建议 |
+|---|---|---|
+| `wind_dir_100m REAL 0~360` | 角度在 0/360 处不连续，模型与统计都会踩 | 存 `u100/v100` 分量（本项目已是如此），或 sin/cos 编码 |
+| `air_density` 独立字段 | 派生量，易与温度/气压不一致 | 用 `GENERATED ALWAYS AS` 生成列，或入库时统一算 |
+| `COPY (...) TO PROGRAM` 导 Parquet | 依赖 shell、权限面大、失败难查 | 用 `COPY TO STDOUT` 交给导出程序，或 DuckDB `postgres_scanner` 只读扫 |
+| 月分区 + 手写冷热导出脚本 | 脚本要自己维护、失败无人知 | 用 `add_columnstore_policy` + `add_retention_policy` 替代 |
+
+---
+
+## 十一、参考
 
 - TimescaleDB 版本与兼容性：`timescale/timescaledb` release notes 2.32.0（2026-11-12，兼容 PG 18.6 / 17.11 / 16.15；升级顺序先扩展后 PG）
 - hypertable 与 chunk 定容：官方 *Understand hypertables* / *Improve hypertable and query performance*（默认 7 天，活跃 chunk 索引 ≤ 内存 25%）
