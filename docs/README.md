@@ -12,6 +12,8 @@
 | [optimization-saturation.md](optimization-saturation.md) | 饱和评估：最近 5 轮效应量、余量测算、已封路线清单、继续涨分的先决条件 |
 | [optimization-tricks.md](optimization-tricks.md) | 逐轮记录：有效方法、被否方案（含门禁数字）、两条边界说明（OOF 分布、越界记录） |
 | [session-summary-2026-11-14.md](session-summary-2026-11-14.md) | 本轮总结：现状数字、时间线、被否路线、可复用经验、协议红线、下一步所需新数据 |
+| [realtime-readiness.md](realtime-readiness.md) | 实时预测准备：差距分析、接口契约、分阶段上线计划、已知风险 |
+| [database-selection.md](database-selection.md) | 数据库选型调研：候选对比与加权适配度、PostgreSQL 生产部署方案 |
 | [figures/](figures/) | 进展图（png/pdf/svg/csv）与原始实验图 |
 
 ## 历史实验报告
