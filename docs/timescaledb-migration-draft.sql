@@ -7,7 +7,7 @@
 -- 目标环境：PostgreSQL 18.6 + TimescaleDB 2.32.x（Linux）
 -- 不可用于：本机开发库（PostgreSQL 18.7 不在 2.32.0 官方支持范围）
 --
--- 跑之前必须先读：docs/timescaledb-evaluation.md 第 7 节
+-- 跑之前必须先读：docs/database-selection.md 第五、六节（部署与许可）
 -- 回滚方式：TimescaleDB 没有"撤销 hypertable"的官方路径，
 --           回滚只能靠迁移前的 `pg_dump -Fc` 全量备份。
 -- =====================================================================
