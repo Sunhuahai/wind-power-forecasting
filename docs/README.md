@@ -17,6 +17,7 @@
 | [timescaledb-evaluation.md](timescaledb-evaluation.md) | 附录：TimescaleDB 机制依据与实测（逐条机制 + 官方原文依据，供核查；结论见主报告） |
 | [timescaledb-migration-draft.sql](timescaledb-migration-draft.sql) | 迁移草案（未执行、不注册为 Alembic 版本）：前置检查、hypertable、列存与保留策略、连续聚合、迁移后校验 |
 | [figures/](figures/) | 进展图（png/pdf/svg/csv）与原始实验图 |
+| [reports/数据库选型与部署方案_2026-11-16.pptx](reports/数据库选型与部署方案_2026-11-16.pptx) | 汇报用 20 页 PPT（五段逻辑：类型 / 需求 / 选型 / 应用 / 设备），同名 PDF 同目录 |
 
 ## 历史实验报告
 
