@@ -2,6 +2,8 @@
 
 > 结论先行：**继续用 PostgreSQL 作为正式主库**，结构化数据与实验记录都放进去，原始文件和模型权重放文件系统；TimescaleDB、DuckDB、ClickHouse 作为"出现明确负载后再引入"的扩展。
 > 依据：官方文档（2026-11-16 查阅）+ 本项目仓库代码与实测数据。功能比较来自官方资料，"是否适合我们"是工程判断，不是跑分结论。
+>
+> **修订（2026-11-16 晚）**：用户明确后续不在 Mac 上部署、按生产环境评估，并要求深入评估 TimescaleDB。在同一口径下重新打分后，结论调整为：**生产主库直接用「PostgreSQL + TimescaleDB 扩展」**（本文的 PostgreSQL 结论不变，只是从"裸 PG"升级为"带时序扩展的 PG"）。详细拆解见 [timescaledb-evaluation.md](timescaledb-evaluation.md)；本文打分为"当前规模/本机形态"口径，保留原样作为对照。
 
 ## 一、我们的需求画像
 
@@ -191,6 +193,8 @@
 8. 用真实起点做一次端到端预测，核对幂等（重复运行行数不变）。
 
 ### 5.12 什么时候才引入 TimescaleDB
+
+> **已修订**：按生产环境口径，TimescaleDB 从"以后再引入"改为"生产实例直接安装"，理由与部署方案见 [timescaledb-evaluation.md](timescaledb-evaluation.md)。本节保留的是"若坚持裸 PostgreSQL"时的触发条件。
 
 触发条件（满足任意两条再评估）：
 
