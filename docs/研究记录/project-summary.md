@@ -92,9 +92,9 @@
 
 ## 七、东西都在哪
 
-- 进展与图表：`docs/optimization-progress.md`（含最新进展图）
-- 每轮的做法与失败原因：`docs/optimization-tricks.md`
-- 为什么停在这里：`docs/optimization-saturation.md`
-- 实时预测准备：`docs/realtime-readiness.md`
+- 进展与图表：`docs/研究记录/optimization-progress.md`（含最新进展图）
+- 每轮的做法与失败原因：`docs/研究记录/optimization-tricks.md`
+- 为什么停在这里：`docs/研究记录/optimization-saturation.md`
+- 实时预测准备：`docs/部署与工程/realtime-readiness.md`
 - 全部文档入口：`docs/README.md`
 - 代码与每轮证据：GitHub 仓库 `Sunhuahai/wind-power-forecasting`

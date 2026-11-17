@@ -39,7 +39,7 @@ def past_oof(train,panel,params,site):
 
 
 def main():
-    registry=json.loads(Path('docs/optimization-progress.json').read_text())
+    registry=json.loads(Path('docs/研究记录/optimization-progress.json').read_text())
     if registry['milestones'][-1]['id']!='mlp_shared_blend':raise ValueError('Baseline changed')
     OUT.mkdir(exist_ok=False)
     cfg=config(); cutoff=datetime.fromisoformat(cfg['splits']['test'][0])

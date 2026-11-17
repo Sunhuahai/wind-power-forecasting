@@ -28,7 +28,7 @@ SEEDS = [42, 7, 2024, 101, 31337]
 
 
 def main():
-    registry = json.loads(Path('docs/optimization-progress.json').read_text())
+    registry = json.loads(Path('docs/研究记录/optimization-progress.json').read_text())
     if registry['milestones'][-1]['id'] != 'mlp_seedavg_tuned':
         raise ValueError('Baseline changed; refusing to run')
     OUT.mkdir(exist_ok=False)

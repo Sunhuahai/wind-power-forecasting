@@ -4,11 +4,11 @@
 
 ## 实验结果
 
-[持续优化进展图与有效技巧](docs/optimization-progress.md)（含[饱和评估](docs/optimization-saturation.md)）：只展示确认改善的节点，当前十站 RMSE 为 **0.156010**，相对原 C 基线降低 **8.47%**。全部节点采用严格协议：只用 2012 年训练、验证集只做选择与早停；三个曾把 2013 上半年标签并入训练的最终重拟合节点已作废并从图中移除。
+[持续优化进展图与有效技巧](docs/研究记录/optimization-progress.md)（含[饱和评估](docs/研究记录/optimization-saturation.md)）：只展示确认改善的节点，当前十站 RMSE 为 **0.156010**，相对原 C 基线降低 **8.47%**。全部节点采用严格协议：只用 2012 年训练、验证集只做选择与早停；三个曾把 2013 上半年标签并入训练的最终重拟合节点已作废并从图中移除。
 
 全部文档见[文档索引](docs/README.md)。
 
-[图表完整实验报告](docs/paper-report.md) 直接展示数据字段、训练特征、真实训练样例及十站结果图。仓库包含汇总指标和图表；原始数据、模型权重和逐小时预测 CSV 在本地运行后生成。
+[图表完整实验报告](docs/研究记录/paper-report.md) 直接展示数据字段、训练特征、真实训练样例及十站结果图。仓库包含汇总指标和图表；原始数据、模型权重和逐小时预测 CSV 在本地运行后生成。
 
 ## 环境与运行
 
@@ -95,15 +95,15 @@ ORDER BY p.valid_at LIMIT 24;
 
 ## 目录
 
-`src/windpower/data/` 下载、解析、清洗和导入；`features/` 统一构造；`models/` 训练；`evaluation/` 指标和图表；`db/` SQLAlchemy PostgreSQL 数据访问；`alembic/` 迁移；`configs/` 实验配置；`tests/` 防泄漏、边界、质量和可选真实数据库检查；`docs/` 中文实验记录。
+`src/windpower/data/` 下载、解析、清洗和导入；`features/` 统一构造；`models/` 训练；`evaluation/` 指标和图表；`db/` SQLAlchemy PostgreSQL 数据访问；`alembic/` 迁移；`configs/` 实验配置；`tests/` 防泄漏、边界、质量和可选真实数据库检查；`docs/` 中文实验记录（周进展 / 研究记录 / 部署与工程 / 归档）。
 
 ## 实际执行范围
 
-请阅读 [实际验收与实验报告](docs/experiment-report.md)。Docker 在本机未安装，不能声称 Compose 路径已实际验证。本次以本机同版本 PostgreSQL 18.6 完成实验，具体完成项及真实数值见报告。原始数据和模型体积较大，默认不纳入版本控制。
+请阅读 [实际验收与实验报告](docs/研究记录/experiment-report.md)。Docker 在本机未安装，不能声称 Compose 路径已实际验证。本次以本机同版本 PostgreSQL 18.6 完成实验，具体完成项及真实数值见报告。原始数据和模型体积较大，默认不纳入版本控制。
 
 ## 物理融合实验
 
-新增 [物理融合实验说明](docs/physics-experiment.md) 与独立 `physics-experiment` 命令，比较冻结 C、三参数场站等效物理曲线、物理残差学习和物理预测特征注入。先 Zone 1，再以相同实验标识续跑十站，不覆盖旧模型或报告。
+新增 [物理融合实验说明](docs/研究记录/physics-experiment.md) 与独立 `physics-experiment` 命令，比较冻结 C、三参数场站等效物理曲线、物理残差学习和物理预测特征注入。先 Zone 1，再以相同实验标识续跑十站，不覆盖旧模型或报告。
 
 ```sh
 uv run windpower physics-experiment --site 1 --experiment-id physics_20261109_v1

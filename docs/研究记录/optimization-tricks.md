@@ -44,7 +44,7 @@ python scripts/run_kpower_ablation.py --experiment-id ablation_20261114_v1
 
 天气邻域相对 C 的 RMSE 差为 -0.004747446，七日块配对 95% 区间 [-0.006269744, -0.003219281]；完整两层相对邻域的差为 -0.004893694，区间 [-0.006190094, -0.003657589]。训练样本键和测试标签逐行完全一致。支持这两组特征在当前配对设计下有贡献，不能推断其他年份或任意学习器上的普遍收益。完整模型重跑指标与之前远端结果一致。
 
-[本轮消融报告](../artifacts/kpower_ablation/ablation_20261114_v1/report.md)
+[本轮消融报告](../../artifacts/kpower_ablation/ablation_20261114_v1/report.md)
 
 ## 已验证的新 trick：验证集全站共享凸融合
 
@@ -65,7 +65,7 @@ python scripts/run_validation_blend.py --ablation-id ablation_20261114_v1
 
 实用要点：保留有差异但单独较弱的模型，使用验证集确定凸融合权重，可能降低最强单模型的误差；本次只试这个预先固定的全站共享方案，未按测试集搜索权重。区间仅反映固定模型在当前历史测试期的日块不确定性，不包括重新训练和新年份。
 
-[融合报告](../artifacts/kpower_ablation/ablation_20261114_v1/validation_blend/report.md) · [冻结权重](../artifacts/kpower_ablation/ablation_20261114_v1/validation_blend/weights.json)
+[融合报告](../../artifacts/kpower_ablation/ablation_20261114_v1/validation_blend/report.md) · [冻结权重](../../artifacts/kpower_ablation/ablation_20261114_v1/validation_blend/weights.json)
 
 当前代码离线测试 **26 passed, 1 skipped**；跳过项要求旧的 PostgreSQL 18.6 精确版本。本轮数据库 18.7 的迁移、十站导入、120 次第二层模型拟合和30组点预测写库均已实际执行，不能将此表述为旧数据库版本门禁通过。
 

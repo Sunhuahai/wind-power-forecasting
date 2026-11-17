@@ -1,4 +1,4 @@
-> 已归档（2026-11-17）：本文被 [database-study.md](../database-study.md) 取代，保留供核对，链接可能失效。
+> 已归档（2026-11-17）：本文被 [database-study.md](../周进展/2026-W46（11-09～11-15）/01_数据库选型调研.md) 取代，保留供核对，链接可能失效。
 
 # 附录：TimescaleDB 机制依据与实测（2026-11-16）
 
@@ -376,7 +376,7 @@ SELECT add_columnstore_policy('nwp_revisions', INTERVAL '90 days');
 ### 7.7 明确不做的事
 
 - **不动本机 Mac 实例**：PG 18.7 不在 2.32.0 支持范围，本地继续用原生 PG 跑实验，生产另起。
-- **不把数据库升级当优化节点**：模型精度不会因为换库改变，`docs/optimization-progress.json` 不新增节点。
+- **不把数据库升级当优化节点**：模型精度不会因为换库改变，`docs/研究记录/optimization-progress.json` 不新增节点。
 - **不上分布式 hypertable**：官方已在 2.14 sunset，别回头。
 
 ---
@@ -404,7 +404,7 @@ SELECT add_columnstore_policy('nwp_revisions', INTERVAL '90 days');
 用户决定：**先不做真机验证，等真实数据到位再迁移**。所以本轮停在"设计 + 草案"，不碰任何实例，本地开发库继续用裸 PostgreSQL 18.7。
 
 **已备好**
-- 迁移草案：[迁移草案](../timescaledb-migration-draft.sql)。含前置检查（版本、预加载、主键是否含时间列、时间列非空）、四张 `create_hypertable`、列存策略、保留策略（默认注释）、两张连续聚合、迁移后四项校验与运维口径。
+- 迁移草案：[迁移草案](../部署与工程/timescaledb-migration-draft.sql)。含前置检查（版本、预加载、主键是否含时间列、时间列非空）、四张 `create_hypertable`、列存策略、保留策略（默认注释）、两张连续聚合、迁移后四项校验与运维口径。
 - **故意不注册为 Alembic 版本**：`alembic upgrade head` 不会执行它，避免在不受支持的实例上误跑。
 - 生产形态已定：**PostgreSQL 18.6 + TimescaleDB 2.32.x**；升级顺序"先升扩展、再升 PG"。
 
@@ -415,7 +415,7 @@ SELECT add_columnstore_policy('nwp_revisions', INTERVAL '90 days');
 
 **P0｜真机验证（1 天）**：在目标 Linux 机器起 `timescale/timescaledb-ha:pg18`（对应 PG 18.6），灌现有三张大表，量三件事——迁移耗时、实际压缩率（`hypertable_columnstore_stats`）、5 条典型查询的 P50/P95。把本文的"官方口径 + 代理实测"换成"我们的真机数字"。
 
-**P1｜迁移落地（半天）**：把草案转成 Alembic 迁移（幂等、可重复执行），并在 [实时预测准备](../realtime-readiness.md) 补一节"生产库形态"。
+**P1｜迁移落地（半天）**：把草案转成 Alembic 迁移（幂等、可重复执行），并在 [实时预测准备](../部署与工程/realtime-readiness.md) 补一节"生产库形态"。
 
 **P2｜策略与报表（1 天）**：开列存与保留策略，接两张连续聚合，采集一周作业历史。
 

@@ -74,6 +74,6 @@ GEFCom2014 风电只有 `U10/V10/U100/V100` + 功率，十个 ZONEID 是匿名�
 
 - 仓库：`github.com/Sunhuahai/wind-power-forecasting`（main）
 - 当前口径：[docs/README.md] 文档索引 → `optimization-progress.md` / `optimization-saturation.md` / `optimization-tricks.md`
-- 注册表：[docs/optimization-progress.json]（进展图与表格的唯一数据源）
+- 注册表：[docs/研究记录/optimization-progress.json]（进展图与表格的唯一数据源）
 - 每轮证据：`artifacts/kpower_ablation/ablation_20261114_v1/<experiment>/`，含 `protocol.json`、`metrics.csv`、`paired.json`、`decision.json`
 - 最终模型链：`mlp_seedavg_tuned_v1`（节点 9）；其上游为验证集凸融合链，权重见各目录 `weights.json`

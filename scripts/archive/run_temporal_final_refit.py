@@ -31,7 +31,7 @@ FEATURES = kp.STAGE2 + COLUMNS + TEMPORAL_COLUMNS
 
 
 def main():
-    registry = json.loads(Path('docs/optimization-progress.json').read_text())
+    registry = json.loads(Path('docs/研究记录/optimization-progress.json').read_text())
     if registry['milestones'][-1]['id'] != 'mlp_final_refit':
         raise ValueError('Baseline changed; refusing to run')
     OUT.mkdir(exist_ok=False)

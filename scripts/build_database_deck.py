@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Build the database selection report deck (20 slides, 16:9).
 
-Content source: docs/database-study.md (long report, 2026-11-17).
+Content source: docs/周进展/2026-W46（11-09～11-15）/01_数据库选型调研.md (long report, 2026-11-17).
 """
 from pptx import Presentation
 from pptx.chart.data import CategoryChartData
@@ -555,7 +555,7 @@ para(tf, "停机窗口", 12.5, NAVY, bold=True, first=True)
 tf = box(s, 7.02, 4.32, 5.35, 1.0)
 para(tf, "数据量小，10 分钟级；「边同步边切换」在这里行不通，因为官方不推荐用逻辑复制同步超表。", 10.5, RGBColor(0x3A, 0x42, 0x50), first=True, line=1.25)
 tf = box(s, 0.8, 5.75, 11.7, 0.9)
-para(tf, "迁移草案已经写好、但没有执行：docs/timescaledb-migration-draft.sql（不注册为 Alembic 版本，alembic upgrade head 不会碰它）。",
+para(tf, "迁移草案已经写好、但没有执行：docs/部署与工程/timescaledb-migration-draft.sql（不注册为 Alembic 版本，alembic upgrade head 不会碰它）。",
      12, GRAY, first=True, line=1.25)
 
 # ---------------------------------------------------------------- 17 section 5
@@ -654,7 +654,7 @@ tf = box(s, 1.2, 5.75, 11.0, 0.7)
 para(tf, "一句话总结：不是换数据库，是给 PostgreSQL 装上时序能力；代价是跟一个扩展版本、守住一条许可证边界。",
      13.5, WHITE, bold=True, first=True, line=1.25)
 tf = box(s, 0.95, 6.78, 11.4, 0.4)
-para(tf, "2026-11-16　·　详细依据：docs/database-study.md", 10.5, RGBColor(0x7F, 0x8C, 0x9C), first=True)
+para(tf, "2026-11-16　·　详细依据：docs/周进展/2026-W46（11-09～11-15）/01_数据库选型调研.md", 10.5, RGBColor(0x7F, 0x8C, 0x9C), first=True)
 PAGE["n"] += 1
 
 NOTES = {

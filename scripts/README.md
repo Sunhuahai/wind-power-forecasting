@@ -8,6 +8,8 @@
 |---|---|
 | `plot_optimization_progress.py` | 由注册表重画进展图（png/pdf/svg/csv）与同步表格；`--add-result` 是登记入口 |
 | `build_paper_report.py` | 生成图表化实验报告 |
+| `build_database_deck.py` | 生成数据库选型与部署方案 20 页汇报 PPT |
+| `export_bundle.py` | 导出已接受最优链路为版本化推理 bundle |
 | `verify_execution.py` | 验收检查 |
 | `fetch_reanalysis.py` | NASA POWER 再分析取数（坐标未提供，管线待命） |
 | `sync_optimization_obsidian.py` | 旧的 Obsidian 同步脚本，现以手工同步为准 |
@@ -16,7 +18,7 @@
 
 `run_kpower_ablation.py`、`run_validation_blend.py`、`run_spatial_nwp.py`、`run_temporal_nwp.py`、`run_shared_model.py`、`run_curve_residual.py`、`run_mlp_shared.py`、`run_mlp_tuned.py`（结构选择）、`run_mlp_seedavg_tuned.py`（节点 9，当前最优）。
 
-## 被否轮次（结论见 docs/optimization-tricks.md）
+## 被否轮次（结论见 docs/研究记录/optimization-tricks.md）
 
 `run_site_blend.py`、`run_lead_blend.py`、`run_joint_blend.py`、`run_diversity_blend.py`、`run_prediction_calibration.py`、`run_kernel_ridge.py`、`run_hist_gradient.py`、`run_extra_trees.py`、`run_shared_capacity_search.py`、`run_shared_bagged.py`、`run_shared_median.py`、`run_mlp_seed_ensemble.py`、`run_mlp_mixed_ensemble.py`、`run_mlp_seed8_check.py`、`run_hurdle_shared.py`、`run_pooled_base.py`、`run_cross_history.py`、`run_day_context_shared.py`、`run_direct_full_year.py`、`run_direction_shared.py`、`run_vertical_shared.py`、`run_forecast_bias_shared.py`、`run_mean_stack_shared.py`、`run_expanded_refit.py`、`run_dispersion_features.py`、`run_lead_segments.py`、`run_rolling_residual_features.py`。
 
