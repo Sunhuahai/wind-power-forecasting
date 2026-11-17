@@ -1,6 +1,8 @@
+> 已归档（2026-11-17）：本文被 [database-study.md](../database-study.md) 取代，保留供核对，链接可能失效。
+
 # 附录：TimescaleDB 机制依据与实测（2026-11-16）
 
-> **本文是 [database-selection.md](database-selection.md) 的详细附录**，不是独立的选型报告；结论、部署方案与对另一版报告的评审都以主报告为准。
+> **本文是 [合并版短报告](database-selection-2026-11-16.md) 的详细附录**，不是独立的选型报告；结论、部署方案与对另一版报告的评审都以主报告为准。
 > 保留这份附录的原因：它按「机制 → 对我们意味着什么 → 证据等级 → 代价」逐条展开，并记录了压缩实测与官方原文依据，主报告做了压缩。
 
 > 结论摘要：**生产主库定为「PostgreSQL + TimescaleDB 扩展」**。它不是一个要替换 PostgreSQL 的新数据库，而是 PostgreSQL 的超集——关系模型、事务、外键、JSONB、备份、HA、驱动、ORM 全部沿用，额外多出一层时序能力（自动分块、列存压缩、增量物化视图、保留策略、时序函数）。
@@ -186,7 +188,7 @@
 
 ## 五、按生产口径重新打分
 
-上一版文档（[database-selection.md](database-selection.md)）的打分是**当时口径**：把"现在只有 115MB、10 个站、在 Mac 上跑"作为前提，运维复杂度和迁移成本压得很重，所以 PostgreSQL 89 > TimescaleDB 84。
+上一版文档（[合并版短报告](database-selection-2026-11-16.md)）的打分是**当时口径**：把"现在只有 115MB、10 个站、在 Mac 上跑"作为前提，运维复杂度和迁移成本压得很重，所以 PostgreSQL 89 > TimescaleDB 84。
 
 用户已明确：**以后不在 Mac 上部署，按生产环境评估**。权重随之调整，理由逐条写明：
 
@@ -402,7 +404,7 @@ SELECT add_columnstore_policy('nwp_revisions', INTERVAL '90 days');
 用户决定：**先不做真机验证，等真实数据到位再迁移**。所以本轮停在"设计 + 草案"，不碰任何实例，本地开发库继续用裸 PostgreSQL 18.7。
 
 **已备好**
-- 迁移草案：[timescaledb-migration-draft.sql](timescaledb-migration-draft.sql)。含前置检查（版本、预加载、主键是否含时间列、时间列非空）、四张 `create_hypertable`、列存策略、保留策略（默认注释）、两张连续聚合、迁移后四项校验与运维口径。
+- 迁移草案：[迁移草案](../timescaledb-migration-draft.sql)。含前置检查（版本、预加载、主键是否含时间列、时间列非空）、四张 `create_hypertable`、列存策略、保留策略（默认注释）、两张连续聚合、迁移后四项校验与运维口径。
 - **故意不注册为 Alembic 版本**：`alembic upgrade head` 不会执行它，避免在不受支持的实例上误跑。
 - 生产形态已定：**PostgreSQL 18.6 + TimescaleDB 2.32.x**；升级顺序"先升扩展、再升 PG"。
 
@@ -413,7 +415,7 @@ SELECT add_columnstore_policy('nwp_revisions', INTERVAL '90 days');
 
 **P0｜真机验证（1 天）**：在目标 Linux 机器起 `timescale/timescaledb-ha:pg18`（对应 PG 18.6），灌现有三张大表，量三件事——迁移耗时、实际压缩率（`hypertable_columnstore_stats`）、5 条典型查询的 P50/P95。把本文的"官方口径 + 代理实测"换成"我们的真机数字"。
 
-**P1｜迁移落地（半天）**：把草案转成 Alembic 迁移（幂等、可重复执行），并在 [realtime-readiness.md](realtime-readiness.md) 补一节"生产库形态"。
+**P1｜迁移落地（半天）**：把草案转成 Alembic 迁移（幂等、可重复执行），并在 [实时预测准备](../realtime-readiness.md) 补一节"生产库形态"。
 
 **P2｜策略与报表（1 天）**：开列存与保留策略，接两张连续聚合，采集一周作业历史。
 

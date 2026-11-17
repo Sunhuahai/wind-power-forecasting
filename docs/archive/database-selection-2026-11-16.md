@@ -1,11 +1,13 @@
+> 已归档（2026-11-17）：本文被 [database-study.md](../database-study.md) 取代，保留供核对，链接可能失效。
+
 # 数据库调研报告：选型与生产部署（2026-11-16）
 
 > **结论先行**
 > 1. **生产主库 = PostgreSQL 18.6 + TimescaleDB 2.32.x**。TimescaleDB 是 PostgreSQL 扩展，不是另一个数据库：事务、外键、JSONB、索引、备份、HA、ORM 全部沿用，额外多出自动分块、列存压缩、增量物化视图、保留策略、时序函数。
 > 2. **应用代码一行不改**。只用结构化数据管关系、管实验、管回滚，原始文件与模型权重留在文件系统。
-> 3. **现在不迁**：用户 2026-11-16 决定等真实数据到位再动，迁移草案已备好（[timescaledb-migration-draft.sql](timescaledb-migration-draft.sql)），不注册为 Alembic 版本，不会被 `alembic upgrade head` 执行。
+> 3. **现在不迁**：用户 2026-11-16 决定等真实数据到位再动，迁移草案已备好（[迁移草案](../timescaledb-migration-draft.sql)），不注册为 Alembic 版本，不会被 `alembic upgrade head` 执行。
 >
-> 本文合并了三份材料：数据库选型调研、TimescaleDB 深度评估、以及一份「PostgreSQL-only」方案的评审。机制细节保留在附录 [timescaledb-evaluation.md](timescaledb-evaluation.md)；本文自足，只读这一份也能做决定。
+> 本文合并了三份材料：数据库选型调研、TimescaleDB 深度评估、以及一份「PostgreSQL-only」方案的评审。机制细节保留在附录 [机制附录](timescaledb-evaluation-2026-11-16.md)；本文自足，只读这一份也能做决定。
 > 依据：官方文档与 release notes（2026-11-16 查阅）+ 本项目仓库代码与实测数据。功能比较来自官方资料，"是否适合我们"是工程判断，不是跑分结论。
 
 ---
@@ -330,7 +332,7 @@ ALTER TABLE nwp_revisions SET (timescaledb.compress = true);
 SELECT add_columnstore_policy('nwp_revisions', INTERVAL '90 days');
 ```
 
-完整版（前置检查、保留策略、连续聚合、迁移后校验）见 [timescaledb-migration-draft.sql](timescaledb-migration-draft.sql)。
+完整版（前置检查、保留策略、连续聚合、迁移后校验）见 [迁移草案](../timescaledb-migration-draft.sql)。
 
 ### 5.6 迁移步骤（现有 PG → TimescaleDB 实例）
 
@@ -475,7 +477,7 @@ SELECT add_columnstore_policy('nwp_revisions', INTERVAL '90 days');
 用户 2026-11-16 决定：**先不做真机验证、不迁移，等真实数据到位**。本地开发库继续用裸 PostgreSQL 18.7，不动。
 
 **已备好**
-- [timescaledb-migration-draft.sql](timescaledb-migration-draft.sql)：前置检查、四张 `create_hypertable`、列存/保留策略、两张连续聚合、迁移后校验、生产新表规范。**故意不注册为 Alembic 版本**。
+- [迁移草案](../timescaledb-migration-draft.sql)：前置检查、四张 `create_hypertable`、列存/保留策略、两张连续聚合、迁移后校验、生产新表规范。**故意不注册为 Alembic 版本**。
 - 生产形态已定：PG 18.6 + TimescaleDB 2.32.x；升级顺序"先扩展、再 PG"。
 
 **启动条件（满足任一条就开 P0，不再讨论）**

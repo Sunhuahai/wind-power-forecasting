@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Build the database selection report deck (20 slides, 16:9).
 
-Content source: docs/database-selection.md (merged report, 2026-11-16).
+Content source: docs/database-study.md (long report, 2026-11-17).
 """
 from pptx import Presentation
 from pptx.chart.data import CategoryChartData
@@ -654,7 +654,7 @@ tf = box(s, 1.2, 5.75, 11.0, 0.7)
 para(tf, "一句话总结：不是换数据库，是给 PostgreSQL 装上时序能力；代价是跟一个扩展版本、守住一条许可证边界。",
      13.5, WHITE, bold=True, first=True, line=1.25)
 tf = box(s, 0.95, 6.78, 11.4, 0.4)
-para(tf, "2026-11-16　·　详细依据：docs/database-selection.md", 10.5, RGBColor(0x7F, 0x8C, 0x9C), first=True)
+para(tf, "2026-11-16　·　详细依据：docs/database-study.md", 10.5, RGBColor(0x7F, 0x8C, 0x9C), first=True)
 PAGE["n"] += 1
 
 NOTES = {

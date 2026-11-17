@@ -13,10 +13,11 @@
 | [optimization-tricks.md](optimization-tricks.md) | 逐轮记录：有效方法、被否方案（含门禁数字）、两条边界说明（OOF 分布、越界记录） |
 | [session-summary-2026-11-14.md](session-summary-2026-11-14.md) | 本轮总结：现状数字、时间线、被否路线、可复用经验、协议红线、下一步所需新数据 |
 | [realtime-readiness.md](realtime-readiness.md) | 实时预测准备：差距分析、接口契约、分阶段上线计划、已知风险 |
-| [database-selection.md](database-selection.md) | **数据库调研报告（合并版）**：候选对比与两套权重评分、TimescaleDB 逐项优势与实测压缩比、许可证、Linux 生产部署与迁移、对另一版 PG-only 报告的评审 |
-| [timescaledb-evaluation.md](timescaledb-evaluation.md) | 附录：TimescaleDB 机制依据与实测（逐条机制 + 官方原文依据，供核查；结论见主报告） |
+| [database-study.md](database-study.md) | **数据库选型调研（长文）**：六类形态全景、需求量化、十个候选深评、两套权重评分与敏感性、TimescaleDB 机制级拆解与压缩实测、许可证、Linux 生产部署（版本/形态/参数/对象/迁移/备份/HA/监控/安全）、对 PG-only 方案的评审 |
+| [optimization-experiment-record.md](optimization-experiment-record.md) | **算法优化实验记录（长文）**：数据集与任务、评估协议与门禁、9 个节点的动机与证据、132 维特征体系、融合机制、30+ 被否路线逐条诊断、两次协议事故、饱和证据、12 条教训、复现指南 |
 | [timescaledb-migration-draft.sql](timescaledb-migration-draft.sql) | 迁移草案（未执行、不注册为 Alembic 版本）：前置检查、hypertable、列存与保留策略、连续聚合、迁移后校验 |
 | [figures/](figures/) | 进展图（png/pdf/svg/csv）与原始实验图 |
+| [archive/](archive/) | 被取代的历史文档（2026-11-16 的数据库短报告与机制附录），保留供核对 |
 | [reports/数据库选型与部署方案_2026-11-16.pptx](reports/数据库选型与部署方案_2026-11-16.pptx) | 汇报用 20 页 PPT（五段逻辑：类型 / 需求 / 选型 / 应用 / 设备），同名 PDF 同目录 |
 
 ## 历史实验报告
