@@ -44,7 +44,8 @@ def main() -> None:
         wide = wide.join(f, on=['site', 'origin', 'valid_at', 'lead'],
                          how='inner', validate='1:1')
 
-    joined = wide.join(serving.select('site', 'origin', 'valid_at', 'lead', *sorted(sources)),
+    components = ['C', 'curve', 'full', 'mlp', 'neighbors', 'shared', 'spatial', 'temporal']
+    joined = wide.join(serving.select('site', 'origin', 'valid_at', 'lead', *components),
                        on=['site', 'origin', 'valid_at', 'lead'],
                        how='inner', validate='1:1', suffix='_serving')
     report = {}
