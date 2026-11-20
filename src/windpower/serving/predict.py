@@ -68,8 +68,14 @@ def assemble(bundle, sites=SITES, origins=None) -> dict[int, pl.DataFrame]:
     return frames
 
 
-def _mean_predict(models, matrix) -> np.ndarray:
+def _clip_then_mean(models, matrix) -> np.ndarray:
+    """Per-member clip, then average (spatial/temporal training semantics)."""
     return np.mean([np.clip(m.predict(matrix), 0, 1) for m in models], axis=0)
+
+
+def _mean_then_clip(models, matrix) -> np.ndarray:
+    """Average raw members, then clip once (mlp training semantics)."""
+    return np.clip(np.mean([m.predict(matrix) for m in models], axis=0), 0, 1)
 
 
 def component_values(bundle, frames: dict[int, pl.DataFrame]) -> dict[int, dict[str, np.ndarray]]:
@@ -85,8 +91,8 @@ def component_values(bundle, frames: dict[int, pl.DataFrame]) -> dict[int, dict[
                 frame.select(bundle.components[cid]['columns']).to_numpy()), 0, 1)
         for cid in ('spatial', 'temporal'):
             art = artifacts[cid][str(s)]
-            row[cid] = _mean_predict(art['models'],
-                                     frame.select(bundle.components[cid]['columns']).to_numpy())
+            row[cid] = _clip_then_mean(art['models'],
+                                       frame.select(bundle.components[cid]['columns']).to_numpy())
         pooled = frame.with_columns(pl.lit(s).alias('farm'))
         shared_cols = bundle.components['shared']['columns']
         row['shared'] = np.clip(artifacts['shared']['all']['model'].predict(
@@ -100,7 +106,7 @@ def component_values(bundle, frames: dict[int, pl.DataFrame]) -> dict[int, dict[
         mlp_cols = bundle.components['mlp']['columns']
         design = np.column_stack([frame.select(mlp_cols).to_numpy(),
                                   np.eye(10)[s - 1].reshape(1, -1).repeat(frame.height, axis=0)])
-        row['mlp'] = _mean_predict(artifacts['mlp']['all']['models'], design)
+        row['mlp'] = _mean_then_clip(artifacts['mlp']['all']['models'], design)
         values[s] = row
     return values
 
