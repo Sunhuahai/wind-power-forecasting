@@ -66,7 +66,7 @@ python -m windpower.serving.predict --origin 2026-11-16T00:00:00 --bundle models
 |---|---|---|
 | P0（已完成） | 模型 bundle 导出器 + 组合树求值 + 单测；`models/wind_v1/manifest.json` 已生成，8 个组件、校验和齐全，`pytest tests/test_serving.py` 6 项通过 | 无 |
 | P1（表已建） | `nwp_revisions` 表已迁移上线（主键 farm_id+issued_at+valid_at，含 received_at/source）；入库脚本待你的数据格式 | 你的数据格式 |
-| P2 | DB 取数的推理入口，支持 10 站 24 小时 | P1 |
+| P2（代码已写，待验证） | DB 取数的推理入口 `src/windpower/serving/predict.py`：按 manifest 加载 8 组件、组合树出数、每站确定性 run_id 幂等写 `predictions`；回放一致性检查 `scripts/verify_serving_replay.py`（与冻结的 0.156010 链逐行比对）。2026-11-20 写完，等 Omarchy 环境跑通 | Omarchy 数据库 |
 | P3 | 调度（每日固定时刻跑）+ 运行日志 + 幂等 | P2 |
 | P4 | 监控：滚动 RMSE/MAE、覆盖率、漂移；与基线对比告警 | P2、真实观测回流 |
 | P5 | 容量换算（MW）、报表与告警通道 | 站点元数据 |
