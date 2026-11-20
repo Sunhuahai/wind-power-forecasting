@@ -31,10 +31,13 @@ def main() -> None:
                              how='inner', validate='1:1').sort('site', 'origin', 'valid_at')
     if joined.height != frozen.height:
         raise SystemExit(f'row mismatch: frozen {frozen.height} vs joined {joined.height}')
-    delta = (joined['prediction'] - joined['frozen']).abs()
-    diff_max = float(delta.max())
-    rmse = float(np.sqrt(np.mean((joined['prediction'] - joined['actual']) ** 2)))
-    frozen_rmse = float(np.sqrt(np.mean((joined['frozen'] - joined['actual']) ** 2)))
+    delta = (joined['prediction'] - joined['frozen']).to_numpy()
+    diff_max = float(np.abs(delta).max())
+    serving_p = joined['prediction'].to_numpy()
+    frozen_p = joined['frozen'].to_numpy()
+    actual = joined['actual'].to_numpy()
+    rmse = float(np.sqrt(np.mean((serving_p - actual) ** 2)))
+    frozen_rmse = float(np.sqrt(np.mean((frozen_p - actual) ** 2)))
     report = dict(rows=joined.height, max_abs_diff=diff_max,
                   serving_RMSE=rmse, frozen_RMSE=frozen_rmse,
                   tolerance=TOLERANCE, passed=diff_max <= TOLERANCE)
