@@ -23,10 +23,12 @@ END $$;
 -- 主键均含时间列（observed_at / valid_at），满足 hypertable 唯一约束要求。
 -- 外键方向为 hypertable -> 普通表（wind_turbines / data_ingest_files），TimescaleDB 支持。
 -- migrate_data 涉及既有 F01 行：执行前必须完成备份并停止导入任务。
-SELECT create_hypertable('turbine_scada_10m', by_range('observed_at'),
+-- 2026-11-21 实测修订：create_hypertable 使用经典 (relation, time_column) 重载；
+-- 维度式 by_range(...) 与 chunk_time_interval 关键字不能混用。
+SELECT create_hypertable('turbine_scada_10m', 'observed_at',
                          chunk_time_interval => INTERVAL '30 days',
                          migrate_data => true, if_not_exists => true);
-SELECT create_hypertable('turbine_power_15m_proxy', by_range('valid_at'),
+SELECT create_hypertable('turbine_power_15m_proxy', 'valid_at',
                          chunk_time_interval => INTERVAL '90 days',
                          if_not_exists => true);
 

@@ -3,6 +3,8 @@
 -- 插件由管理员安装/预加载。绝不对旧 GEFCom2014 小时级实验表做转换。
 -- 生产前验证官方兼容性矩阵与许可。脚本不启用自动数据删除或压缩。
 -- 涉及真实数据的转换应另行编制变更单，并以可恢复备份为前提。
+-- 2026-11-21 实测修订：create_hypertable 使用经典 (relation, time_column) 重载；
+-- 维度式 by_range(...) 与 chunk_time_interval 关键字不能混用。
 \set ON_ERROR_STOP on
 
 SELECT version();
@@ -23,13 +25,13 @@ END $$;
 
 -- 三个高频表的主键均含 valid_at，满足 hypertable 唯一约束要求。
 -- 所有外键均指向普通关系表，不构造 hypertable -> hypertable 外键。
-SELECT create_hypertable('operational_power', by_range('valid_at'),
+SELECT create_hypertable('operational_power', 'valid_at',
                          chunk_time_interval => INTERVAL '30 days',
                          if_not_exists => true);
-SELECT create_hypertable('operational_nwp', by_range('valid_at'),
+SELECT create_hypertable('operational_nwp', 'valid_at',
                          chunk_time_interval => INTERVAL '7 days',
                          if_not_exists => true);
-SELECT create_hypertable('forecast_values', by_range('valid_at'),
+SELECT create_hypertable('forecast_values', 'valid_at',
                          chunk_time_interval => INTERVAL '7 days',
                          if_not_exists => true);
 

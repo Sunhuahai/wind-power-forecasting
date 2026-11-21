@@ -1,6 +1,11 @@
 services:
   db:
-    image: postgres:18.6
+    build:
+      context: .
+      dockerfile: docker/db-timescale.Dockerfile
+    image: windpower/timescaledb:pg18.6-ts2.32.1
+    # TimescaleDB 需要 shared_preload_libraries；扩展在各库中按激活脚本显式启用。
+    command: ["postgres", "-c", "shared_preload_libraries=timescaledb"]
     environment:
       POSTGRES_USER: ${POSTGRES_USER:-windpower}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-windpower_local}

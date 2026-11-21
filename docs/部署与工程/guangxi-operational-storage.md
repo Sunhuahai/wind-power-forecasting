@@ -1,6 +1,6 @@
 ---
 title: 广西风电场生产数据库结构与数据契约
-status: design-and-migration-committed-not-deployed
+status: timescaledb-active-on-dev-db-production-pending
 updated: 2026-11-21
 week: 2026-W47
 tags: [风电功率预测, 广西, PostgreSQL, TimescaleDB, 数据契约]
@@ -12,7 +12,23 @@ tags: [风电功率预测, 广西, PostgreSQL, TimescaleDB, 数据契约]
 
 **目标架构：PostgreSQL 18.6 + 兼容的 TimescaleDB 2.32.x。**关系表负责场站、容量、模型发布、报送回执和政策版本；hypertable 负责高频功率观测、NWP 版本和逐目标时刻预测。这是在事务一致性、时间序列查询、修订追溯、Python/SQLAlchemy 兼容性之间的工程选型，不代表任何规模下都是绝对最优。
 
-2026-11-21 已将独立业务表定义写入 [Alembic 0003](../../alembic/versions/0003_guangxi_operational.py)，并提供 [TimescaleDB 激活脚本](guangxi-timescale-activation.sql)。**提交代码不等于在 Omarchy 或生产库完成迁移。**新表先作为标准 PostgreSQL 表；Linux 环境完成插件安装、版本预检与备份后，才可独立启用 hypertable。保留旧 `power_observations`、`nwp_forecasts`、`predictions` 与 2012/2013 基准实验，不从归一化小时数据反推真实 MW 容量。
+2026-11-21 已将独立业务表定义写入 [Alembic 0003](../../alembic/versions/0003_guangxi_operational.py)，并提供 [TimescaleDB 激活脚本](guangxi-timescale-activation.sql)。**同日在 Omarchy 开发库实际完成 TimescaleDB 安装与激活**（见下节"2026-11-21 实测记录"）；生产库仍须按备份预检流程独立执行。保留旧 `power_observations`、`nwp_forecasts`、`predictions` 与 2012/2013 基准实验，不从归一化小时数据反推真实 MW 容量。
+
+## 2026-11-21 实测记录（Omarchy 开发库）
+
+- 镜像：`docker/db-timescale.Dockerfile` 基于锁定版 `postgres:18.6`，apt 安装并钉死
+  `postgresql-18=18.6-1.pgdg13+2` + `timescaledb-2-postgresql-18=2.32.1~debian13-1806`
+  （-1806 构建对应 PG 18.6；不钉住时 apt 会把服务器升到 18.7 破坏 health() 校验，
+  依赖链上的 loader 包也要一并钉死）。
+- `CREATE EXTENSION timescaledb` → 2.32.1；`shared_preload_libraries=timescaledb` 经 compose command 注入。
+- 两份激活脚本实测执行：场站层三表（空表）转 hypertable；单机层
+  `turbine_scada_10m` 以 `migrate_data => true` 迁移 52,749 行成 13 个 30 天 chunk。
+- 实测发现并修正脚本缺陷：`by_range(...)` 维度式签名与 `chunk_time_interval` 关键字不能混用，
+  已改回经典 `(relation, time_column)` 重载。
+- 迁移后核对：行数 52,749/负功率 9,968/哨兵 50,084 无变化，无重复键；
+  范围查询确认 chunk 裁剪生效（月度查询仅触及 2 个 chunk）；重复导入仍幂等；
+  `WINDPOWER_TEST_DB=1` 全量 108 项测试通过。
+- 执行前已留档备份 `pg_dump -Fc`（20 MB，存于 `backups/`，不入 git）。
 
 ## 1. 为什么这样分表？
 
@@ -129,13 +145,13 @@ uv run windpower evaluate-guangxi --farm-id 101 --target-day 2026-11-22 \
 
 ## 6. 部署前的验收条件
 
-1. 在 Omarchy 检查 PostgreSQL、TimescaleDB 的真实兼容版本、备份和部署权限；执行 Alembic 0003 后核对新增表结构。空表的 hypertable 激活独立操作，不转换旧实验表。
+1. **2026-11-21 已在 Omarchy 开发库完成**：迁移至 0004、TimescaleDB 2.32.1 安装并激活全部五张高频表（场站层三张空表 + 单机层 52,749 行 migrate_data），备份留档、108 项测试通过；生产库仍须按变更单流程独立执行。
 2. 获取真实 15 分钟 SCADA（实发、可用功率、限电信息）、NWP 批次时间、容量历史和调度回执，审核字段/单位/时区与数据完整性。
 3. 逐历史发布时间回放输入：不得使用预测截止后才收到的 NWP 与观测。
 4. 用合成单测核验公式，再评价真实数据；保留 MAE/RMSE、每提前量指标及政策指标的两种版本。
 5. 获取调度执行说明，核对豁免、缺报、96 点分母、月度归并与上传格式，在此之前不自动提交报文。
 
-目前仅完成**数据库迁移与评分代码编写**，没有在 Omarchy 执行迁移、模型训练或真实调度考核。报告中的 CSV 是内部推荐契约，不是官方规定的报文格式。
+2026-11-21 更新：开发库（Omarchy Docker）已完成 0003/0004 迁移与 TimescaleDB 激活并全量验证；未做真实调度考核，报告中的 CSV 是内部推荐契约，不是官方规定的报文格式。
 
 ## 参考
 

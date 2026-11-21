@@ -66,6 +66,11 @@ tags: [风电功率预测, F01, SCADA, 数据治理]
 `turbine_power_15m_proxy` 保持 **0 行**：源区间语义未确认，不生成真实 15 分钟代理标签；
 转换函数与合成测试已交付（`resample_15m.py`、`tests/test_resample_15m.py`）。
 
+2026-11-21 追加：应用户要求在 Omarchy 开发库安装 **TimescaleDB 2.32.1**
+（`docker/db-timescale.Dockerfile`，PG 钉死 18.6），两份激活脚本实测执行；
+`turbine_scada_10m` 已转为 hypertable（13 个 30 天 chunk，52,749 行迁移后负功率/哨兵计数不变，
+重复导入仍幂等，108 项测试通过）。执行前已 `pg_dump` 备份。
+
 ## 尚不能推出的信息
 
 场站并网点 15 分钟参考功率、单机额定容量证据、可用功率/限电记录、历史 NWP 批次、

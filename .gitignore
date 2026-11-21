@@ -64,3 +64,6 @@ artifacts/kpower_reproduction/**/train_keys.csv
 data/external/
 artifacts/f01/models/
 artifacts/f01/*.log
+
+# 本地数据库备份（pg_dump），不入公开仓库
+backups/
