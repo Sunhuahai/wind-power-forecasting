@@ -104,10 +104,7 @@ def build_payload() -> dict:
             identity=quality['identity'],
             rules_note='全部规则预注册、只标记不删改；负功率原值入库不截零。',
         ),
-        policy=summary['policy'],
-        gate=summary['gate'],
         thresholds=summary['thresholds'],
-        assumption=summary['availability_assumption']['statement'],
         daily=daily_power(),
         ramp=models[min(models, key=lambda m: models[m]['RMSE'])]['ramp'],
     )
@@ -152,8 +149,6 @@ td:first-child,th:first-child{text-align:left}
 .legend{display:flex;gap:16px;flex-wrap:wrap;font-size:12px;color:var(--muted);margin:4px 2px 10px}
 .legend i{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:5px;vertical-align:-1px}
 svg text{font-family:inherit}
-.policy{border:1px dashed #3b4a63;border-radius:12px;padding:16px 18px;color:var(--muted);font-size:13px}
-.policy b{color:var(--warn)}
 footer{color:#5b6c85;font-size:12px;text-align:center;margin-top:44px;line-height:2}
 a{color:var(--accent)}
 </style>
@@ -322,20 +317,7 @@ function render(){
     <tr><td>设备 / 型号</td><td>${D.audit.identity.设备名称} / ${D.audit.identity.型号名称}</td></tr>
     <tr><td>额定功率</td><td>${K.rated_note}</td></tr></table></div>`;
   app.appendChild(qa);
-  // 协议与政策
-  app.appendChild(el('h2',null,'评估协议 · 政策资格 · 诚实声明'));
-  let pa=el('div','policy');
-  pa.innerHTML=`<b>广西政策准确率：null（无评价资格）</b> — ${D.policy.ineligible_reason}。<br>
-  单机 10 分钟 SCADA 不是场站并网点 15 分钟参考曲线，且缺装机容量证据、历史 NWP 与 16 批历史发布版本；
-  取得真实场站资料后经 guangxi.py 做研究性回放，草案 GX_WIND_DRAFT_202608 与正式版分开计算。<br><br>
-  <b>可见性假设</b>：${D.assumption}<br><br>
-  <b>门禁 ${D.gate.status.toUpperCase()}</b>：${Object.entries(D.gate.criteria).map(([k,v])=>`${k}=${v}`).join('；')}。
-  按预注册协议，本轮测试集（${D.splits.test.issues} 个发布）<b>未打开</b>；
-  打开须下一轮以冻结配置执行一次性最终评分。<br><br>
-  <b>不宣称</b>：可部署的 D+1 日前模型（无历史 NWP）；已验证的生产实时能力（无真实接收时间）。`;
-  app.appendChild(pa);
-  $('#foot').innerHTML=`快照 ${D.best.name} · 训练 ${D.splits.train.issues} 发布 / 验证 ${D.splits.validation.issues} 发布 / 测试 ${D.splits.test.issues} 发布（锁定）<br>
-  F01 单机研究性结果 · 政策指标无资格输出 null · 原始 SCADA 不公开`;
+  $('#foot').innerHTML=`快照 ${D.best.name} · 训练 ${D.splits.train.issues} 发布 / 验证 ${D.splits.validation.issues} 发布 / 测试 ${D.splits.test.issues} 发布（本轮锁定）`;
 }
 render();
 </script>
