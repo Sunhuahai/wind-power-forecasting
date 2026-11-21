@@ -1,7 +1,7 @@
 ---
 title: F01 结果仪表盘 · 腾讯云部署说明
 type: deployment
-status: deployed-behind-security-group-port-80-pending
+status: deployed-public-basic-auth-active
 created: 2026-11-21
 week: 2026-W47
 server: tencent（49.233.91.122，Ubuntu 24.04，Caddy）
@@ -19,9 +19,10 @@ tags: [风电功率预测, F01, 可视化, 部署]
   符合"报告只公开聚合结果"的数据政策。
 - 部署：腾讯云 CVM `49.233.91.122`，Caddy 静态站点，路径
   **`http://49.233.91.122/windpower/`**；原占位站点未动。
-- **当前唯一阻塞：腾讯云安全组未放行 TCP:80**（实测 80/443/8080 均不可达，仅 22 放行；
-  服务器本机访问 200 正常）。须在腾讯云控制台 → 云服务器 → 安全组 → 添加入站规则
-  `TCP:80` 后公网可见。
+- 2026-11-21 已放行 TCP:80（用户在腾讯云控制台操作）：Omarchy 实测公网 200（~0.02 s）。
+- **basic_auth 已启用**：账号 `f01`，密码由用户设置并自行保管，**不入公开仓库**
+  （服务器 Caddyfile 只存 bcrypt 哈希；占位站点不设密码，仅保护 /windpower/*）。
+- 注意：浏览器可能把裸地址自动升级为 https://（443 未开）→ 必须手动输入 `http://`。
 
 ## 展示内容与诚实边界
 
@@ -35,7 +36,7 @@ tags: [风电功率预测, F01, 可视化, 部署]
 |---|---|
 | Web 根 | `/var/www/windpower/`（ubuntu 属主，Caddy 以 www-data 读取） |
 | Caddy 配置 | `/etc/caddy/Caddyfile`：`:80` 内 `handle /windpower/* { uri strip_prefix /windpower; root * /var/www/windpower; file_server }`，其余路径回落原占位站点；修改前已备份 `Caddyfile.bak.20261121` |
-| 验证 | `caddy validate` 通过；`systemctl reload caddy`；本机 curl 200（100,320 字节） |
+| 验证 | `caddy validate` 通过；reload 后实测：无凭据 401、错误凭据 401、`f01` + 用户密码 200（100,320 字节） |
 | 清理 | 临时 8080 探测进程已关闭，无残留 |
 
 ## 更新一页
@@ -48,8 +49,8 @@ rsync -vz artifacts/dashboard/index.html tencent:/var/www/windpower/index.html
 
 ## 安全与后续选项
 
-1. **公网可见后无鉴权**：内容为聚合指标，风险可控；如需限制，
-   Caddy 加 `basic_auth` 两行即可（需用户提供账号/密码哈希）。
+1. ~~公网可见后无鉴权~~ 已启用 basic_auth（账号 `f01`）。更换密码：
+   `caddy hash-password --plaintext '新密码'` 后更新 Caddyfile 并 reload。
 2. **HTTPS/域名**：把域名 A 记录指到 49.233.91.122，Caddyfile 把 `:80` 换成域名，
    自动签 Let's Encrypt；需同时放行 443。
 3. 服务器为 2 核 / 1.9 GB 小机型：纯静态页无压力；不要在上面跑训练或数据库。
