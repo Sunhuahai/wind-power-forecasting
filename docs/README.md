@@ -6,12 +6,13 @@
 |---|---|---|
 | **周进展/** | 每周结论：本周概览与专题长文；过程文档、附件和早期草稿放该周 `归档/` | [2026-W47](周进展/2026-W47（11-16～11-22）/00_本周总览.md) · [2026-W46](周进展/2026-W46（11-09～11-15）/) |
 | **研究记录/** | 优化链的长期记录：进展、注册表、饱和评估、逐轮技巧、实验报告、论文图表 | [优化进展](研究记录/optimization-progress.md) |
-| **部署与工程/** | 实时预测准备、迁移草案、再分析接入、代码架构、Omarchy 环境 | [实时预测准备](部署与工程/realtime-readiness.md) |
+| **部署与工程/** | 广西真实场站生产数据库、实时预测准备、代码架构、Omarchy 环境 | [广西生产数据库与数据契约](部署与工程/guangxi-operational-storage.md) · [实时预测准备](部署与工程/realtime-readiness.md) |
 | **归档/** | 被取代的历史文档，保留供核对，链接可能失效 | [归档说明](归档/README.md) |
 
 ## 常用入口
 
 - 本周进展：[2026-W47 概览](周进展/2026-W47（11-16～11-22）/00_本周总览.md) · [广西风电功率预测考核政策与训练评估适配](周进展/2026-W47（11-16～11-22）/01_广西风电功率预测考核政策与训练评估适配.md)
+- 广西场站部署：[PostgreSQL + TimescaleDB 生产表与数据契约](部署与工程/guangxi-operational-storage.md) · [数据库迁移](../alembic/versions/0003_guangxi_operational.py) · [政策公式评价器](../src/windpower/evaluation/guangxi.py)
 - 当前最优：**0.156010**（9 节点 / 8 次改进，累计 −8.47%），见[进展注册表](研究记录/optimization-progress.json)与[进展图](研究记录/figures/optimization-progress.png)
 - 为什么停在这里：[饱和评估与已封路线](研究记录/optimization-saturation.md)
 - 逐轮记录（含失败与越界）：[优化技巧](研究记录/optimization-tricks.md)

@@ -126,4 +126,32 @@ def physics_experiment(site:int=1,all_sites:bool=False,experiment_id:str|None=No
     from windpower.models.physics_experiment import run_experiment
     folder=run_experiment(range(1,11) if all_sites else [site],experiment_id)
     emit({'experiment':str(folder),'report':str(folder/'report.md')})
+
+@app.command('evaluate-guangxi')
+def evaluate_guangxi(
+    farm_id: int = typer.Option(..., help='实际场站 ID'),
+    target_day: str = typer.Option(..., help='北京时间业务日 YYYY-MM-DD'),
+    product: str = typer.Option(..., help='day_ahead 或 ultra_short'),
+    issuance_id: str | None = typer.Option(None, help='日前指定的冻结发布批次 ID'),
+    model_version: str | None = typer.Option(None, help='超短期指定模型版本'),
+    series_id: str | None = typer.Option(None, help='超短期指定连续预测序列'),
+    power_source: str = typer.Option('scada', help='参考功率的指定数据源（须经场站确认）'),
+    rule_version: str = typer.Option('GX_WIND_PUBLIC_2025',
+                                     help='正式公开版或单列草案版'),
+    as_of: str | None = typer.Option(None, help='评价可见截止时间（带时区 ISO 8601）'),
+    save: bool = typer.Option(False, help='显式追加保存研究评价记录'),
+):
+    """真实 15 分钟 MW 数据的广西政策回放；缺报或豁免口径不明时不给正式分。"""
+    from datetime import date
+    from windpower.evaluation.guangxi_db import score_from_database
+    result = score_from_database(
+        farm_id=farm_id, target_date=date.fromisoformat(target_day),
+        product=product, issuance_id=issuance_id,
+        model_version=model_version, series_id=series_id,
+        rule_version=rule_version, power_source=power_source,
+        as_of=datetime.fromisoformat(as_of) if as_of else None,
+        save=save,
+    )
+    emit(result)
+
 if __name__=='__main__':app()
