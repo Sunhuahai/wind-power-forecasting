@@ -1,0 +1,70 @@
+{
+  "task": "F01_NATIVE_10M",
+  "dataset": {
+    "file_sha256": "1f81153d82242214201776d5cda6f302dc849d32f7f79f56cb3ec968f992b663",
+    "turbine_id": 1,
+    "label": "grid_active_power_kw",
+    "label_note": "单机网侧有功功率 kW，负值为真实净取用，保留不截零；非场站并网点计量",
+    "time_semantics": "source_naive_clock_unknown_timezone",
+    "interval_start_end_semantics": "unconfirmed"
+  },
+  "availability_assumption": {
+    "name": "OFFLINE_REPLAY_COMPLETED_INTERVAL",
+    "visibility_delay_minutes": 10,
+    "statement": "离线回放假设：统计时间=t 的记录视为区间 [t,t+10min) 平均，在 t+10 分钟才完整可见；发布时刻 T 只允许使用 observed_at <= T-10min 的记录。该假设在区间起点与区间终点两种语义下均无未来信息泄漏；无真实接收时间，不得宣称生产实时能力。"
+  },
+  "splits": {
+    "train": ["2023-12-11 00:00", "2024-09-01 00:00"],
+    "validation": ["2024-09-01 00:00", "2024-11-01 00:00"],
+    "test": ["2024-11-01 00:00", "2024-12-12 00:00"]
+  },
+  "split_semantics": "目标时间（valid_at）左闭右开划分；同一目标标签只属于一个分段；发布时刻可跨段，但其历史输入均早于该发布时刻",
+  "leads_steps": 24,
+  "lead_minutes": [10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120, 130, 140, 150, 160, 170, 180, 190, 200, 210, 220, 230, 240],
+  "history": {
+    "required_complete_steps": 144,
+    "feature_mask_rules": {
+      "pitch_deg": [-10, 100],
+      "ambient_temp_c": [-40, 50],
+      "nacelle_wind_speed_ms": [0, 60]
+    }
+  },
+  "models": {
+    "persistence": {"rule": "pred = 最近一个完整可见记录的网侧功率（lag1）"},
+    "seasonal": {
+      "days": 7,
+      "rule": "pred(target) = 过去 7 天同一目标时刻功率均值（只用 observed_at < 发布时刻 的记录）；全部缺失时回退 lag1（确定性规则，非数据驱动选择）"
+    },
+    "ridge": {"alphas": [0.1, 1, 10, 100], "selection": "验证集 MSE 最小；只用验证集选 alpha"},
+    "lightgbm": {
+      "params": {"n_estimators": 600, "learning_rate": 0.05, "num_leaves": 31, "min_child_samples": 60, "reg_lambda": 1.0, "random_state": 42, "n_jobs": 8, "verbosity": -1},
+      "early_stopping_rounds": 50,
+      "selection": "验证集 MSE 早停；不使用测试集"
+    }
+  },
+  "evaluation": {
+    "wind_bins_ms": [3, 6, 9, 12],
+    "state_groups": ["generating", "fault", "maintenance", "not_generating", "env_abnormal"],
+    "power_group_factors": {"low_max_fraction": 0.05, "high_fraction": 0.9},
+    "ramp": {"window_minutes": 30, "train_abs_change_quantile": 0.95},
+    "identical_sample_set_required": true,
+    "runtime_measurement": true
+  },
+  "policy_eligibility": {
+    "eligible": false,
+    "GX_policy_accuracy": null,
+    "ineligible_reason": "single_turbine_10m_scada_is_not_farm_dispatch_reference",
+    "rule_versions": ["GX_WIND_PUBLIC_2025", "GX_WIND_DRAFT_202608"]
+  },
+  "gate": {
+    "name": "F01_FIRST_ROUND_VALIDATION_GATE",
+    "criteria": {
+      "c1_pooled_rmse_beats_persistence": "lightgbm 验证期 pooled RMSE < persistence 验证期 pooled RMSE（同一样本集）",
+      "c2_lead_mean_rmse_beats_persistence": "lightgbm 各提前量 RMSE 的均值 < persistence 各提前量 RMSE 的均值",
+      "c3_leakage_and_protocol_tests": "tests/test_scada_samples.py 与 tests/test_scada_quality.py 全部通过"
+    },
+    "action_on_pass": "本轮仍不打开测试集（规划 T04：测试保持门禁关闭）；测试集打开须在下一轮以本冻结配置显式执行一次性最终评分"
+  },
+  "registered_at": "2026-11-21T14:40:00+08:00",
+  "registered_before_any_validation_or_test_scoring": true
+}

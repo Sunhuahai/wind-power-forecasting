@@ -53,4 +53,14 @@ artifacts/kpower_reproduction/**/*.joblib
 artifacts/kpower_reproduction/**/predictions.csv
 artifacts/kpower_reproduction/**/validation_predictions.csv
 artifacts/kpower_reproduction/**/train_keys.csv
+# F01 单机 SCADA 首轮证据：只提交聚合指标与报告，模型与原始数据不入库。
+!artifacts/f01/
+!artifacts/f01/quality_report.json
+!artifacts/f01/summary.json
+!artifacts/f01/per_lead.csv
+!artifacts/f01/per_day.csv
+!artifacts/f01/report.md
+!artifacts/f01/run_manifest.json
 data/external/
+artifacts/f01/models/
+artifacts/f01/*.log

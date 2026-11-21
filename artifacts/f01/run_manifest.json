@@ -1,0 +1,15 @@
+{
+  "snapshot_id": "123fcef0-9de8-4b36-b88f-dc9c7f509d7f",
+  "dataset_file_sha256": "1f81153d82242214201776d5cda6f302dc849d32f7f79f56cb3ec968f992b663",
+  "turbine_id": 1,
+  "config": "configs/f01_experiment.json",
+  "availability_assumption": {
+    "name": "OFFLINE_REPLAY_COMPLETED_INTERVAL",
+    "visibility_delay_minutes": 10,
+    "statement": "离线回放假设：统计时间=t 的记录视为区间 [t,t+10min) 平均，在 t+10 分钟才完整可见；发布时刻 T 只允许使用 observed_at <= T-10min 的记录。该假设在区间起点与区间终点两种语义下均无未来信息泄漏；无真实接收时间，不得宣称生产实时能力。"
+  },
+  "test_set_status": "locked_by_gate_this_round",
+  "protocol_tests_passed": true,
+  "wall_seconds": 19.9,
+  "generated_at": "2026-11-21T06:47:55.699766+00:00"
+}

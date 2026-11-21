@@ -1,0 +1,871 @@
+{
+  "file": {
+    "path": "data/raw/f01/F01号风机十分钟数据.csv",
+    "sha256": "1f81153d82242214201776d5cda6f302dc849d32f7f79f56cb3ec968f992b663",
+    "byte_size": 15344580,
+    "encoding": "gb18030",
+    "rows": 52749,
+    "columns": 54,
+    "time_semantics": "source_naive_clock_unknown_timezone",
+    "interval_start_end_semantics": "unconfirmed"
+  },
+  "identity": {
+    "设备名称": [
+      "F01"
+    ],
+    "型号名称": [
+      "GW191/5270"
+    ],
+    "馈线名称": [
+      "集电1线"
+    ]
+  },
+  "rated_power_note": "型号名称 GW191/5270 仅暗示额定功率约 5270 kW，未经铭牌/合同证据确认；观察到的最大网侧有功功率 5314.22 kW 与之量级一致但不构成证明。rated_power_kw 保持 NULL，不得用于政策分母或归一化容量。",
+  "time_axis": {
+    "start": "2023-12-11 00:00:00",
+    "end": "2024-12-11 23:50:00",
+    "rows": 52749,
+    "expected_grid_points": 52848,
+    "missing_grid_points": 99,
+    "duplicate_timestamps": 0,
+    "monotonic": true,
+    "gap_events": 64,
+    "gap_delta_minutes_histogram": {
+      "20": 55,
+      "30": 5,
+      "40": 2,
+      "120": 1,
+      "180": 1
+    },
+    "max_gap_minutes": 180.0,
+    "largest_gaps": [
+      {
+        "after": "2024-05-27 14:40:00",
+        "before": "2024-05-27 17:40:00",
+        "delta_minutes": 180.0
+      },
+      {
+        "after": "2023-12-27 12:40:00",
+        "before": "2023-12-27 14:40:00",
+        "delta_minutes": 120.0
+      },
+      {
+        "after": "2024-01-05 18:20:00",
+        "before": "2024-01-05 19:00:00",
+        "delta_minutes": 40.0
+      },
+      {
+        "after": "2024-01-25 15:50:00",
+        "before": "2024-01-25 16:30:00",
+        "delta_minutes": 40.0
+      },
+      {
+        "after": "2024-03-21 15:00:00",
+        "before": "2024-03-21 15:30:00",
+        "delta_minutes": 30.0
+      },
+      {
+        "after": "2024-03-28 07:50:00",
+        "before": "2024-03-28 08:20:00",
+        "delta_minutes": 30.0
+      },
+      {
+        "after": "2024-09-12 10:20:00",
+        "before": "2024-09-12 10:50:00",
+        "delta_minutes": 30.0
+      },
+      {
+        "after": "2024-09-26 16:00:00",
+        "before": "2024-09-26 16:30:00",
+        "delta_minutes": 30.0
+      },
+      {
+        "after": "2024-10-10 03:30:00",
+        "before": "2024-10-10 04:00:00",
+        "delta_minutes": 30.0
+      },
+      {
+        "after": "2023-12-27 18:20:00",
+        "before": "2023-12-27 18:40:00",
+        "delta_minutes": 20.0
+      }
+    ]
+  },
+  "complete_days": 310,
+  "incomplete_days": 57,
+  "columns": [
+    {
+      "column": "序号",
+      "rows": 52749,
+      "dash_count": 0,
+      "empty_count": 0,
+      "unparseable_count": 0,
+      "value_count": 52749,
+      "min": 1.0,
+      "max": 52749.0,
+      "unique_count": 52749,
+      "first_round_usage": "identity_metadata"
+    },
+    {
+      "column": "馈线名称",
+      "rows": 52749,
+      "dash_count": 0,
+      "empty_count": 0,
+      "unparseable_count": 52749,
+      "value_count": 0,
+      "unique_count": 0,
+      "all_missing": true,
+      "first_round_usage": "identity_metadata"
+    },
+    {
+      "column": "设备名称",
+      "rows": 52749,
+      "dash_count": 0,
+      "empty_count": 0,
+      "unparseable_count": 52749,
+      "value_count": 0,
+      "unique_count": 0,
+      "all_missing": true,
+      "first_round_usage": "identity_metadata"
+    },
+    {
+      "column": "型号名称",
+      "rows": 52749,
+      "dash_count": 0,
+      "empty_count": 0,
+      "unparseable_count": 52749,
+      "value_count": 0,
+      "unique_count": 0,
+      "all_missing": true,
+      "first_round_usage": "identity_metadata"
+    },
+    {
+      "column": "统计时间",
+      "rows": 52749,
+      "dash_count": 0,
+      "empty_count": 0,
+      "unparseable_count": 52749,
+      "value_count": 0,
+      "unique_count": 0,
+      "all_missing": true,
+      "first_round_usage": "typed_feature_or_label"
+    },
+    {
+      "column": "平均变流器有功功率(kW)",
+      "rows": 52749,
+      "dash_count": 0,
+      "empty_count": 0,
+      "unparseable_count": 0,
+      "value_count": 52749,
+      "min": -36.54,
+      "max": 5241.0,
+      "unique_count": 42578,
+      "first_round_usage": "typed_feature_or_label"
+    },
+    {
+      "column": "平均变流器无功功率(kVar)",
+      "rows": 52749,
+      "dash_count": 0,
+      "empty_count": 0,
+      "unparseable_count": 0,
+      "value_count": 52749,
+      "min": -14.43,
+      "max": 30.27,
+      "unique_count": 1439,
+      "first_round_usage": "typed_feature_or_label"
+    },
+    {
+      "column": "平均发电机转速瞬时值(rpm)",
+      "rows": 52749,
+      "dash_count": 0,
+      "empty_count": 0,
+      "unparseable_count": 0,
+      "value_count": 52749,
+      "min": 0.0,
+      "max": 684.752,
+      "unique_count": 40092,
+      "first_round_usage": "typed_feature_or_label"
+    },
+    {
+      "column": "平均发电机绕组温度最大值(℃)",
+      "rows": 52749,
+      "dash_count": 0,
+      "empty_count": 0,
+      "unparseable_count": 0,
+      "value_count": 52749,
+      "min": 4.62,
+      "max": 131.66,
+      "unique_count": 9643,
+      "first_round_usage": "raw_payload_only"
+    },
+    {
+      "column": "平均发电机绕组温度1(℃)",
+      "rows": 52749,
+      "dash_count": 0,
+      "empty_count": 0,
+      "unparseable_count": 0,
+      "value_count": 52749,
+      "min": 0.0,
+      "max": 120.74,
+      "unique_count": 8787,
+      "first_round_usage": "raw_payload_only"
+    },
+    {
+      "column": "平均发电机绕组温度2(℃)",
+      "rows": 52749,
+      "dash_count": 0,
+      "empty_count": 0,
+      "unparseable_count": 0,
+      "value_count": 52749,
+      "min": 0.0,
+      "max": 125.11,
+      "unique_count": 9231,
+      "first_round_usage": "raw_payload_only"
+    },
+    {
+      "column": "平均发电机绕组温度3(℃)",
+      "rows": 52749,
+      "dash_count": 0,
+      "empty_count": 0,
+      "unparseable_count": 0,
+      "value_count": 52749,
+      "min": 0.0,
+      "max": 132.12,
+      "unique_count": 9888,
+      "first_round_usage": "raw_payload_only"
+    },
+    {
+      "column": "平均发电机绕组温度4(℃)",
+      "rows": 52749,
+      "dash_count": 0,
+      "empty_count": 0,
+      "unparseable_count": 0,
+      "value_count": 52749,
+      "min": 0.0,
+      "max": 122.86,
+      "unique_count": 8959,
+      "first_round_usage": "raw_payload_only"
+    },
+    {
+      "column": "平均发电机绕组温度5(℃)",
+      "rows": 52749,
+      "dash_count": 0,
+      "empty_count": 0,
+      "unparseable_count": 0,
+      "value_count": 52749,
+      "min": 0.0,
+      "max": 128.2,
+      "unique_count": 9602,
+      "first_round_usage": "raw_payload_only"
+    },
+    {
+      "column": "平均发电机绕组温度6(℃)",
+      "rows": 52749,
+      "dash_count": 0,
+      "empty_count": 0,
+      "unparseable_count": 0,
+      "value_count": 52749,
+      "min": 0.0,
+      "max": 119.77,
+      "unique_count": 8718,
+      "first_round_usage": "raw_payload_only"
+    },
+    {
+      "column": "平均主轴前轴承外圈温度1(℃)",
+      "rows": 52749,
+      "dash_count": 0,
+      "empty_count": 0,
+      "unparseable_count": 0,
+      "value_count": 52749,
+      "min": 15.4,
+      "max": 46.7,
+      "unique_count": 1192,
+      "first_round_usage": "raw_payload_only"
+    },
+    {
+      "column": "平均主轴前轴承外圈温度2(℃)",
+      "rows": 52749,
+      "dash_count": 0,
+      "empty_count": 0,
+      "unparseable_count": 0,
+      "value_count": 52749,
+      "min": 15.4,
+      "max": 46.7,
+      "unique_count": 1239,
+      "first_round_usage": "raw_payload_only"
+    },
+    {
+      "column": "平均发电机进风口温度1(℃)",
+      "rows": 52749,
+      "dash_count": 0,
+      "empty_count": 0,
+      "unparseable_count": 0,
+      "value_count": 52749,
+      "sentinel_847_count": 50084,
+      "min": 0.0,
+      "max": 847.0,
+      "unique_count": 2,
+      "first_round_usage": "excluded_sentinel_only_channel"
+    },
+    {
+      "column": "平均发电机出风口温度1(℃)",
+      "rows": 52749,
+      "dash_count": 0,
+      "empty_count": 0,
+      "unparseable_count": 0,
+      "value_count": 52749,
+      "min": -1.5,
+      "max": 91.59,
+      "unique_count": 7493,
+      "first_round_usage": "raw_payload_only"
+    },
+    {
+      "column": "平均发电机进风口温度2(℃)",
+      "rows": 52749,
+      "dash_count": 0,
+      "empty_count": 0,
+      "unparseable_count": 0,
+      "value_count": 52749,
+      "sentinel_847_count": 50084,
+      "min": 0.0,
+      "max": 847.0,
+      "unique_count": 2,
+      "first_round_usage": "excluded_sentinel_only_channel"
+    },
+    {
+      "column": "平均发电机出风口温度2(℃)",
+      "rows": 52749,
+      "dash_count": 0,
+      "empty_count": 0,
+      "unparseable_count": 0,
+      "value_count": 52749,
+      "min": -1.38,
+      "max": 90.13,
+      "unique_count": 7394,
+      "first_round_usage": "raw_payload_only"
+    },
+    {
+      "column": "平均机舱温度(℃)",
+      "rows": 52749,
+      "dash_count": 0,
+      "empty_count": 0,
+      "unparseable_count": 0,
+      "value_count": 52749,
+      "min": 0.0,
+      "max": 43.91,
+      "unique_count": 3769,
+      "first_round_usage": "raw_payload_only"
+    },
+    {
+      "column": "平均机舱控制柜温度(℃)",
+      "rows": 52749,
+      "dash_count": 0,
+      "empty_count": 0,
+      "unparseable_count": 0,
+      "value_count": 52749,
+      "min": 0.0,
+      "max": 37.6,
+      "unique_count": 3099,
+      "first_round_usage": "raw_payload_only"
+    },
+    {
+      "column": "平均叶轮转速瞬时值(rpm)",
+      "rows": 52749,
+      "dash_count": 0,
+      "empty_count": 0,
+      "unparseable_count": 0,
+      "value_count": 52749,
+      "min": 0.0,
+      "max": 9.33,
+      "unique_count": 918,
+      "first_round_usage": "typed_feature_or_label"
+    },
+    {
+      "column": "平均1#变桨桨距角(deg)",
+      "rows": 52749,
+      "dash_count": 0,
+      "empty_count": 0,
+      "unparseable_count": 0,
+      "value_count": 52749,
+      "min": -182.41,
+      "max": 90.4,
+      "unique_count": 3487,
+      "first_round_usage": "typed_feature_or_label"
+    },
+    {
+      "column": "平均2#变桨桨距角(deg)",
+      "rows": 52749,
+      "dash_count": 0,
+      "empty_count": 0,
+      "unparseable_count": 0,
+      "value_count": 52749,
+      "min": -128.1,
+      "max": 173.38,
+      "unique_count": 3490,
+      "first_round_usage": "typed_feature_or_label"
+    },
+    {
+      "column": "平均3#变桨桨距角(deg)",
+      "rows": 52749,
+      "dash_count": 0,
+      "empty_count": 0,
+      "unparseable_count": 0,
+      "value_count": 52749,
+      "min": -181.03,
+      "max": 134.79,
+      "unique_count": 3290,
+      "first_round_usage": "typed_feature_or_label"
+    },
+    {
+      "column": "平均1#变桨速度(deg/s)",
+      "rows": 52749,
+      "dash_count": 0,
+      "empty_count": 0,
+      "unparseable_count": 0,
+      "value_count": 52749,
+      "min": -1.27,
+      "max": 0.98,
+      "unique_count": 46,
+      "first_round_usage": "raw_payload_only"
+    },
+    {
+      "column": "平均2#变桨速度(deg/s)",
+      "rows": 52749,
+      "dash_count": 0,
+      "empty_count": 0,
+      "unparseable_count": 0,
+      "value_count": 52749,
+      "min": -0.23,
+      "max": 1.11,
+      "unique_count": 42,
+      "first_round_usage": "raw_payload_only"
+    },
+    {
+      "column": "平均3#变桨速度(deg/s)",
+      "rows": 52749,
+      "dash_count": 0,
+      "empty_count": 0,
+      "unparseable_count": 0,
+      "value_count": 52749,
+      "min": -1.23,
+      "max": 0.98,
+      "unique_count": 43,
+      "first_round_usage": "raw_payload_only"
+    },
+    {
+      "column": "平均齿轮箱进油口温度(℃)",
+      "rows": 52749,
+      "dash_count": 0,
+      "empty_count": 0,
+      "unparseable_count": 0,
+      "value_count": 52749,
+      "min": 17.28,
+      "max": 57.12,
+      "unique_count": 3211,
+      "first_round_usage": "raw_payload_only"
+    },
+    {
+      "column": "平均齿轮箱油池温度(℃)",
+      "rows": 52749,
+      "dash_count": 0,
+      "empty_count": 0,
+      "unparseable_count": 0,
+      "value_count": 52749,
+      "min": 15.53,
+      "max": 57.81,
+      "unique_count": 3111,
+      "first_round_usage": "raw_payload_only"
+    },
+    {
+      "column": "平均齿轮箱高速轴1#轴承温度(℃)",
+      "rows": 52749,
+      "dash_count": 0,
+      "empty_count": 0,
+      "unparseable_count": 0,
+      "value_count": 52749,
+      "min": 17.32,
+      "max": 63.96,
+      "unique_count": 3410,
+      "first_round_usage": "raw_payload_only"
+    },
+    {
+      "column": "平均齿轮箱高速轴2#轴承温度(℃)",
+      "rows": 52749,
+      "dash_count": 0,
+      "empty_count": 0,
+      "unparseable_count": 0,
+      "value_count": 52749,
+      "min": 18.55,
+      "max": 69.74,
+      "unique_count": 4067,
+      "first_round_usage": "raw_payload_only"
+    },
+    {
+      "column": "平均齿轮箱低速轴1#轴承温度(℃)",
+      "rows": 52749,
+      "dash_count": 0,
+      "empty_count": 0,
+      "unparseable_count": 0,
+      "value_count": 52749,
+      "min": 17.59,
+      "max": 67.16,
+      "unique_count": 3878,
+      "first_round_usage": "raw_payload_only"
+    },
+    {
+      "column": "平均风速(m/s)",
+      "rows": 52749,
+      "dash_count": 0,
+      "empty_count": 0,
+      "unparseable_count": 0,
+      "value_count": 52749,
+      "min": 0.0,
+      "max": 18.69,
+      "unique_count": 1440,
+      "first_round_usage": "typed_feature_or_label"
+    },
+    {
+      "column": "平均网侧有功功率(kW)",
+      "rows": 52749,
+      "dash_count": 0,
+      "empty_count": 0,
+      "unparseable_count": 0,
+      "value_count": 52749,
+      "min": -31.92,
+      "max": 5314.22,
+      "unique_count": 42345,
+      "first_round_usage": "typed_feature_or_label"
+    },
+    {
+      "column": "平均网侧无功功率(kVar)",
+      "rows": 52749,
+      "dash_count": 0,
+      "empty_count": 0,
+      "unparseable_count": 0,
+      "value_count": 52749,
+      "min": -14.43,
+      "max": 30.26,
+      "unique_count": 1440,
+      "first_round_usage": "typed_feature_or_label"
+    },
+    {
+      "column": "风机正常运行时间(h)",
+      "rows": 52749,
+      "dash_count": 0,
+      "empty_count": 0,
+      "unparseable_count": 0,
+      "value_count": 52749,
+      "min": 0.0,
+      "max": 3.0,
+      "unique_count": 24,
+      "first_round_usage": "typed_feature_or_label"
+    },
+    {
+      "column": "风机故障时间(h)",
+      "rows": 52749,
+      "dash_count": 0,
+      "empty_count": 0,
+      "unparseable_count": 0,
+      "value_count": 52749,
+      "min": 0.0,
+      "max": 0.333332,
+      "unique_count": 17,
+      "first_round_usage": "typed_feature_or_label"
+    },
+    {
+      "column": "风机发电时间(h)",
+      "rows": 52749,
+      "dash_count": 0,
+      "empty_count": 0,
+      "unparseable_count": 0,
+      "value_count": 52749,
+      "min": 0.0,
+      "max": 0.78,
+      "unique_count": 24,
+      "first_round_usage": "typed_feature_or_label"
+    },
+    {
+      "column": "风机维护时间(h)",
+      "rows": 52749,
+      "dash_count": 0,
+      "empty_count": 0,
+      "unparseable_count": 0,
+      "value_count": 52749,
+      "min": 0.0,
+      "max": 0.28,
+      "unique_count": 18,
+      "first_round_usage": "typed_feature_or_label"
+    },
+    {
+      "column": "风机环境异常时间(h)",
+      "rows": 52749,
+      "dash_count": 0,
+      "empty_count": 0,
+      "unparseable_count": 0,
+      "value_count": 52749,
+      "min": 0.0,
+      "max": 0.62,
+      "unique_count": 20,
+      "first_round_usage": "typed_feature_or_label"
+    },
+    {
+      "column": "风机环境正常时间(h)",
+      "rows": 52749,
+      "dash_count": 0,
+      "empty_count": 0,
+      "unparseable_count": 0,
+      "value_count": 52749,
+      "min": 0.0,
+      "max": 1.07,
+      "unique_count": 26,
+      "first_round_usage": "typed_feature_or_label"
+    },
+    {
+      "column": "平均环境温度(℃)",
+      "rows": 52749,
+      "dash_count": 0,
+      "empty_count": 0,
+      "unparseable_count": 0,
+      "value_count": 52749,
+      "min": -4.77,
+      "max": 34.23,
+      "unique_count": 3576,
+      "first_round_usage": "typed_feature_or_label"
+    },
+    {
+      "column": "平均X轴方向加速度",
+      "rows": 52749,
+      "dash_count": 0,
+      "empty_count": 0,
+      "unparseable_count": 0,
+      "value_count": 52749,
+      "min": 0.0,
+      "max": 0.0,
+      "unique_count": 1,
+      "zero_variance": true,
+      "first_round_usage": "excluded_zero_variance"
+    },
+    {
+      "column": "平均y轴方向加速度",
+      "rows": 52749,
+      "dash_count": 0,
+      "empty_count": 0,
+      "unparseable_count": 0,
+      "value_count": 52749,
+      "min": 0.0,
+      "max": 0.0,
+      "unique_count": 1,
+      "zero_variance": true,
+      "first_round_usage": "excluded_zero_variance"
+    },
+    {
+      "column": "平均偏航位置(deg)",
+      "rows": 52749,
+      "dash_count": 0,
+      "empty_count": 0,
+      "unparseable_count": 0,
+      "value_count": 52749,
+      "min": -681.94,
+      "max": 650.55,
+      "unique_count": 24309,
+      "first_round_usage": "typed_feature_or_label"
+    },
+    {
+      "column": "平均对风角度(deg)",
+      "rows": 52749,
+      "dash_count": 0,
+      "empty_count": 0,
+      "unparseable_count": 0,
+      "value_count": 52749,
+      "min": -180.0,
+      "max": 162.24,
+      "unique_count": 5613,
+      "first_round_usage": "typed_feature_or_label"
+    },
+    {
+      "column": "平均偏航集电环温度(℃)",
+      "rows": 52749,
+      "dash_count": 6555,
+      "empty_count": 0,
+      "unparseable_count": 0,
+      "value_count": 46194,
+      "min": 0.0,
+      "max": 847.03,
+      "unique_count": 3902,
+      "first_round_usage": "excluded_unconfirmed_channel"
+    },
+    {
+      "column": "有效风时数<=3(h)",
+      "rows": 52749,
+      "dash_count": 52749,
+      "empty_count": 0,
+      "unparseable_count": 0,
+      "value_count": 0,
+      "unique_count": 0,
+      "all_missing": true,
+      "first_round_usage": "excluded_all_missing"
+    },
+    {
+      "column": "有效风时数>19(h)",
+      "rows": 52749,
+      "dash_count": 52749,
+      "empty_count": 0,
+      "unparseable_count": 0,
+      "value_count": 0,
+      "unique_count": 0,
+      "all_missing": true,
+      "first_round_usage": "excluded_all_missing"
+    },
+    {
+      "column": "有效风时数3-10(h)",
+      "rows": 52749,
+      "dash_count": 52749,
+      "empty_count": 0,
+      "unparseable_count": 0,
+      "value_count": 0,
+      "unique_count": 0,
+      "all_missing": true,
+      "first_round_usage": "excluded_all_missing"
+    },
+    {
+      "column": "有效发电时间(h)",
+      "rows": 52749,
+      "dash_count": 52749,
+      "empty_count": 0,
+      "unparseable_count": 0,
+      "value_count": 0,
+      "unique_count": 0,
+      "all_missing": true,
+      "first_round_usage": "excluded_all_missing"
+    }
+  ],
+  "label_candidate": {
+    "grid_active_power_kw": {
+      "negative_count": 9968,
+      "negative_share": 0.18897040702193407,
+      "negative_min_kw": -31.92,
+      "negative_median_kw": -15.61,
+      "zero_count": 290,
+      "max_kw": 5314.22,
+      "min_kw": -31.92,
+      "null_count": 0,
+      "negative_with_generating_h_zero": 8668
+    },
+    "converter_active_power_kw": {
+      "negative_count": 10348,
+      "max_kw": 5241.0,
+      "null_count": 0
+    }
+  },
+  "wind_speed": {
+    "min_ms": 0.0,
+    "max_ms": 18.69,
+    "median_ms": 4.91,
+    "null_count": 0
+  },
+  "row_flag_hits": {
+    "sentinel_847_intake_temp1": 50084,
+    "sentinel_847_intake_temp2": 50084,
+    "negative_grid_power": 9968,
+    "state_duration_exceeds_step": 4350,
+    "yaw_position_outside_canonical": 2675,
+    "after_time_gap": 64,
+    "zero_grid_power": 290,
+    "yaw_ring_temp_anomaly": 12,
+    "pitch_outside_canonical": 26
+  },
+  "rules": {
+    "negative_grid_power": {
+      "columns": [
+        "平均网侧有功功率(kW)"
+      ],
+      "unit": "kW",
+      "rule": "value < 0",
+      "handling": "保留原值入库并打标；不得截零或删行"
+    },
+    "zero_grid_power": {
+      "columns": [
+        "平均网侧有功功率(kW)"
+      ],
+      "unit": "kW",
+      "rule": "value == 0",
+      "handling": "不视为缺失；结合状态时间检查"
+    },
+    "sentinel_847_intake_temp1/2": {
+      "columns": [
+        "平均发电机进风口温度1(℃)",
+        "平均发电机进风口温度2(℃)"
+      ],
+      "unit": "℃",
+      "rule": "value == 847（该两列仅有 0 与 847 两种取值）",
+      "handling": "标记为疑似哨兵值；整列排除出第一轮特征，不当作温度"
+    },
+    "yaw_ring_temp_anomaly": {
+      "columns": [
+        "平均偏航集电环温度(℃)"
+      ],
+      "unit": "℃",
+      "rule": "value > 200",
+      "handling": "标记异常；该通道另有 12.43% 缺失，整列暂不纳入特征"
+    },
+    "pitch_outside_canonical": {
+      "columns": [
+        "平均1#变桨桨距角(deg)",
+        "平均2#变桨桨距角(deg)",
+        "平均3#变桨桨距角(deg)"
+      ],
+      "unit": "deg",
+      "rule": "任一叶片超出 [-10, 100]",
+      "handling": "保留原值；特征构造时该行桨距输入置为缺失（掩码），样本按严格可用性规则剔除"
+    },
+    "yaw_position_outside_canonical": {
+      "columns": [
+        "平均偏航位置(deg)"
+      ],
+      "unit": "deg",
+      "rule": "|value| > 360",
+      "handling": "保留原值；疑似累计角度，语义确认前不做取模/周期特征"
+    },
+    "state_duration_exceeds_step": {
+      "columns": [
+        "normal_h",
+        "generating_h",
+        "fault_h",
+        "maintenance_h",
+        "env_abnormal_h",
+        "env_normal_h"
+      ],
+      "unit": "h",
+      "rule": "任一状态时长 > 1/6 h",
+      "handling": "只记录；长记录可能汇总缺失时段，不判错"
+    },
+    "after_time_gap": {
+      "columns": [
+        "统计时间"
+      ],
+      "unit": "minute",
+      "rule": "与上一条记录差 ≠ 10 分钟",
+      "handling": "标记缺口后首行；样本构造要求完整 24h 历史窗口"
+    }
+  },
+  "known_corrections": [
+    "实测确认规划文档 §1.1 的时间轴结论：最大相邻时间戳差为 180 分钟（2024-05-27 14:40 → 17:40），另有一次 120 分钟缺口；\"风机正常运行时间\"最大 3 小时是状态时长列的独立事实，与时间缺口是两个概念。"
+  ],
+  "availability_note": "原文件不提供数据接收时间；离线回放可见性假设见 configs/f01_experiment.json，不得宣称为已验证的生产实时能力。",
+  "policy_eligibility": {
+    "single_turbine_10m": true,
+    "farm_dispatch_reference": false,
+    "GX_policy_accuracy": null,
+    "ineligible_reason": "single_turbine_scada_is_not_farm_grid_reference"
+  },
+  "generated_at": "2026-11-21T06:47:06.504417+00:00",
+  "ingester_version": "scada_f01_v1",
+  "database": {
+    "data_ingest_files": 1,
+    "wind_turbines": 1,
+    "turbine_scada_raw_10m": 52749,
+    "turbine_scada_10m": 52749,
+    "turbine_scada_10m_negative": 9968,
+    "turbine_power_15m_proxy": 0
+  }
+}

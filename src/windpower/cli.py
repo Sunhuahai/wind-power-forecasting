@@ -154,4 +154,28 @@ def evaluate_guangxi(
     )
     emit(result)
 
+@app.command('audit-f01')
+def audit_f01():
+    """只读审计 F01 十分钟 CSV：编码、时间网格、54 列画像与规则命中。"""
+    from windpower.data.scada_f01 import audit, ARTIFACT_DIR
+    report = audit()
+    ARTIFACT_DIR.mkdir(parents=True, exist_ok=True)
+    (ARTIFACT_DIR / 'quality_report.json').write_text(
+        json.dumps(report, ensure_ascii=False, indent=2, default=str))
+    emit({k: report[k] for k in ('file', 'identity', 'time_axis', 'label_candidate',
+                                 'row_flag_hits', 'policy_eligibility')})
+
+@app.command('import-f01')
+def import_f01():
+    """审计并版本化入库 F01 SCADA；重复导入幂等，不产生重复记录。"""
+    from windpower.data.scada_f01 import ingest
+    report = ingest()
+    emit({k: report[k] for k in ('file', 'time_axis', 'row_flag_hits', 'database')})
+
+@app.command('baseline-f01')
+def baseline_f01(turbine_id: int = typer.Option(1, help='风机 ID')):
+    """F01 原生 10 分钟基线：样本 -> 训练 -> 验证评价 -> 统一报告（测试集保持关闭）。"""
+    from windpower.models.scada_baseline import run_baseline
+    emit(run_baseline(turbine_id=turbine_id))
+
 if __name__=='__main__':app()
