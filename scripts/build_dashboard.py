@@ -207,7 +207,7 @@ function svgLine(series, xLabels, w=520, h=240, opts={}) {
   if(opts.pts) opts.pts.forEach(p=>{
     g+=`<circle cx="${X(p.i)}" cy="${Y(p.v)}" r="3.5" fill="${p.color}"/>`;
   });
-  return `<svg viewBox="0 0 ${w} ${h}" style="width:100%;height:auto">${g}</svg>`;
+  return `<svg width="${w}" height="${h}" viewBox="0 0 ${w} ${h}" style="max-width:100%;height:auto">${g}</svg>`;
 }
 function svgBars(items, w=520, h=0, opts={}) {
   const rowH=opts.rowH||30, pad={l:150,r:60,t:4,b:4};
@@ -220,7 +220,7 @@ function svgBars(items, w=520, h=0, opts={}) {
     g+=`<rect x="${pad.l}" y="${y}" width="${bw}" height="${rowH-12}" rx="4" fill="${it.color||'#5aa9ff'}"/>`;
     g+=`<text x="${pad.l+bw+8}" y="${y+13}" fill="#dbe4f0" font-size="12">${it.t}</text>`;
   });
-  return `<svg viewBox="0 0 ${W} ${H}" style="width:100%;height:auto">${g}</svg>`;
+  return `<svg width="${W}" height="${H}" viewBox="0 0 ${W} ${H}" style="max-width:100%;height:auto">${g}</svg>`;
 }
 function svgBand(daily, keyHi, keyLo, keyMid, w=560, h=200) {
   const pad={l:52,r:12,t:10,b:26};
@@ -242,7 +242,7 @@ function svgBand(daily, keyHi, keyLo, keyMid, w=560, h=200) {
   g+=`<polygon points="${band}${band2}" fill="rgba(90,169,255,.16)" stroke="none"/>`;
   const pts=daily.map((d,i)=>`${X(i).toFixed(1)},${Y(d[keyMid]).toFixed(1)}`).join(' ');
   g+=`<polyline points="${pts}" fill="none" stroke="#5aa9ff" stroke-width="1.6"/>`;
-  return `<svg viewBox="0 0 ${w} ${h}" style="width:100%;height:auto">${g}</svg>`;
+  return `<svg width="${w}" height="${h}" viewBox="0 0 ${w} ${h}" style="max-width:100%;height:auto">${g}</svg>`;
 }
 function fmt(n,d=1){return (n==null?'—':Number(n).toLocaleString('zh-CN',{maximumFractionDigits:d}));}
 function render(){
