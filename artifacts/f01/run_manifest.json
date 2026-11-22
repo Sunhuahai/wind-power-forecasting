@@ -1,5 +1,5 @@
 {
-  "snapshot_id": "123fcef0-9de8-4b36-b88f-dc9c7f509d7f",
+  "snapshot_id": "df3c1f37-7459-44ec-a39e-672834e5b836",
   "dataset_file_sha256": "1f81153d82242214201776d5cda6f302dc849d32f7f79f56cb3ec968f992b663",
   "turbine_id": 1,
   "config": "configs/f01_experiment.json",
@@ -10,6 +10,6 @@
   },
   "test_set_status": "locked_by_gate_this_round",
   "protocol_tests_passed": true,
-  "wall_seconds": 19.9,
-  "generated_at": "2026-11-21T06:47:55.699766+00:00"
+  "wall_seconds": 19.7,
+  "generated_at": "2026-11-22T06:54:11.262190+00:00"
 }
