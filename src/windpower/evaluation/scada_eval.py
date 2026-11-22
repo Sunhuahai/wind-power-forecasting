@@ -209,14 +209,19 @@ def evaluate_split(frame, preds: dict, runtimes: dict, thresholds: dict, cfg) ->
 
 def write_reports(out: Path, split_name: str, results: dict, thresholds: dict,
                  coverage: dict, cfg, test_availability: dict,
-                  tests_passed: bool | None) -> dict:
-    """统一报告输出：summary.json / per_lead.csv / per_day.csv / report.md。"""
+                 tests_passed: bool | None, prefix: str = '',
+                 gate_override: dict | None = None) -> dict:
+    """统一报告输出：summary.json / per_lead.csv / per_day.csv / report.md。
+
+    prefix 为空写验证轮文件名，'test_' 写测试轮文件。
+    gate_override 用于一次性测试评分：测试结果只记录，不构成新的选择门禁。
+    """
     out.mkdir(parents=True, exist_ok=True)
     lead_rows = [dict(model=m, **r) for m, v in results.items() for r in v['per_lead']]
     day_rows = [dict(model=m, **r) for m, v in results.items() for r in v['per_day']]
-    pl.DataFrame(lead_rows).write_csv(out / 'per_lead.csv')
-    pl.DataFrame(day_rows).write_csv(out / 'per_day.csv')
-    gate = gate_check(results, tests_passed, cfg)
+    pl.DataFrame(lead_rows).write_csv(out / f'{prefix}per_lead.csv')
+    pl.DataFrame(day_rows).write_csv(out / f'{prefix}per_day.csv')
+    gate = gate_override if gate_override else gate_check(results, tests_passed, cfg)
     summary = dict(
         task=cfg['task'],
         dataset=dict(file_sha256=cfg['dataset']['file_sha256'],
@@ -237,16 +242,19 @@ def write_reports(out: Path, split_name: str, results: dict, thresholds: dict,
         code_commit=_git_commit(),
         config=cfg,
     )
-    (out / 'summary.json').write_text(
+    (out / f'{prefix}summary.json').write_text(
         json.dumps(summary, ensure_ascii=False, indent=2, default=str))
-    _write_markdown(out, split_name, results, thresholds, coverage, gate, cfg)
+    _write_markdown(out, split_name, results, thresholds, coverage, gate, cfg,
+                    prefix=prefix)
     return summary
 
 
 def _write_markdown(out: Path, split_name: str, results: dict, thresholds: dict,
-                    coverage: dict, gate: dict, cfg) -> None:
+                    coverage: dict, gate: dict, cfg,
+                    prefix: str = '') -> None:
     lines = [
-        f'# F01 单机 10 分钟基线 · {split_name} 报告', '',
+        f'# F01 单机 10 分钟基线 · '
+        f'{"测试集一次性最终评分" if prefix else split_name} 报告', '',
         f'- 数据：`F01号风机十分钟数据.csv`（sha256 `{cfg["dataset"]["file_sha256"][:16]}…`），'
         f'源时间为无时区时钟，区间起止语义未确认。',
         f'- 可见性假设：{cfg["availability_assumption"]["name"]}'
@@ -298,8 +306,15 @@ def _write_markdown(out: Path, split_name: str, results: dict, thresholds: dict,
               '`GX_policy_accuracy = null`（原因：single_turbine_10m_scada_is_not_farm_dispatch_reference）。',
               '- 取得真实场站计量、容量证据、历史 NWP 与发布批次后，'
               '经 `windpower.evaluation.guangxi` 做**研究性回放**，仍不等于调度认证成绩。', '']
-    lines += ['## 测试门禁', '',
-              f"- 门禁 `{gate['name']}`：**{gate['status']}**（"
-              + '，'.join(f"{k}={v}" for k, v in gate['criteria'].items()) + '）。',
-              '- 本轮测试集保持关闭：打开须在下一轮以本冻结配置执行一次性最终评分。', '']
-    (out / 'report.md').write_text('\n'.join(lines), encoding='utf-8')
+    if prefix == 'test_':
+        lines += ['## 一次性评分说明', '',
+                  '- 模型、特征、阈值与超参数全部冻结自验证轮'
+                  f'（门禁 `{gate["gate_reference"]}` 于 2026-11-21 通过）；'
+                  '本报告为测试集唯一一次评分，此后不再依据测试结果做任何模型选择或调参。',
+                  '- 记录性质对比（不构成新门禁）：见 summary.json 内各模型测试指标。', '']
+    else:
+        lines += ['## 测试门禁', '',
+                  f"- 门禁 `{gate['name']}`：**{gate['status']}**（"
+                  + '，'.join(f"{k}={v}" for k, v in gate['criteria'].items()) + '）。',
+                  '- 本轮测试集保持关闭：打开须在下一轮以本冻结配置执行一次性最终评分。', '']
+    (out / f'{prefix}report.md').write_text('\n'.join(lines), encoding='utf-8')

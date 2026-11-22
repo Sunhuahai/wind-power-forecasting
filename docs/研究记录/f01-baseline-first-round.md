@@ -1,12 +1,13 @@
 ---
 title: F01 原生 10 分钟预测首轮基线报告
 type: experiment-report
-status: validation-only-test-locked
+status: validation-and-test-scored-one-time
 created: 2026-11-21
+test_opened: 2026-11-22
 week: 2026-W47
 dataset_sha256: 1f81153d82242214201776d5cda6f302dc849d32f7f79f56cb3ec968f992b663
 config: configs/f01_experiment.json
-machine_readable: artifacts/f01/summary.json
+machine_readable: artifacts/f01/summary.json · artifacts/f01/test_summary.json
 tags: [风电功率预测, F01, 基线, 严格评估协议]
 ---
 
@@ -85,3 +86,29 @@ tags: [风电功率预测, F01, 基线, 严格评估协议]
 uv run windpower import-f01 && uv run windpower baseline-f01
 uv run pytest tests/ -q && WINDPOWER_TEST_DB=1 uv run pytest tests/ -q
 ```
+
+## 测试集一次性最终评分（2026-11-22 用户授权打开）
+
+流程：先以冻结模型在验证集干跑，精确复现已存指标（Ridge 911.5467、LightGBM 929.3906）证明代码路径无误，
+再对测试集执行**唯一一次**评分（`uv run windpower final-test-f01 --split test`）；
+模型、特征、阈值、超参数全部冻结自验证轮，测试结果不用于任何后续选择。
+
+| 模型 | MAE (kW) | RMSE (kW) | Bias (kW) | 验证 RMSE（对照） |
+|---|---:|---:|---:|---:|
+| Persistence | 754.4 | 1105.4 | +0.3 | 1032.3 |
+| Seasonal | 1039.9 | 1342.2 | +62.1 | 1523.6 |
+| Ridge | 707.4 | 933.3 | −52.7 | 911.5 |
+| **LightGBM** | **659.4** | **877.2** | −5.1 | 929.4 |
+
+测试期 4,586 个发布 × 24 提前量 = 109,788 个有效样本；爬坡事件 5,952 个（|ΔP30| ≥ 1,267 kW），
+LightGBM 事件内 MAE 1,145 kW，方向准确率 77.9%。
+
+**关键观察（如实记录，不做二次选择）**：验证期最优是 Ridge（911.5 对 929.4），
+测试期最优是 LightGBM（877.2 对 933.3）——验证期排序未延续到测试期。
+若当初按测试集挑模型会得出不同结论，这正是预注册协议存在的意义。
+首轮结论：两种参数化方法都显著优于持续法与季节基线（测试 RMSE 较持续法降 20%），
+LightGBM 的验证/测试波动提示下一轮应引入滚动来源多样性（多种子、滚动再训练窗口），
+该决定属于下一轮的验证集工作，不由本轮测试分数触发。
+
+证据：`artifacts/f01/test_summary.json`、`test_per_lead.csv`、`test_per_day.csv`、
+`test_report.md`、`test_manifest.json`（含冻结配置哈希与授权记录）。

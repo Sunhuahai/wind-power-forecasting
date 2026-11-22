@@ -63,6 +63,21 @@ def build_payload() -> dict:
     per_lead = read_csv('artifacts/f01/per_lead.csv')
     per_day = read_csv('artifacts/f01/per_day.csv')
     models = summary['models']
+
+    test = None
+    if Path('artifacts/f01/test_summary.json').exists():
+        ts = json.loads(Path('artifacts/f01/test_summary.json').read_text())
+        test = dict(
+            best=min(ts['models'], key=lambda m: ts['models'][m]['RMSE']),
+            bounds=ts['coverage']['splits']['test'],
+            models={m: dict(MAE=round(v['MAE'], 1), RMSE=round(v['RMSE'], 1),
+                            Bias=round(v['Bias'], 1), n=v['n'],
+                            val_rmse=round(ts['gate']['validation_reference_rmse'][m], 1),
+                            colors=MODEL_COLORS.get(m, '#888'))
+                    for m, v in ts['models'].items()},
+            leads=[dict(model=r['model'], lead=int(r['lead_minutes']),
+                        RMSE=float(r['RMSE'])) for r in read_csv('artifacts/f01/test_per_lead.csv')],
+        )
     return dict(
         generated_at=datetime.now(timezone.utc).astimezone().isoformat(timespec='seconds'),
         commit=_git_commit(),
@@ -81,7 +96,11 @@ def build_payload() -> dict:
             val_rmse=round(min(m['RMSE'] for m in models.values()), 1),
             best_model=min(models, key=lambda m: models[m]['RMSE']),
             rated_note='额定功率未核实（GW191/5270 仅为型号字符串）',
+            test_rmse=(round(min(m['RMSE'] for m in test['models'].values()), 1)
+                       if test else None),
+            test_best=(test['best'] if test else None),
         ),
+        test=test,
         splits=summary['coverage']['splits'],
         models={m: dict(MAE=round(v['MAE'], 1), RMSE=round(v['RMSE'], 1),
                         Bias=round(v['Bias'], 1), n=v['n'],
@@ -231,12 +250,13 @@ function render(){
   $('#meta').innerHTML=`数据集 <b>${D.dataset_sha}…</b> · ${D.time_range.start} ～ ${D.time_range.end} ·
     生成于 ${D.generated_at} · 代码 ${D.commit}`;
   // KPI
-  const cards=[['有效记录',fmt(D.audit.time_axis.rows,0),'条 10 分钟 SCADA'],
+    const cards=[['有效记录',fmt(D.audit.time_axis.rows,0),'条 10 分钟 SCADA'],
     ['时间网格完整',K.grid_complete+'%','缺 99 个网格点'],
     ['样本覆盖率',K.coverage+'%','24h 历史窗口完备的发布'],
     ['负功率时段',K.neg_share+'%',`共 ${fmt(K.neg_count,0)} 条，原值保留不截零`],
-    ['验证期最优 RMSE',fmt(K.val_rmse)+' kW',`模型 ${K.best_model}（验证期 ${D.splits.validation.issues} 个发布）`],
-    ['验证门禁',K.gate.toUpperCase(),'测试集本轮锁定']];
+    ['验证期最优 RMSE',fmt(K.val_rmse)+' kW',`模型 ${K.best_model}（验证期 ${D.splits.validation.issues} 个发布）`]];
+    cards.push(D.test?['测试集最终 RMSE',fmt(K.test_rmse)+' kW',`模型 ${K.test_best} · 2024-11-01～12-12 一次性评分`]
+                     :['验证门禁',K.gate.toUpperCase(),'测试集本轮锁定']);
   let c=el('section'); c.appendChild(el('div','cards'));
   c.firstChild.innerHTML=cards.map(x=>`<div class="card"><div class="k">${x[1]}</div>
     <div class="v" style="color:${x[0]==='验证门禁'&&K.gate==='pass'?'var(--good)':'var(--txt)'}">${x[0]}</div>
@@ -276,6 +296,24 @@ function render(){
   pd.innerHTML=svgLine(dseries,days.map(d=>d.slice(5)),560,260)+
     `<div class="note">每日 RMSE（kW）。${D.days.filter(x=>x.model==='ridge').reduce((s,x)=>s+x.n_issues,0)/days.length|0} 个发布/日均值。</div>`;
   app.appendChild(pd);
+  // 测试集最终评分
+  if(D.test){
+    app.appendChild(el('h2',null,'测试集最终评分（2024-11-01 ～ 2024-12-12，冻结模型一次性评分）'));
+    const tt=Object.entries(D.test.models);
+    let tPanel=el('div','grid2');
+    const tleads=[...new Set(D.test.leads.map(l=>l.lead))].sort((a,b)=>a-b);
+    const tSeries=Object.keys(D.test.models).map(m=>({name:m,color:D.test.models[m].color,
+      values:tleads.map(L=>{const r=D.test.leads.find(x=>x.model===m&&x.lead===L);return r?r.RMSE:null;})}));
+    tPanel.innerHTML=`<div class="panel"><table>
+      <tr><th>模型</th><th>MAE</th><th>RMSE</th><th>Bias</th><th>验证 RMSE</th></tr>`+
+      tt.map(([n,v])=>`<tr><td><i style="display:inline-block;width:9px;height:9px;border-radius:2px;background:${v.colors};margin-right:6px"></i>${n}</td>
+      <td>${v.MAE.toFixed(1)}</td><td><b>${v.RMSE.toFixed(1)}</b></td><td>${v.Bias.toFixed(1)}</td>
+      <td style="color:#8296b3">${v.val_rmse.toFixed(1)}</td></tr>`).join('')+
+      `</table><div class="note">测试期最优：${D.test.best}。验证期排序（Ridge 最优）未延续到测试期——
+      一次性评分结果如实记录，此后不依据测试结果再做任何模型选择或调参。</div></div>
+    <div class="panel">${svgLine(tSeries,tleads.map(String))}<div class="note">测试期 RMSE × 提前量</div></div>`;
+    app.appendChild(tPanel);
+  }
   // 分组诊断
   const B=D.best.groups;
   app.appendChild(el('h2',null,`分组与爬坡诊断（${D.best.model}）`));
@@ -317,7 +355,7 @@ function render(){
     <tr><td>设备 / 型号</td><td>${D.audit.identity.设备名称} / ${D.audit.identity.型号名称}</td></tr>
     <tr><td>额定功率</td><td>${K.rated_note}</td></tr></table></div>`;
   app.appendChild(qa);
-  $('#foot').innerHTML=`快照 ${D.best.name} · 训练 ${D.splits.train.issues} 发布 / 验证 ${D.splits.validation.issues} 发布 / 测试 ${D.splits.test.issues} 发布（本轮锁定）`;
+  $('#foot').innerHTML=`快照 ${D.best.name} · 训练 ${D.splits.train.issues} 发布 / 验证 ${D.splits.validation.issues} 发布 / 测试 ${D.splits.test.issues} 发布（${D.test?'已一次性评分':'本轮锁定'}）`;
 }
 render();
 </script>

@@ -178,4 +178,18 @@ def baseline_f01(turbine_id: int = typer.Option(1, help='风机 ID')):
     from windpower.models.scada_baseline import run_baseline
     emit(run_baseline(turbine_id=turbine_id))
 
+@app.command('final-test-f01')
+def final_test_f01(turbine_id: int = typer.Option(1, help='风机 ID'),
+                   split: str = typer.Option('test', help='test 为真实一次性评分；validation 仅干跑校验')):
+    """门禁通过后以冻结模型做一次性最终评分；validation 用于触碰测试标签前的代码校验。"""
+    from windpower.models.scada_baseline import run_final_test
+    summary = run_final_test(turbine_id=turbine_id, split_name=split,
+                             write=(split == 'test'))
+    if split == 'test':
+        emit({m: {k: summary['models'][m][k] for k in ('MAE', 'RMSE', 'Bias', 'n')}
+              for m in summary['models']})
+    else:
+        emit({m: dict(MAE=round(s['MAE'], 4), RMSE=round(s['RMSE'], 4))
+              for m, s in summary.items()})
+
 if __name__=='__main__':app()

@@ -61,6 +61,11 @@ artifacts/kpower_reproduction/**/train_keys.csv
 !artifacts/f01/per_day.csv
 !artifacts/f01/report.md
 !artifacts/f01/run_manifest.json
+!artifacts/f01/test_summary.json
+!artifacts/f01/test_per_lead.csv
+!artifacts/f01/test_per_day.csv
+!artifacts/f01/test_report.md
+!artifacts/f01/test_manifest.json
 data/external/
 artifacts/f01/models/
 artifacts/f01/*.log

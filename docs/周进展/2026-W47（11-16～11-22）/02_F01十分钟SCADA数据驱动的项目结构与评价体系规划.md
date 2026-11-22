@@ -435,7 +435,7 @@ evaluate(
 | T01 | **完成** | `src/windpower/data/scada_f01.py` + `tests/test_scada_f01.py`（GB18030/`--`/哈希/幂等共 9 用例）；审计报告 [docs/研究记录/f01-data-audit.md](../../研究记录/f01-data-audit.md) + `artifacts/f01/quality_report.json`；规划 §1 全部数字复核通过，时间缺口最大 180 分钟属实 |
 | T02 | **完成** | Alembic `0004_turbine_scada.py`（六表 + 跨 metadata 外键）；Omarchy 迁移至 0004；F01 入库 52,749 行（原始 JSONB + 规范行），负功率 9,968 条保留，重复导入两次幂等；GEFCom 表未动 |
 | T03 | **完成** | `src/windpower/data/quality_scada.py` + `tests/test_scada_quality.py`（12 用例）；哨兵/零方差/全缺失/负功率/长状态/缺口规则全部预注册、只标记不删改；无时区源时间保持 naive，未擅自转 UTC |
-| T04 | **完成** | `configs/f01_experiment.json` 预注册协议 + `features/scada_samples.py` + `models/scada_train.py` + `evaluation/scada_eval.py`；验证期结果见 [docs/研究记录/f01-baseline-first-round.md](../../研究记录/f01-baseline-first-round.md) 与 `artifacts/f01/summary.json`；门禁 pass 但测试集按协议锁定未评分；防泄漏/协议测试 22 项全绿 |
+| T04 | **完成** | `configs/f01_experiment.json` 预注册协议 + `features/scada_samples.py` + `models/scada_train.py` + `evaluation/scada_eval.py`；验证期结果见 [docs/研究记录/f01-baseline-first-round.md](../../研究记录/f01-baseline-first-round.md) 与 `artifacts/f01/summary.json`；门禁 pass 后于 2026-11-22 经用户授权打开测试集，以冻结模型执行一次性最终评分（最优 LightGBM RMSE 877.2 kW；验证期排序未延续到测试期，已如实记录）；防泄漏/协议测试 22 项全绿 |
 | T05 | 函数与合成测试已交付，真实代理标签**阻塞**（源区间语义未确认） | `src/windpower/data/resample_15m.py` + `tests/test_resample_15m.py`（规划 §6 算例、缺段不重归一化、research_only）；`turbine_power_15m_proxy` 保持 0 行 |
 | T06 | 部分完成 | 单机政策字段 `null` + 原因已实现并测试；`guangxi.py` 合成单测在 Omarchy 运行通过；完整统一接口待场站数据 |
 | T07 | 部分完成 | F01 独立划分与数据集版本已在配置与 run manifest 固定；七日块配对统计待下一轮开测试集时实施 |
@@ -510,4 +510,4 @@ evaluate(
 
 **截至 2026-11-21 晚间更新：T00—T04 已按本文件在 Omarchy 实际执行并通过测试**（执行状态见 §11.0，
 审计与基线报告见 `docs/研究记录/f01-data-audit.md`、`docs/研究记录/f01-baseline-first-round.md`）。
-测试集未打开，15 分钟真实代理标签仍阻塞于源区间语义确认；尚无任何可部署的 D+1 模型宣称。
+测试集已于 2026-11-22 一次性评分完毕，15 分钟真实代理标签仍阻塞于源区间语义确认；尚无任何可部署的 D+1 模型宣称。
