@@ -73,7 +73,7 @@ def build_payload() -> dict:
             models={m: dict(MAE=round(v['MAE'], 1), RMSE=round(v['RMSE'], 1),
                             Bias=round(v['Bias'], 1), n=v['n'],
                             val_rmse=round(ts['gate']['validation_reference_rmse'][m], 1),
-                            colors=MODEL_COLORS.get(m, '#888'))
+                            color=MODEL_COLORS.get(m, '#888'))
                     for m, v in ts['models'].items()},
             leads=[dict(model=r['model'], lead=int(r['lead_minutes']),
                         RMSE=float(r['RMSE'])) for r in read_csv('artifacts/f01/test_per_lead.csv')],
@@ -105,7 +105,7 @@ def build_payload() -> dict:
         models={m: dict(MAE=round(v['MAE'], 1), RMSE=round(v['RMSE'], 1),
                         Bias=round(v['Bias'], 1), n=v['n'],
                         runtime=v['runtime'],
-                        colors=MODEL_COLORS.get(m, '#888')) for m, v in models.items()},
+                        color=MODEL_COLORS.get(m, '#888')) for m, v in models.items()},
         leads=[dict(model=r['model'], lead=int(r['lead_minutes']),
                     MAE=float(r['MAE']), RMSE=float(r['RMSE'])) for r in per_lead],
         days=[dict(model=r['model'], date=r['date'],
@@ -266,14 +266,14 @@ function render(){
   app.appendChild(el('h2',null,'验证期模型对比（2024-09-01 ～ 2024-11-01，同一 171,720 个有效样本）'));
   let p=el('div','grid2');
   const mm=Object.entries(D.models);
-  p.innerHTML=`<div class="panel">${svgBars(mm.map(([n,v])=>({k:n,v:v.RMSE,t:v.RMSE.toFixed(1)+' kW',color:v.colors})))}
+  p.innerHTML=`<div class="panel">${svgBars(mm.map(([n,v])=>({k:n,v:v.RMSE,t:v.RMSE.toFixed(1)+' kW',color:v.color})))}
     <div class="note">RMSE（ pooled，kW）</div></div>
-  <div class="panel">${svgBars(mm.map(([n,v])=>({k:n,v:v.MAE,t:v.MAE.toFixed(1)+' kW',color:v.colors})))}
+  <div class="panel">${svgBars(mm.map(([n,v])=>({k:n,v:v.MAE,t:v.MAE.toFixed(1)+' kW',color:v.color})))}
     <div class="note">MAE（pooled，kW）</div></div>`;
   app.appendChild(p);
   let t=el('div','panel');
   t.innerHTML=`<table><tr><th>模型</th><th>MAE</th><th>RMSE</th><th>Bias</th><th>样本</th><th>单发布推理</th></tr>`+
-    mm.map(([n,v])=>`<tr><td><i style="display:inline-block;width:9px;height:9px;border-radius:2px;background:${v.colors};margin-right:6px"></i>${n}</td>
+    mm.map(([n,v])=>`<tr><td><i style="display:inline-block;width:9px;height:9px;border-radius:2px;background:${v.color};margin-right:6px"></i>${n}</td>
     <td>${v.MAE.toFixed(1)}</td><td>${v.RMSE.toFixed(1)}</td><td>${v.Bias.toFixed(1)}</td><td>${fmt(v.n,0)}</td>
     <td>${v.runtime&&v.runtime.per_issue_ms!=null?v.runtime.per_issue_ms+' ms':'—'}</td></tr>`).join('')+`</table>
     <div class="note">标签为单机网侧有功功率 kW（含负值）；预测不裁剪。选择规则：Ridge alpha 与 LightGBM 早停仅用验证集。</div>`;
@@ -306,7 +306,7 @@ function render(){
       values:tleads.map(L=>{const r=D.test.leads.find(x=>x.model===m&&x.lead===L);return r?r.RMSE:null;})}));
     tPanel.innerHTML=`<div class="panel"><table>
       <tr><th>模型</th><th>MAE</th><th>RMSE</th><th>Bias</th><th>验证 RMSE</th></tr>`+
-      tt.map(([n,v])=>`<tr><td><i style="display:inline-block;width:9px;height:9px;border-radius:2px;background:${v.colors};margin-right:6px"></i>${n}</td>
+      tt.map(([n,v])=>`<tr><td><i style="display:inline-block;width:9px;height:9px;border-radius:2px;background:${v.color};margin-right:6px"></i>${n}</td>
       <td>${v.MAE.toFixed(1)}</td><td><b>${v.RMSE.toFixed(1)}</b></td><td>${v.Bias.toFixed(1)}</td>
       <td style="color:#8296b3">${v.val_rmse.toFixed(1)}</td></tr>`).join('')+
       `</table><div class="note">测试期最优：${D.test.best}。验证期排序（Ridge 最优）未延续到测试期——
