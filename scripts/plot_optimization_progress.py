@@ -15,8 +15,8 @@ from matplotlib.font_manager import FontProperties
 from matplotlib.ticker import MultipleLocator, FormatStrFormatter
 
 ROOT = Path(__file__).resolve().parents[1]
-REGISTRY = ROOT / "docs/研究记录/optimization-progress.json"
-OUT = ROOT / "docs/研究记录/figures/optimization-progress"
+REGISTRY = ROOT / "docs/归档/gefcom2014/optimization-progress.json"
+OUT = ROOT / "docs/归档/gefcom2014/figures/optimization-progress"
 
 
 def score(event):
@@ -257,7 +257,7 @@ def main():
         rows = resolve(registry)
         REGISTRY.write_text(json.dumps(registry, ensure_ascii=False, indent=2) + "\n")
     gain = render(rows, registry["cohort"])
-    note = ROOT / 'docs/研究记录/optimization-progress.md'
+    note = ROOT / 'docs/归档/gefcom2014/optimization-progress.md'
     table = ['|进展|日期|十站测试 RMSE|相对前一节点降低|', '|---|---|---:|---:|']
     for i, row in enumerate(rows):
         reduction = '—' if i == 0 else f"{(1-row['RMSE']/rows[i-1]['RMSE'])*100:.4f}%"

@@ -18,7 +18,7 @@
 
 `run_kpower_ablation.py`、`run_validation_blend.py`、`run_spatial_nwp.py`、`run_temporal_nwp.py`、`run_shared_model.py`、`run_curve_residual.py`、`run_mlp_shared.py`、`run_mlp_tuned.py`（结构选择）、`run_mlp_seedavg_tuned.py`（节点 9，当前最优）。
 
-## 被否轮次（结论见 docs/研究记录/optimization-tricks.md）
+## 被否轮次（结论见 docs/归档/gefcom2014/optimization-tricks.md）
 
 `run_site_blend.py`、`run_lead_blend.py`、`run_joint_blend.py`、`run_diversity_blend.py`、`run_prediction_calibration.py`、`run_kernel_ridge.py`、`run_hist_gradient.py`、`run_extra_trees.py`、`run_shared_capacity_search.py`、`run_shared_bagged.py`、`run_shared_median.py`、`run_mlp_seed_ensemble.py`、`run_mlp_mixed_ensemble.py`、`run_mlp_seed8_check.py`、`run_hurdle_shared.py`、`run_pooled_base.py`、`run_cross_history.py`、`run_day_context_shared.py`、`run_direct_full_year.py`、`run_direction_shared.py`、`run_vertical_shared.py`、`run_forecast_bias_shared.py`、`run_mean_stack_shared.py`、`run_expanded_refit.py`、`run_dispersion_features.py`、`run_lead_segments.py`、`run_rolling_residual_features.py`。
 

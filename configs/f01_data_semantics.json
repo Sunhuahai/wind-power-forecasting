@@ -1,0 +1,25 @@
+{
+  "asset": "广西某风场 F01 风机",
+  "dataset_file": "data/raw/f01/F01号风机十分钟数据.csv",
+  "dataset_sha256": "1f81153d82242214201776d5cda6f302dc849d32f7f79f56cb3ec968f992b663",
+  "scope": "data semantics overlay",
+  "note": "本文只声明数据语义，不参与模型选择或评分参数；configs/f01_experiment.json 保持冻结，frozen_config_sha256=d8191cc22a733b6456cf6ef69b2828a4ecec9a2e4d7188176a31c16379ea58a2 不变。",
+  "declared_semantics": {
+    "timezone": "Asia/Shanghai",
+    "interval_label": "interval_start",
+    "clock": "source_naive_local_wall_clock",
+    "confirmed_by": "项目负责人",
+    "confirmed_at": "2026-11-23",
+    "basis": "项目负责人确认；设备导出规范书面材料待补并归档",
+    "affects_stored_values": false,
+    "affects_frozen_artifacts": false
+  },
+  "policy_eligibility": {
+    "eligible": false,
+    "GX_policy_accuracy": null,
+    "reason": "single_turbine_10m_scada_is_not_farm_dispatch_reference",
+    "note": "确认时区与区间标签不改变单机数据不能作为场站考核参考的事实；正式政策评价仍缺场站并网点 15 分钟参考功率、容量档案、NWP 批次与调度回执。"
+  },
+  "recorded_at": "2026-11-23",
+  "superseded_by": null
+}

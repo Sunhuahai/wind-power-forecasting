@@ -179,7 +179,7 @@ $$\mathrm{MAE}=\frac{1}{N}\sum_i|\hat y_i-y_i|,\qquad \mathrm{RMSE}=\sqrt{\frac{
 
 ## 7. 特征重要性与解释边界
 
-![图7 Zone 1 C 特征重要性](../../artifacts/site_1/lightgbm_C_importance.png)
+![图7 Zone 1 C 特征重要性](../../../artifacts/site_1/lightgbm_C_importance.png)
 
 **图7. Zone 1 LightGBM C 的前 15 个 split gain 特征。** 100m 风速在该模型中占主导，历史功率也被使用，但“被使用”不等于“改善独立测试指标”。gain 受特征相关性和树的划分方式影响，不是因果效应；不同模型的重要性绝对数值也不直接比较。十站 A/B/C 的全部重要性图均内嵌在附录。
 
@@ -200,269 +200,269 @@ $$\mathrm{MAE}=\frac{1}{N}\sum_i|\hat y_i-y_i|,\qquad \mathrm{RMSE}=\sqrt{\frac{
 
 ### A1. Zone 1
 
-![Zone 1 五模型整体 RMSE 比较](../../artifacts/site_1/model_comparison.png)
+![Zone 1 五模型整体 RMSE 比较](../../../artifacts/site_1/model_comparison.png)
 
 **Zone 1 · 五模型整体 RMSE 比较。**
 
-![Zone 1 真实功率与五模型预测时间曲线](../../artifacts/site_1/prediction_curve.png)
+![Zone 1 真实功率与五模型预测时间曲线](../../../artifacts/site_1/prediction_curve.png)
 
 **Zone 1 · 真实功率与五模型预测时间曲线。**
 
-![Zone 1 1–24 小时 RMSE 曲线](../../artifacts/site_1/lead_errors.png)
+![Zone 1 1–24 小时 RMSE 曲线](../../../artifacts/site_1/lead_errors.png)
 
 **Zone 1 · 1–24 小时 RMSE 曲线。**
 
-![Zone 1 A：原始 NWP 的 gain 重要性](../../artifacts/site_1/lightgbm_A_importance.png)
+![Zone 1 A：原始 NWP 的 gain 重要性](../../../artifacts/site_1/lightgbm_A_importance.png)
 
 **Zone 1 · A：原始 NWP 的 gain 重要性。**
 
-![Zone 1 B：物理特征的 gain 重要性](../../artifacts/site_1/lightgbm_B_importance.png)
+![Zone 1 B：物理特征的 gain 重要性](../../../artifacts/site_1/lightgbm_B_importance.png)
 
 **Zone 1 · B：物理特征的 gain 重要性。**
 
-![Zone 1 C：物理与历史功率的 gain 重要性](../../artifacts/site_1/lightgbm_C_importance.png)
+![Zone 1 C：物理与历史功率的 gain 重要性](../../../artifacts/site_1/lightgbm_C_importance.png)
 
 **Zone 1 · C：物理与历史功率的 gain 重要性。**
 
 
 ### A2. Zone 2
 
-![Zone 2 五模型整体 RMSE 比较](../../artifacts/site_2/model_comparison.png)
+![Zone 2 五模型整体 RMSE 比较](../../../artifacts/site_2/model_comparison.png)
 
 **Zone 2 · 五模型整体 RMSE 比较。**
 
-![Zone 2 真实功率与五模型预测时间曲线](../../artifacts/site_2/prediction_curve.png)
+![Zone 2 真实功率与五模型预测时间曲线](../../../artifacts/site_2/prediction_curve.png)
 
 **Zone 2 · 真实功率与五模型预测时间曲线。**
 
-![Zone 2 1–24 小时 RMSE 曲线](../../artifacts/site_2/lead_errors.png)
+![Zone 2 1–24 小时 RMSE 曲线](../../../artifacts/site_2/lead_errors.png)
 
 **Zone 2 · 1–24 小时 RMSE 曲线。**
 
-![Zone 2 A：原始 NWP 的 gain 重要性](../../artifacts/site_2/lightgbm_A_importance.png)
+![Zone 2 A：原始 NWP 的 gain 重要性](../../../artifacts/site_2/lightgbm_A_importance.png)
 
 **Zone 2 · A：原始 NWP 的 gain 重要性。**
 
-![Zone 2 B：物理特征的 gain 重要性](../../artifacts/site_2/lightgbm_B_importance.png)
+![Zone 2 B：物理特征的 gain 重要性](../../../artifacts/site_2/lightgbm_B_importance.png)
 
 **Zone 2 · B：物理特征的 gain 重要性。**
 
-![Zone 2 C：物理与历史功率的 gain 重要性](../../artifacts/site_2/lightgbm_C_importance.png)
+![Zone 2 C：物理与历史功率的 gain 重要性](../../../artifacts/site_2/lightgbm_C_importance.png)
 
 **Zone 2 · C：物理与历史功率的 gain 重要性。**
 
 
 ### A3. Zone 3
 
-![Zone 3 五模型整体 RMSE 比较](../../artifacts/site_3/model_comparison.png)
+![Zone 3 五模型整体 RMSE 比较](../../../artifacts/site_3/model_comparison.png)
 
 **Zone 3 · 五模型整体 RMSE 比较。**
 
-![Zone 3 真实功率与五模型预测时间曲线](../../artifacts/site_3/prediction_curve.png)
+![Zone 3 真实功率与五模型预测时间曲线](../../../artifacts/site_3/prediction_curve.png)
 
 **Zone 3 · 真实功率与五模型预测时间曲线。**
 
-![Zone 3 1–24 小时 RMSE 曲线](../../artifacts/site_3/lead_errors.png)
+![Zone 3 1–24 小时 RMSE 曲线](../../../artifacts/site_3/lead_errors.png)
 
 **Zone 3 · 1–24 小时 RMSE 曲线。**
 
-![Zone 3 A：原始 NWP 的 gain 重要性](../../artifacts/site_3/lightgbm_A_importance.png)
+![Zone 3 A：原始 NWP 的 gain 重要性](../../../artifacts/site_3/lightgbm_A_importance.png)
 
 **Zone 3 · A：原始 NWP 的 gain 重要性。**
 
-![Zone 3 B：物理特征的 gain 重要性](../../artifacts/site_3/lightgbm_B_importance.png)
+![Zone 3 B：物理特征的 gain 重要性](../../../artifacts/site_3/lightgbm_B_importance.png)
 
 **Zone 3 · B：物理特征的 gain 重要性。**
 
-![Zone 3 C：物理与历史功率的 gain 重要性](../../artifacts/site_3/lightgbm_C_importance.png)
+![Zone 3 C：物理与历史功率的 gain 重要性](../../../artifacts/site_3/lightgbm_C_importance.png)
 
 **Zone 3 · C：物理与历史功率的 gain 重要性。**
 
 
 ### A4. Zone 4
 
-![Zone 4 五模型整体 RMSE 比较](../../artifacts/site_4/model_comparison.png)
+![Zone 4 五模型整体 RMSE 比较](../../../artifacts/site_4/model_comparison.png)
 
 **Zone 4 · 五模型整体 RMSE 比较。**
 
-![Zone 4 真实功率与五模型预测时间曲线](../../artifacts/site_4/prediction_curve.png)
+![Zone 4 真实功率与五模型预测时间曲线](../../../artifacts/site_4/prediction_curve.png)
 
 **Zone 4 · 真实功率与五模型预测时间曲线。**
 
-![Zone 4 1–24 小时 RMSE 曲线](../../artifacts/site_4/lead_errors.png)
+![Zone 4 1–24 小时 RMSE 曲线](../../../artifacts/site_4/lead_errors.png)
 
 **Zone 4 · 1–24 小时 RMSE 曲线。**
 
-![Zone 4 A：原始 NWP 的 gain 重要性](../../artifacts/site_4/lightgbm_A_importance.png)
+![Zone 4 A：原始 NWP 的 gain 重要性](../../../artifacts/site_4/lightgbm_A_importance.png)
 
 **Zone 4 · A：原始 NWP 的 gain 重要性。**
 
-![Zone 4 B：物理特征的 gain 重要性](../../artifacts/site_4/lightgbm_B_importance.png)
+![Zone 4 B：物理特征的 gain 重要性](../../../artifacts/site_4/lightgbm_B_importance.png)
 
 **Zone 4 · B：物理特征的 gain 重要性。**
 
-![Zone 4 C：物理与历史功率的 gain 重要性](../../artifacts/site_4/lightgbm_C_importance.png)
+![Zone 4 C：物理与历史功率的 gain 重要性](../../../artifacts/site_4/lightgbm_C_importance.png)
 
 **Zone 4 · C：物理与历史功率的 gain 重要性。**
 
 
 ### A5. Zone 5
 
-![Zone 5 五模型整体 RMSE 比较](../../artifacts/site_5/model_comparison.png)
+![Zone 5 五模型整体 RMSE 比较](../../../artifacts/site_5/model_comparison.png)
 
 **Zone 5 · 五模型整体 RMSE 比较。**
 
-![Zone 5 真实功率与五模型预测时间曲线](../../artifacts/site_5/prediction_curve.png)
+![Zone 5 真实功率与五模型预测时间曲线](../../../artifacts/site_5/prediction_curve.png)
 
 **Zone 5 · 真实功率与五模型预测时间曲线。**
 
-![Zone 5 1–24 小时 RMSE 曲线](../../artifacts/site_5/lead_errors.png)
+![Zone 5 1–24 小时 RMSE 曲线](../../../artifacts/site_5/lead_errors.png)
 
 **Zone 5 · 1–24 小时 RMSE 曲线。**
 
-![Zone 5 A：原始 NWP 的 gain 重要性](../../artifacts/site_5/lightgbm_A_importance.png)
+![Zone 5 A：原始 NWP 的 gain 重要性](../../../artifacts/site_5/lightgbm_A_importance.png)
 
 **Zone 5 · A：原始 NWP 的 gain 重要性。**
 
-![Zone 5 B：物理特征的 gain 重要性](../../artifacts/site_5/lightgbm_B_importance.png)
+![Zone 5 B：物理特征的 gain 重要性](../../../artifacts/site_5/lightgbm_B_importance.png)
 
 **Zone 5 · B：物理特征的 gain 重要性。**
 
-![Zone 5 C：物理与历史功率的 gain 重要性](../../artifacts/site_5/lightgbm_C_importance.png)
+![Zone 5 C：物理与历史功率的 gain 重要性](../../../artifacts/site_5/lightgbm_C_importance.png)
 
 **Zone 5 · C：物理与历史功率的 gain 重要性。**
 
 
 ### A6. Zone 6
 
-![Zone 6 五模型整体 RMSE 比较](../../artifacts/site_6/model_comparison.png)
+![Zone 6 五模型整体 RMSE 比较](../../../artifacts/site_6/model_comparison.png)
 
 **Zone 6 · 五模型整体 RMSE 比较。**
 
-![Zone 6 真实功率与五模型预测时间曲线](../../artifacts/site_6/prediction_curve.png)
+![Zone 6 真实功率与五模型预测时间曲线](../../../artifacts/site_6/prediction_curve.png)
 
 **Zone 6 · 真实功率与五模型预测时间曲线。**
 
-![Zone 6 1–24 小时 RMSE 曲线](../../artifacts/site_6/lead_errors.png)
+![Zone 6 1–24 小时 RMSE 曲线](../../../artifacts/site_6/lead_errors.png)
 
 **Zone 6 · 1–24 小时 RMSE 曲线。**
 
-![Zone 6 A：原始 NWP 的 gain 重要性](../../artifacts/site_6/lightgbm_A_importance.png)
+![Zone 6 A：原始 NWP 的 gain 重要性](../../../artifacts/site_6/lightgbm_A_importance.png)
 
 **Zone 6 · A：原始 NWP 的 gain 重要性。**
 
-![Zone 6 B：物理特征的 gain 重要性](../../artifacts/site_6/lightgbm_B_importance.png)
+![Zone 6 B：物理特征的 gain 重要性](../../../artifacts/site_6/lightgbm_B_importance.png)
 
 **Zone 6 · B：物理特征的 gain 重要性。**
 
-![Zone 6 C：物理与历史功率的 gain 重要性](../../artifacts/site_6/lightgbm_C_importance.png)
+![Zone 6 C：物理与历史功率的 gain 重要性](../../../artifacts/site_6/lightgbm_C_importance.png)
 
 **Zone 6 · C：物理与历史功率的 gain 重要性。**
 
 
 ### A7. Zone 7
 
-![Zone 7 五模型整体 RMSE 比较](../../artifacts/site_7/model_comparison.png)
+![Zone 7 五模型整体 RMSE 比较](../../../artifacts/site_7/model_comparison.png)
 
 **Zone 7 · 五模型整体 RMSE 比较。**
 
-![Zone 7 真实功率与五模型预测时间曲线](../../artifacts/site_7/prediction_curve.png)
+![Zone 7 真实功率与五模型预测时间曲线](../../../artifacts/site_7/prediction_curve.png)
 
 **Zone 7 · 真实功率与五模型预测时间曲线。**
 
-![Zone 7 1–24 小时 RMSE 曲线](../../artifacts/site_7/lead_errors.png)
+![Zone 7 1–24 小时 RMSE 曲线](../../../artifacts/site_7/lead_errors.png)
 
 **Zone 7 · 1–24 小时 RMSE 曲线。**
 
-![Zone 7 A：原始 NWP 的 gain 重要性](../../artifacts/site_7/lightgbm_A_importance.png)
+![Zone 7 A：原始 NWP 的 gain 重要性](../../../artifacts/site_7/lightgbm_A_importance.png)
 
 **Zone 7 · A：原始 NWP 的 gain 重要性。**
 
-![Zone 7 B：物理特征的 gain 重要性](../../artifacts/site_7/lightgbm_B_importance.png)
+![Zone 7 B：物理特征的 gain 重要性](../../../artifacts/site_7/lightgbm_B_importance.png)
 
 **Zone 7 · B：物理特征的 gain 重要性。**
 
-![Zone 7 C：物理与历史功率的 gain 重要性](../../artifacts/site_7/lightgbm_C_importance.png)
+![Zone 7 C：物理与历史功率的 gain 重要性](../../../artifacts/site_7/lightgbm_C_importance.png)
 
 **Zone 7 · C：物理与历史功率的 gain 重要性。**
 
 
 ### A8. Zone 8
 
-![Zone 8 五模型整体 RMSE 比较](../../artifacts/site_8/model_comparison.png)
+![Zone 8 五模型整体 RMSE 比较](../../../artifacts/site_8/model_comparison.png)
 
 **Zone 8 · 五模型整体 RMSE 比较。**
 
-![Zone 8 真实功率与五模型预测时间曲线](../../artifacts/site_8/prediction_curve.png)
+![Zone 8 真实功率与五模型预测时间曲线](../../../artifacts/site_8/prediction_curve.png)
 
 **Zone 8 · 真实功率与五模型预测时间曲线。**
 
-![Zone 8 1–24 小时 RMSE 曲线](../../artifacts/site_8/lead_errors.png)
+![Zone 8 1–24 小时 RMSE 曲线](../../../artifacts/site_8/lead_errors.png)
 
 **Zone 8 · 1–24 小时 RMSE 曲线。**
 
-![Zone 8 A：原始 NWP 的 gain 重要性](../../artifacts/site_8/lightgbm_A_importance.png)
+![Zone 8 A：原始 NWP 的 gain 重要性](../../../artifacts/site_8/lightgbm_A_importance.png)
 
 **Zone 8 · A：原始 NWP 的 gain 重要性。**
 
-![Zone 8 B：物理特征的 gain 重要性](../../artifacts/site_8/lightgbm_B_importance.png)
+![Zone 8 B：物理特征的 gain 重要性](../../../artifacts/site_8/lightgbm_B_importance.png)
 
 **Zone 8 · B：物理特征的 gain 重要性。**
 
-![Zone 8 C：物理与历史功率的 gain 重要性](../../artifacts/site_8/lightgbm_C_importance.png)
+![Zone 8 C：物理与历史功率的 gain 重要性](../../../artifacts/site_8/lightgbm_C_importance.png)
 
 **Zone 8 · C：物理与历史功率的 gain 重要性。**
 
 
 ### A9. Zone 9
 
-![Zone 9 五模型整体 RMSE 比较](../../artifacts/site_9/model_comparison.png)
+![Zone 9 五模型整体 RMSE 比较](../../../artifacts/site_9/model_comparison.png)
 
 **Zone 9 · 五模型整体 RMSE 比较。**
 
-![Zone 9 真实功率与五模型预测时间曲线](../../artifacts/site_9/prediction_curve.png)
+![Zone 9 真实功率与五模型预测时间曲线](../../../artifacts/site_9/prediction_curve.png)
 
 **Zone 9 · 真实功率与五模型预测时间曲线。**
 
-![Zone 9 1–24 小时 RMSE 曲线](../../artifacts/site_9/lead_errors.png)
+![Zone 9 1–24 小时 RMSE 曲线](../../../artifacts/site_9/lead_errors.png)
 
 **Zone 9 · 1–24 小时 RMSE 曲线。**
 
-![Zone 9 A：原始 NWP 的 gain 重要性](../../artifacts/site_9/lightgbm_A_importance.png)
+![Zone 9 A：原始 NWP 的 gain 重要性](../../../artifacts/site_9/lightgbm_A_importance.png)
 
 **Zone 9 · A：原始 NWP 的 gain 重要性。**
 
-![Zone 9 B：物理特征的 gain 重要性](../../artifacts/site_9/lightgbm_B_importance.png)
+![Zone 9 B：物理特征的 gain 重要性](../../../artifacts/site_9/lightgbm_B_importance.png)
 
 **Zone 9 · B：物理特征的 gain 重要性。**
 
-![Zone 9 C：物理与历史功率的 gain 重要性](../../artifacts/site_9/lightgbm_C_importance.png)
+![Zone 9 C：物理与历史功率的 gain 重要性](../../../artifacts/site_9/lightgbm_C_importance.png)
 
 **Zone 9 · C：物理与历史功率的 gain 重要性。**
 
 
 ### A10. Zone 10
 
-![Zone 10 五模型整体 RMSE 比较](../../artifacts/site_10/model_comparison.png)
+![Zone 10 五模型整体 RMSE 比较](../../../artifacts/site_10/model_comparison.png)
 
 **Zone 10 · 五模型整体 RMSE 比较。**
 
-![Zone 10 真实功率与五模型预测时间曲线](../../artifacts/site_10/prediction_curve.png)
+![Zone 10 真实功率与五模型预测时间曲线](../../../artifacts/site_10/prediction_curve.png)
 
 **Zone 10 · 真实功率与五模型预测时间曲线。**
 
-![Zone 10 1–24 小时 RMSE 曲线](../../artifacts/site_10/lead_errors.png)
+![Zone 10 1–24 小时 RMSE 曲线](../../../artifacts/site_10/lead_errors.png)
 
 **Zone 10 · 1–24 小时 RMSE 曲线。**
 
-![Zone 10 A：原始 NWP 的 gain 重要性](../../artifacts/site_10/lightgbm_A_importance.png)
+![Zone 10 A：原始 NWP 的 gain 重要性](../../../artifacts/site_10/lightgbm_A_importance.png)
 
 **Zone 10 · A：原始 NWP 的 gain 重要性。**
 
-![Zone 10 B：物理特征的 gain 重要性](../../artifacts/site_10/lightgbm_B_importance.png)
+![Zone 10 B：物理特征的 gain 重要性](../../../artifacts/site_10/lightgbm_B_importance.png)
 
 **Zone 10 · B：物理特征的 gain 重要性。**
 
-![Zone 10 C：物理与历史功率的 gain 重要性](../../artifacts/site_10/lightgbm_C_importance.png)
+![Zone 10 C：物理与历史功率的 gain 重要性](../../../artifacts/site_10/lightgbm_C_importance.png)
 
 **Zone 10 · C：物理与历史功率的 gain 重要性。**

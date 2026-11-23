@@ -121,6 +121,15 @@ def test_gefcom_protocol_unchanged():
     assert cfg['splits']['test'] == ['2013-07-01', '2014-01-01']
 
 
+def test_frozen_config_matches_test_snapshot():
+    """测试集评分后实验配置必须保持冻结，否则一次性评分不可审计。"""
+    import hashlib
+
+    manifest = json.loads(Path('artifacts/f01/test_manifest.json').read_text())
+    digest = hashlib.sha256(Path('configs/f01_experiment.json').read_bytes()).hexdigest()
+    assert digest == manifest['frozen_config_sha256']
+
+
 def test_time_semantics_not_silently_converted(config):
     """源 naive 时间不得被转换为带时区时间。"""
     samples, _ = _build(config)

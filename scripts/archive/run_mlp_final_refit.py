@@ -26,7 +26,7 @@ KEYS=['origin','valid_at','lead','actual','site']
 
 
 def main():
-    registry=json.loads(Path('docs/研究记录/optimization-progress.json').read_text())
+    registry=json.loads(Path('docs/归档/gefcom2014/optimization-progress.json').read_text())
     if registry['milestones'][-1]['id']!='shared_final_refit':raise ValueError('Baseline changed')
     OUT.mkdir(exist_ok=False)
     cfg=config();cutoff=datetime.fromisoformat(cfg['splits']['test'][0])

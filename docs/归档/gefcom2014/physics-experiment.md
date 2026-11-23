@@ -20,6 +20,6 @@ WINDPOWER_TEST_DB=1 uv run --extra dev pytest
 
 每站保存参数、模型、宽表逐小时预测、MAE/RMSE、逐时效和逐 NWP 风速区间误差、配对区间、资源统计及四张图。模型配置和新预测另写原数据库 `model_runs` / `predictions`，不修改旧行。冻结基线原始历史训练时间未知，成本比较用同配置受控重训，报告明确区分；重训不替换基线。
 
-[本次完整图表报告](../../artifacts/physics_experiments/physics_20261109_v1/report.md) 已包括全部 44 张结果图。最新结果为：残差融合 MAE 0.121856、RMSE 0.170535；原 C 为 0.123454 / 0.170454。MAE 改善，RMSE 没有可靠改善。直接注入为 0.122734 / 0.170425，微小 RMSE 改善的区间也跨零。
+[本次完整图表报告](../../../artifacts/physics_experiments/physics_20261109_v1/report.md) 已包括全部 44 张结果图。最新结果为：残差融合 MAE 0.121856、RMSE 0.170535；原 C 为 0.123454 / 0.170454。MAE 改善，RMSE 没有可靠改善。直接注入为 0.122734 / 0.170425，微小 RMSE 改善的区间也跨零。
 
 GitHub 保留参数、指标、图表与报告；joblib 和逐小时宽表 CSV 默认忽略，保留于实验本地目录。Obsidian 的新报告及独立附件目录保留这些结果数据，旧报告不改动。

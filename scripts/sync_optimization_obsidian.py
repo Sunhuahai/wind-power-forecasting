@@ -16,9 +16,9 @@ def main():
     vault = args.vault_project
     if not vault.is_dir():
         raise ValueError('Existing Obsidian project directory required')
-    note_path = ROOT/'docs/研究记录/optimization-progress.md'
+    note_path = ROOT/'docs/归档/gefcom2014/optimization-progress.md'
     note = note_path.read_text()
-    files = {note_path, ROOT/'docs/研究记录/optimization-progress.json'}
+    files = {note_path, ROOT/'docs/归档/gefcom2014/optimization-progress.json'}
     replacements = {}
     for link in re.findall(r'\]\(([^)]+)\)',note):
         if '://' in link:
@@ -30,8 +30,8 @@ def main():
         files.add(source)
         replacements[link] = f'优化进展/{relative.as_posix()}'
     for extension in ['png','pdf','svg','csv']:
-        files.add(ROOT/f'docs/研究记录/figures/optimization-progress.{extension}')
-    registry = json.loads((ROOT/'docs/研究记录/optimization-progress.json').read_text())
+        files.add(ROOT/f'docs/归档/gefcom2014/figures/optimization-progress.{extension}')
+    registry = json.loads((ROOT/'docs/归档/gefcom2014/optimization-progress.json').read_text())
     for milestone in registry['milestones']:
         source = ROOT/milestone['source']
         files.add(source)

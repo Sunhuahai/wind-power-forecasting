@@ -57,10 +57,10 @@ Zone 1 物理特征 B 优于原始 A；历史功率 C 没有进一步降低 RMSE
 
 功率已归一化到额定容量 1，故 nMAE=MAE、nRMSE=RMSE；数值乘 100 是额定容量百分比，不是 MW。模型输出统一裁剪 [0,1]。各站和 1–24 小时分时效指标保存在每站 metrics.csv 和 lead_metrics.csv。
 
-![十站比较](../../artifacts/all_sites_comparison.png)
-![Zone 1 预测曲线](../../artifacts/site_1/prediction_curve.png)
-![Zone 1 提前量误差](../../artifacts/site_1/lead_errors.png)
-![Zone 1 特征重要性](../../artifacts/site_1/lightgbm_C_importance.png)
+![十站比较](../../../artifacts/all_sites_comparison.png)
+![Zone 1 预测曲线](../../../artifacts/site_1/prediction_curve.png)
+![Zone 1 提前量误差](../../../artifacts/site_1/lead_errors.png)
+![Zone 1 特征重要性](../../../artifacts/site_1/lightgbm_C_importance.png)
 
 ## 数据库和可重复性验收
 

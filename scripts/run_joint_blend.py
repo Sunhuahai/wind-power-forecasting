@@ -48,7 +48,7 @@ def components(filename):
 
 
 def main():
-    registry=json.loads(Path('docs/研究记录/optimization-progress.json').read_text())
+    registry=json.loads(Path('docs/归档/gefcom2014/optimization-progress.json').read_text())
     if registry['milestones'][-1]['id']!='curve_residual_blend':
         raise ValueError('Current best changed; declare a new baseline/components protocol')
     OUT.mkdir(exist_ok=False)

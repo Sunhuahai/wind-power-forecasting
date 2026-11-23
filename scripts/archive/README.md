@@ -9,4 +9,4 @@
 | `run_temporal_final_refit.py` | 节点已作废 | 同上（并依赖上面的 `past_oof`） |
 | `run_meta_learner.py` | 设计越界 | 用验证集训练 meta-learner，未按协议执行，未产生任何指标 |
 
-运行这些脚本会重新生成被作废或被否决的结果，并可能污染注册表，因此一律不要执行。当前有效链路见 `docs/研究记录/optimization-progress.json`。
+运行这些脚本会重新生成被作废或被否决的结果，并可能污染注册表，因此一律不要执行。当前有效链路见 `docs/归档/gefcom2014/optimization-progress.json`。
