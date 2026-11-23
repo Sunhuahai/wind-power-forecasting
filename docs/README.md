@@ -12,10 +12,10 @@
 ## 常用入口
 
 - 本周进展：[2026-W47 概览](周进展/2026-W47（11-16～11-22）/00_本周总览.md) · [第一份：广西政策与考核公式](周进展/2026-W47（11-16～11-22）/01_广西风电功率预测考核政策与训练评估适配.md) · [第二份：F01 数据驱动的改造规划与评价体系](周进展/2026-W47（11-16～11-22）/02_F01十分钟SCADA数据驱动的项目结构与评价体系规划.md)
-- F01 真实数据闭环：[数据审计报告](研究记录/f01-data-audit.md) · [首轮基线报告（验证期，测试集锁定）](研究记录/f01-baseline-first-round.md) · [TimescaleDB 激活（单机表）](部署与工程/turbine-timescale-activation.sql)
+- F01 真实数据闭环：[架构总览（数据库→模型）](周进展/2026-W47（11-16～11-22）/03_真实数据项目架构总览.md) · [数据审计报告](研究记录/f01-data-audit.md) · [首轮基线报告（验证 + 一次性测试评分）](研究记录/f01-baseline-first-round.md) · [TimescaleDB 激活](部署与工程/turbine-timescale-activation.sql)
 - 结果展示：[F01 仪表盘（腾讯云）](部署与工程/f01-dashboard-deployment.md) · 重新生成 `uv run python scripts/build_dashboard.py`
 - 广西场站部署：[PostgreSQL + TimescaleDB 生产表与数据契约](部署与工程/guangxi-operational-storage.md) · [数据库迁移](../alembic/versions/0003_guangxi_operational.py) · [政策公式评价器](../src/windpower/evaluation/guangxi.py)
-- 当前最优：**0.156010**（9 节点 / 8 次改进，累计 −8.47%），见[进展注册表](研究记录/optimization-progress.json)与[进展图](研究记录/figures/optimization-progress.png)
+- ~~当前最优~~（历史线，已冻结）：**0.156010**（9 节点 / 8 次改进），见[进展注册表](研究记录/optimization-progress.json)；GEFCom2014 线 2026-11-23 起仅作历史参考
 - 为什么停在这里：[饱和评估与已封路线](研究记录/optimization-saturation.md)
 - 逐轮记录（含失败与越界）：[优化技巧](研究记录/optimization-tricks.md)
 - 数据库方案（长文）：[01_数据库选型调研](周进展/2026-W46（11-09～11-15）/01_数据库选型调研.md)
