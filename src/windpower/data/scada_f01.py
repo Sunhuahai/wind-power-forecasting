@@ -116,10 +116,16 @@ def audit(path: Path | None = None, *, expected_sha256: str | None = None,
     p = path or csv_path()
     raw = read_raw(p, expected_sha256=expected_sha256,
                    expected_rows=expected_rows, expected_columns=expected_columns)
+    digest = expected_sha256 or EXPECTED_SHA256
+    rows, flags_counter = typed_rows(raw, file_id=digest)
+    return _audit_report(p, raw, digest, rows, flags_counter)
+
+
+def _audit_report(p: Path, raw: pl.DataFrame, digest: str,
+                  rows: list[dict], flags_counter: Counter) -> dict:
     times = [datetime.strptime(str(v), TIME_FORMAT) for v in raw['统计时间'].to_list()]
     time_report = time_axis_report(times)
     profiles = [column_profile(c, raw[c].to_list()) for c in raw.columns]
-    rows, flags_counter = typed_rows(raw)
 
     grid = [r['grid_active_power_kw'] for r in rows]
     conv = [r['converter_active_power_kw'] for r in rows]
@@ -134,7 +140,7 @@ def audit(path: Path | None = None, *, expected_sha256: str | None = None,
     winds = [r['nacelle_wind_speed_ms'] for r in rows]
     report = {
         'file': {
-            'path': str(p), 'sha256': EXPECTED_SHA256, 'byte_size': p.stat().st_size,
+            'path': str(p), 'sha256': digest, 'byte_size': p.stat().st_size,
             'encoding': 'gb18030', 'rows': raw.height, 'columns': raw.width,
             'time_semantics': TIME_SEMANTICS,
             'interval_start_end_semantics': 'unconfirmed',
@@ -190,19 +196,26 @@ def audit(path: Path | None = None, *, expected_sha256: str | None = None,
     return report
 
 
+def write_quality_report(report: dict, out_dir: Path = ARTIFACT_DIR) -> Path:
+    path = Path(out_dir) / 'quality_report.json'
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(json.dumps(report, ensure_ascii=False, indent=2, default=str),
+                    encoding='utf-8')
+    return path
+
+
 def ingest(path: Path | None = None, turbine_id: int = 1,
            expected_sha256: str | None = None,
            expected_rows: int | None = None,
            expected_columns: int | None = None,
-           write_report: bool = True) -> dict:
+           write_report: bool = True, *, out_dir: Path | None = None) -> dict:
     """审计 + 版本化入库；重复导入幂等，不产生重复记录。"""
     p = path or csv_path()
-    digest = sha256_of(p)
     raw = read_raw(p, expected_sha256=expected_sha256,
                   expected_rows=expected_rows, expected_columns=expected_columns)
-    report = audit(p, expected_sha256=digest, expected_rows=raw.height,
-                   expected_columns=raw.width)
-    report['file']['sha256'] = digest
+    digest = expected_sha256 or EXPECTED_SHA256
+    typed, flags_counter = typed_rows(raw, file_id=digest, turbine_id=turbine_id)
+    report = _audit_report(p, raw, digest, typed, flags_counter)
     now = datetime.now(timezone.utc)
     file_row = dict(
         file_id=digest, file_name=p.name, sha256=digest,
@@ -235,8 +248,6 @@ def ingest(path: Path | None = None, turbine_id: int = 1,
             payload={k: (str(v) if v is not None else None) for k, v in r.items()},
             ingested_at=now,
         ))
-    typed, _ = typed_rows(raw, file_id=digest, turbine_id=turbine_id)
-
     with engine().begin() as conn:
         upsert(conn, data_ingest_files, [file_row])
         upsert(conn, wind_turbines, [turbine_row])
@@ -254,9 +265,7 @@ def ingest(path: Path | None = None, turbine_id: int = 1,
     counts = verify_counts()
     report['database'] = counts
     if write_report:
-        ARTIFACT_DIR.mkdir(parents=True, exist_ok=True)
-        (ARTIFACT_DIR / 'quality_report.json').write_text(
-            json.dumps(report, ensure_ascii=False, indent=2, default=str))
+        write_quality_report(report, ARTIFACT_DIR if out_dir is None else out_dir)
     return report
 
 

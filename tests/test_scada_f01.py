@@ -1,6 +1,6 @@
 """F01 读取/审计/入库测试：GB18030、'--'、哈希锁定、幂等导入（T01/T02）。
 
-合成文件使用 27 列缩减结构；真实文件测试在文件存在时核对全部审计事实。
+合成文件使用缩减结构；显式设置 WINDPOWER_TEST_REAL_F01=1 后核对真实文件。
 数据库用例复用已迁移的开发库（WINDPOWER_TEST_DB=1），以独立 turbine_id=99
 写入并在结束时清理，不触碰真实 F01 数据与 GEFCom2014 实验表。
 """
@@ -9,11 +9,17 @@ import os
 from pathlib import Path
 
 import pytest
+from typer.testing import CliRunner
 
 from tests.synthetic_scada import MONITORED, FIELD_COLUMNS, record, synth_csv
+from windpower.cli import app
 from windpower.data import scada_f01
 
 REAL_CSV = Path('data/raw/f01/F01号风机十分钟数据.csv')
+REAL = pytest.mark.skipif(
+    os.getenv('WINDPOWER_TEST_REAL_F01') != '1' or not REAL_CSV.exists(),
+    reason='Set WINDPOWER_TEST_REAL_F01=1 with the original F01 CSV',
+)
 DB = pytest.mark.skipif(os.getenv('WINDPOWER_TEST_DB') != '1',
                         reason='Set WINDPOWER_TEST_DB=1 with migrated PostgreSQL 18.6')
 
@@ -60,6 +66,7 @@ def test_hash_and_shape_guards(tmp_path):
 def test_audit_counts_on_synthetic(tmp_path):
     path, expect, written = _synth_file(tmp_path)
     report = scada_f01.audit(path, **expect)
+    assert report['file']['sha256'] == expect['expected_sha256']
     label = report['label_candidate']['grid_active_power_kw']
     assert label['negative_count'] == 1
     assert label['negative_min_kw'] == -31.92
@@ -70,7 +77,37 @@ def test_audit_counts_on_synthetic(tmp_path):
     assert report['policy_eligibility']['GX_policy_accuracy'] is None
 
 
-@pytest.mark.skipif(not REAL_CSV.exists(), reason='Real F01 CSV not present in this checkout')
+def test_audit_and_import_cli_use_selected_report_directory(tmp_path, monkeypatch):
+    import json
+    from unittest.mock import MagicMock
+
+    csv, expect, written = _synth_file(tmp_path)
+    monkeypatch.setenv('F01_CSV_PATH', str(csv))
+    for constant, key in (('EXPECTED_SHA256', 'expected_sha256'),
+                          ('EXPECTED_ROWS', 'expected_rows'),
+                          ('EXPECTED_COLUMNS', 'expected_columns')):
+        monkeypatch.setattr(scada_f01, constant, expect[key])
+    engine = MagicMock()
+    monkeypatch.setattr(scada_f01, 'engine', engine)
+    monkeypatch.setattr(scada_f01, 'verify_counts', lambda: {'turbine_scada_10m': written})
+    out_dir = tmp_path / 'run'
+    report_path = out_dir / 'quality_report.json'
+    runner = CliRunner()
+
+    audit = runner.invoke(app, ['audit-f01', '--out-dir', str(out_dir)])
+    assert audit.exit_code == 0, audit.output
+    report = json.loads(report_path.read_text())
+    assert report['file']['sha256'] == expect['expected_sha256']
+    assert 'database' not in report
+    engine.assert_not_called()
+
+    imported = runner.invoke(app, ['import-f01', '--out-dir', str(out_dir)])
+    assert imported.exit_code == 0, imported.output
+    assert json.loads(report_path.read_text())['database']['turbine_scada_10m'] == written
+    engine.assert_called_once()
+
+
+@REAL
 def test_real_file_audit_facts():
     """对已注册真实文件重跑审计，核对规划文档 §1 的全部关键数字。"""
     report = scada_f01.audit()
@@ -98,7 +135,7 @@ def test_real_file_audit_facts():
     assert report['wind_speed']['max_ms'] == 18.69
 
 
-@pytest.mark.skipif(not REAL_CSV.exists(), reason='Real F01 CSV not present in this checkout')
+@REAL
 def test_real_typed_rows_preserve_negatives_and_sentinels():
     raw = scada_f01.read_raw()
     typed, hits = scada_f01.typed_rows(raw)

@@ -316,5 +316,5 @@ def _write_markdown(out: Path, split_name: str, results: dict, thresholds: dict,
         lines += ['## 测试门禁', '',
                   f"- 门禁 `{gate['name']}`：**{gate['status']}**（"
                   + '，'.join(f"{k}={v}" for k, v in gate['criteria'].items()) + '）。',
-                  '- 本轮测试集保持关闭：打开须在下一轮以本冻结配置执行一次性最终评分。', '']
+                  '- 本轮仅统计训练及验证期覆盖率，测试期观测未读取。', '']
     (out / f'{prefix}report.md').write_text('\n'.join(lines), encoding='utf-8')

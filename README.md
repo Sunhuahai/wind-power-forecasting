@@ -1,62 +1,53 @@
-# 风电功率预测（Wind Power Forecasting）
+# 风电功率预测
 
-风电功率预测工程仓库，用于**时序数据库部署**与**预测模型开发**。当前基于公开数据集 GEFCom2014-Wind（10 个风电场）完成从数据入库、特征构造、模型训练到逐日 24 小时滚动预测与评估的全流程。
-
-## 目录结构
-
-| 目录 | 说明 |
-|---|---|
-| `src/windpower/` | 核心包：数据导入清洗（`data/`）、特征工程（`features/`）、模型训练（`models/`）、评估与出图（`evaluation/`）、数据库访问（`db/`）、推理打包（`serving/`） |
-| `alembic/` | 数据库表结构迁移脚本 |
-| `configs/` | 实验与场站配置（`experiment.json`、`sites.json` 等） |
-| `scripts/` | 实验迭代脚本与报告/图表生成工具，见 [scripts/README.md](scripts/README.md) |
-| `tests/` | 防泄漏、时间边界、数据质量与数据库测试 |
-| `docs/` | 项目文档与周进展，见 [docs/README.md](docs/README.md) |
+当前主线使用 F01 单台风机的 10 分钟 SCADA，完成原始数据审计、版本化入库、短期滚动预测和验证评价。GEFCom2014 公开数据实验已归档，历史 CLI 命令仍可用。[GEFCom2014 归档](docs/归档/gefcom2014/README.md)
 
 ## 快速开始
 
-环境要求：Python 3.13、`uv`、PostgreSQL 18.6（或 Docker Compose；macOS 运行 LightGBM 需 `brew install libomp`）。
+在项目根目录运行，需要 Python 3.13 和 `uv`。审计直接读取私有 CSV。入库和基线需要已迁移的 PostgreSQL 18.6 开发库。
 
 ```sh
-# 1. 配置环境与依赖
-cp .env.example .env
 uv sync --extra dev
 
-# 2. 启动并初始化数据库（默认 127.0.0.1:55432）
-uv run windpower db-start
-uv run windpower db-init
+# 默认读取 data/raw/f01/F01号风机十分钟数据.csv。
+# 文件放在别处时，指定私有路径。
+# export F01_CSV_PATH=/path/to/private/F01.csv
 
-# 3. 跑通单站全流程（下载 -> 入库 -> 训练 -> 预测 -> 评估）
-uv run windpower run-all --site 1
-
-# 4. 运行测试
-uv run pytest
-WINDPOWER_TEST_DB=1 uv run pytest   # 含真实数据库测试
+# CLI 默认使用此目录存放本轮产物，可用 --out-dir 指定其他目录。
+F01_OUT=artifacts/f01-validation
+uv run windpower audit-f01 --out-dir "$F01_OUT"
 ```
 
-常用子命令：`db-health`、`download`、`import-data`、`quality`、`build-samples`、`train`、`predict`、`evaluate`、`forecast`、`run-sites`。
+审计核对注册文件的 SHA-256、编码、行列数和时间网格，输出 `quality_report.json`。原始 CSV 仅保留在私有位置。网侧负功率保留原值，数据库保存源时间，避免替换原始时间戳。
 
-## 数据库部署
+接下来确认 `DATABASE_URL` 指向项目的 **开发库**。如需从空的本地开发库开始，可用 `uv run windpower db-start` 启动 Compose 服务，再用 `uv run windpower db-init` 初始化。[Omarchy 开发环境](docs/部署与工程/omarchy-setup.md)
 
-- 所有正式训练、验证与预测样本均从 PostgreSQL 读取。
-- 核心表：`wind_farms`（场站）、`power_observations`（功率观测）、`nwp_forecasts`（气象预报）、`dataset_splits`（划分定义）、`model_runs`（训练记录）、`predictions`（预测结果）。
-- 数据库选型、生产部署架构与多批次 NWP 迁移方案见 [数据库选型调研](docs/周进展/2026-W46（11-09～11-15）/01_数据库选型调研.md) 与 [代码架构](docs/部署与工程/architecture.md)。
+```sh
+uv run windpower import-f01 --out-dir "$F01_OUT"
+uv run windpower baseline-f01 --out-dir "$F01_OUT"
+uv run windpower final-test-f01 --split validation --out-dir "$F01_OUT"
+```
 
-## 模型开发
+- `import-f01` 按文件哈希版本化入库，重复导入幂等。用同一目录时，本轮质量报告会补充入库核对结果。
+- `baseline-f01` 运行持续法、季节法、Ridge 和 LightGBM，生成验证报告、分提前量和逐日指标、模型文件及快照清单。运行会在开发库登记特征快照。
+- `final-test-f01 --split validation` 读取该目录保存的模型和训练阈值，输出验证 MAE/RMSE。验证回放可以用于排查门禁未通过的运行。
+- 基线与验证回放只查询注册文件版本中早于验证截止的观测，且仅保留提前量标签齐全的发布。验证末尾跨入测试期的发布会被排除，样本数可能与首轮历史报告不同。
+- 首轮测试已于 2026-11-22 完成一次性评分，证据保存在 `artifacts/f01/`。日常复跑使用独立目录，模型选型和调参使用验证集。[F01 评价协议](docs/研究记录/f01-evaluation-protocol.md)
 
-- **严格评估协议**：`2012` 年训练，`2013` 上半年验证（仅用于模型选择、早停与融合权重），`2013` 下半年测试（仅做最终评分，不参与调参）。
-- **当前基线与进展**：公开数据集 10 站严格协议最优 RMSE 为 **0.156010**（相对原 C 基线降低 **8.47%**），详见 [优化进展](docs/研究记录/optimization-progress.md)。
+```sh
+uv run pytest -q
+```
 
-## 广西真实风电场部署目标（2026-W47）
+默认测试使用合成 SCADA，数据库和真实 CSV 用例默认跳过。
 
-现有 GEFCom2014-Wind 小时级公开数据继续用于算法研究，原 MAE/RMSE 与严格 2012/2013 训练验证测试划分不变。真实广西风电场将采用 **PostgreSQL + TimescaleDB** 的独立 15 分钟生产表：保留 SCADA 实发/可用功率、NWP 发布与接收时间、模型发布批次、预测目标时间、限电事件、调度报送回执和政策评分。详情见 [生产数据库结构与业务示例](docs/部署与工程/guangxi-operational-storage.md) 和 [本周政策报告](docs/周进展/2026-W47（11-16～11-22）/01_广西风电功率预测考核政策与训练评估适配.md)。
+## 项目导航
 
-后续真实场站评价将同时输出 MAE、RMSE、广西日前 D+1/超短期公开公式准确率、完整性和提前量诊断；独立命令为 `windpower evaluate-guangxi`。本次仅提交迁移及评分代码，**尚未在 Omarchy 执行迁移、测试或真实数据评价**，不将小时级公开数据的 RMSE 伪装为正式广西考核成绩。
+| 路径 | 用途 |
+|---|---|
+| [src/windpower/](src/windpower/) | F01 数据导入、样本构造、模型、评价和数据库访问 |
+| [configs/f01_experiment.json](configs/f01_experiment.json) | 预注册的数据版本、训练与验证划分、可见性假设和门禁 |
+| [scripts/README.md](scripts/README.md) | 实验、报告和仪表盘脚本 |
+| [docs/README.md](docs/README.md) | 文档索引 |
 
-已收到的 F01 风机数据为单机 10 分钟 SCADA，而非全场 15 分钟并网点功率。基于实际数据的[第二份实施规划](docs/周进展/2026-W47（11-16～11-22）/02_F01十分钟SCADA数据驱动的项目结构与评价体系规划.md)规定了数据质量规则、独立风机时序表、10→15 分钟代理转换限制、基础/代理/政策三级评价资格及 Agent T00—T09 任务。**没有真实场站数据时不得填报正式广西考核分数；原始用户 CSV 不纳入本公开仓库。**
-
-## 文档导航
-
-- 全部文档索引：[docs/README.md](docs/README.md)
-- 数据库与部署：[数据库选型调研](docs/周进展/2026-W46（11-09～11-15）/01_数据库选型调研.md) · [实时预测准备](docs/部署与工程/realtime-readiness.md)
-- 模型与实验：[实验报告](docs/研究记录/experiment-report.md) · [图表报告](docs/研究记录/paper-report.md) · [优化技巧与失败记录](docs/研究记录/optimization-tricks.md)
+- F01 实测与设计见 [数据审计](docs/研究记录/f01-data-audit.md)、[首轮基线](docs/研究记录/f01-baseline-first-round.md)和[真实数据架构](docs/周进展/2026-W47（11-16～11-22）/03_真实数据项目架构总览.md)。
+- 广西现场部署采用 PostgreSQL + TimescaleDB，按历史发布和接收时间回放。正式评分需要 15 分钟场站参考功率、装机容量、历史预测发布及豁免等数据。F01 单机评价中的 `GX_policy_accuracy` 为 `null`。[广西生产库与数据契约](docs/部署与工程/guangxi-operational-storage.md)

@@ -1,13 +1,18 @@
 import json
 import subprocess
+from contextlib import contextmanager
 from pathlib import Path
 from datetime import datetime
+from typing import Annotated
 import typer
 from sqlalchemy import text
 from alembic import command
 from alembic.config import Config
 from windpower.db.core import engine, health
-app=typer.Typer(no_args_is_help=True,help='GEFCom2014 PostgreSQL 实验 CLI；在项目根目录运行。')
+app=typer.Typer(no_args_is_help=True,help='F01 单机 SCADA 审计、入库与验证；请在项目根目录运行。')
+
+F01_OUTPUT_DIR = Path('artifacts/f01-validation')
+F01OutputDir = Annotated[Path, typer.Option(help='审计或模型产物目录；验证回放读取同一目录。')]
 
 def emit(value): typer.echo(json.dumps(value,ensure_ascii=False,indent=2,default=str))
 @app.command()
@@ -92,12 +97,12 @@ def evaluate(site:int=1):
     emit(score(site))
 @app.command('run-all')
 def run_all(site:int=1):
-    """数据库已启动时，下载、迁移、导入、清洗、训练、测试和报告。"""
+    """GEFCom2014 历史入口：下载、迁移、导入、训练、测试和报告。"""
     db_init();download();import_data(site);quality(site);build_samples(site);train(site);predict(site);evaluate(site)
     typer.echo(f'报告: artifacts/site_{site}/report.md')
 @app.command('run-sites')
 def run_sites():
-    """先 Zone 1，再顺序完成全部十个场站并汇总。"""
+    """GEFCom2014 历史入口：顺序完成全部十个场站并汇总。"""
     import polars as pl
     for site in range(1,11): run_all(site)
     summarize()
@@ -154,37 +159,51 @@ def evaluate_guangxi(
     )
     emit(result)
 
+@contextmanager
+def _f01_errors():
+    try:
+        yield
+    except (FileNotFoundError, ValueError) as exc:
+        typer.echo(str(exc), err=True)
+        raise typer.Exit(1) from exc
+
+
 @app.command('audit-f01')
-def audit_f01():
+def audit_f01(out_dir: F01OutputDir = F01_OUTPUT_DIR):
     """只读审计 F01 十分钟 CSV：编码、时间网格、54 列画像与规则命中。"""
-    from windpower.data.scada_f01 import audit, ARTIFACT_DIR
-    report = audit()
-    ARTIFACT_DIR.mkdir(parents=True, exist_ok=True)
-    (ARTIFACT_DIR / 'quality_report.json').write_text(
-        json.dumps(report, ensure_ascii=False, indent=2, default=str))
-    emit({k: report[k] for k in ('file', 'identity', 'time_axis', 'label_candidate',
-                                 'row_flag_hits', 'policy_eligibility')})
+    from windpower.data.scada_f01 import audit, write_quality_report
+    with _f01_errors():
+        report = audit()
+        output = write_quality_report(report, out_dir)
+    emit({**{k: report[k] for k in ('file', 'identity', 'time_axis', 'label_candidate',
+                                    'row_flag_hits', 'policy_eligibility')},
+          'report': str(output)})
 
 @app.command('import-f01')
-def import_f01():
+def import_f01(out_dir: F01OutputDir = F01_OUTPUT_DIR):
     """审计并版本化入库 F01 SCADA；重复导入幂等，不产生重复记录。"""
     from windpower.data.scada_f01 import ingest
-    report = ingest()
+    with _f01_errors():
+        report = ingest(out_dir=out_dir)
     emit({k: report[k] for k in ('file', 'time_axis', 'row_flag_hits', 'database')})
 
 @app.command('baseline-f01')
-def baseline_f01(turbine_id: int = typer.Option(1, help='风机 ID')):
+def baseline_f01(turbine_id: int = typer.Option(1, help='风机 ID'),
+                 *, out_dir: F01OutputDir = F01_OUTPUT_DIR):
     """F01 原生 10 分钟基线：样本 -> 训练 -> 验证评价 -> 统一报告（测试集保持关闭）。"""
     from windpower.models.scada_baseline import run_baseline
-    emit(run_baseline(turbine_id=turbine_id))
+    with _f01_errors():
+        emit(run_baseline(turbine_id=turbine_id, out_dir=out_dir))
 
 @app.command('final-test-f01')
 def final_test_f01(turbine_id: int = typer.Option(1, help='风机 ID'),
-                   split: str = typer.Option('test', help='test 为真实一次性评分；validation 仅干跑校验')):
-    """门禁通过后以冻结模型做一次性最终评分；validation 用于触碰测试标签前的代码校验。"""
+                   split: str = typer.Option('test', help='日常使用 validation；首轮 test 已评分'),
+                   *, out_dir: F01OutputDir = F01_OUTPUT_DIR):
+    """加载保存的模型做只读验证回放，或检查一次性评分状态。"""
     from windpower.models.scada_baseline import run_final_test
-    summary = run_final_test(turbine_id=turbine_id, split_name=split,
-                             write=(split == 'test'))
+    with _f01_errors():
+        summary = run_final_test(turbine_id=turbine_id, out_dir=out_dir,
+                                 split_name=split, write=(split == 'test'))
     if split == 'test':
         emit({m: {k: summary['models'][m][k] for k in ('MAE', 'RMSE', 'Bias', 'n')}
               for m in summary['models']})

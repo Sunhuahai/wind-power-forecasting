@@ -16,9 +16,10 @@ from pathlib import Path
 
 import numpy as np
 import polars as pl
-from sqlalchemy import text
+from sqlalchemy import select
 
 from windpower.db.core import engine
+from windpower.db.turbine_schema import turbine_scada_10m
 
 STEP = timedelta(minutes=10)
 
@@ -38,18 +39,26 @@ FEATURE_COLUMNS = (
 BASELINE_COLUMNS = ['p_lag1', 'seasonal_kw']
 
 
-def load_turbine_frame(turbine_id: int = 1) -> pl.DataFrame:
-    """从数据库读取规范 10 分钟行（单一 file 版本），按时间升序。"""
+def load_turbine_frame(turbine_id: int = 1, *, file_id: str | None = None,
+                       observed_before: datetime | None = None) -> pl.DataFrame:
+    """读取指定风机的规范行，可限定文件版本及观测时间上界（不含）。"""
+    columns = turbine_scada_10m.c
+    query = select(
+        columns.observed_at, columns.grid_active_power_kw, columns.nacelle_wind_speed_ms,
+        columns.ambient_temp_c, columns.rotor_rpm, columns.generator_rpm,
+        columns.pitch1_deg, columns.pitch2_deg, columns.pitch3_deg, columns.generating_h,
+        columns.fault_h, columns.maintenance_h, columns.normal_h, columns.env_abnormal_h,
+        columns.env_normal_h, columns.file_id,
+    ).where(columns.turbine_id == turbine_id)
+    if file_id is not None:
+        query = query.where(columns.file_id == file_id)
+    if observed_before is not None:
+        query = query.where(columns.observed_at < observed_before)
     with engine().connect() as conn:
-        rows = conn.execute(text(
-            'SELECT observed_at, grid_active_power_kw, nacelle_wind_speed_ms,'
-            ' ambient_temp_c, rotor_rpm, generator_rpm, pitch1_deg, pitch2_deg,'
-            ' pitch3_deg, generating_h, fault_h, maintenance_h, normal_h,'
-            ' env_abnormal_h, env_normal_h, file_id FROM turbine_scada_10m'
-            ' WHERE turbine_id=:t ORDER BY observed_at'), {'t': turbine_id}).mappings().all()
+        rows = conn.execute(query.order_by(columns.observed_at)).mappings().all()
     if not rows:
-        raise ValueError('turbine_scada_10m empty; run import-f01 first')
-    return pl.DataFrame([dict(r) for r in rows]).sort('observed_at')
+        raise ValueError('No matching turbine_scada_10m rows; run import-f01 for the registered file')
+    return pl.DataFrame([dict(r) for r in rows], infer_schema_length=None)
 
 
 def _masked(value, lo, hi):

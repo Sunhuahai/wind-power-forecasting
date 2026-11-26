@@ -2,13 +2,14 @@
 
 预注册协议见 configs/f01_experiment.json：
 - 训练集拟合；验证集用于 Ridge alpha 选择、LightGBM 早停与门禁判定；
-- 测试集本轮保持关闭（规划 T04），仅报告可用样本规模，不计算任何测试指标。
+- 基线和验证回放只读取验证截止前的观测。
 """
 from __future__ import annotations
 
 import hashlib
 import json
 import subprocess
+import sys
 import time as _time
 import uuid
 from datetime import datetime, timezone
@@ -34,38 +35,56 @@ def _protocol_tests_passed() -> bool | None:
     """门禁 c3：实际运行防泄漏与质量测试，取真实退出码。"""
     try:
         proc = subprocess.run(
-            ['uv', 'run', 'pytest', 'tests/test_scada_samples.py',
+            [sys.executable, '-m', 'pytest', 'tests/test_scada_samples.py',
              'tests/test_scada_quality.py', '-q'],
             capture_output=True, text=True, timeout=600)
         return proc.returncode == 0
-    except Exception:
+    except (OSError, subprocess.TimeoutExpired):
         return None
+
+
+def _load_samples(turbine_id: int, cfg: dict, *, validation_only: bool):
+    cutoff = datetime.fromisoformat(cfg['splits']['validation'][1]) if validation_only else None
+    frame = load_turbine_frame(turbine_id, file_id=cfg['dataset']['file_sha256'],
+                               observed_before=cutoff)
+    return build_samples(frame, config_path=CONFIG_PATH, turbine_id=turbine_id)
+
+
+def _has_test_evidence(out_dir: Path) -> bool:
+    return (out_dir / 'test_manifest.json').exists() or (out_dir / 'test_summary.json').exists()
 
 
 def run_final_test(turbine_id: int = 1, out_dir: Path = OUT_DIR,
                    split_name: str = 'test', write: bool = True) -> dict:
-    """以冻结配置与冻结模型做一次性最终评分（预注册门禁通过后的唯一一次）。
+    """以保存的模型与训练阈值回放验证，或执行尚未记录的一次性测试评分。
 
-    不重新训练：加载 baseline-f01 保存的模型 bundle；阈值原样复用验证轮
-    summary.json 中由训练集推导的值。write=False 时只返回结果不落盘，
-    用于在触碰测试标签前先用 validation 复现已存指标验证代码路径。
+    验证回放始终只返回结果，使用与 baseline-f01 相同的验证截止时间。
+    测试评分要求验证门禁通过且没有已保存的测试证据。
     """
-    cfg = json.loads(CONFIG_PATH.read_text())
+    if split_name not in ('validation', 'test'):
+        raise ValueError('split must be validation or test')
+    config_bytes = CONFIG_PATH.read_bytes()
+    cfg = json.loads(config_bytes)
     out_dir = Path(out_dir)
-    val_summary = json.loads((out_dir / 'summary.json').read_text())
-    if val_summary['gate']['status'] != 'pass':
+    validation_only = split_name == 'validation'
+    if not validation_only and (_has_test_evidence(OUT_DIR) or _has_test_evidence(out_dir)):
+        raise ValueError('本协议的测试集已完成一次性评分；日常校验请使用 --split validation')
+    summary_path = out_dir / 'summary.json'
+    if not summary_path.is_file():
+        raise FileNotFoundError(f'{summary_path} missing; run baseline-f01 --out-dir {out_dir} first')
+    val_summary = json.loads(summary_path.read_text(encoding='utf-8'))
+    if not validation_only and val_summary['gate']['status'] != 'pass':
         raise ValueError('验证门禁未通过；测试集必须保持锁定')
-    frame = load_turbine_frame(turbine_id)
-    samples, coverage = build_samples(frame, turbine_id=turbine_id)
-    part = split_by_target(samples, split_name)
-    if part.is_empty():
-        raise ValueError(f'Empty {split_name} split; check database ingestion')
     bundles = {}
     for name in ('persistence', 'seasonal', 'ridge', 'lightgbm'):
         path = out_dir / 'models' / f'{name}.joblib'
         if not path.exists():
-            raise FileNotFoundError(f'{path} missing; run baseline-f01 first')
+            raise FileNotFoundError(f'{path} missing; run baseline-f01 --out-dir {out_dir} first')
         bundles[name] = joblib.load(path)
+    samples, coverage = _load_samples(turbine_id, cfg, validation_only=validation_only)
+    part = split_by_target(samples, split_name, config_path=CONFIG_PATH)
+    if part.is_empty():
+        raise ValueError(f'Empty {split_name} split; check database ingestion')
     preds, runtimes = {}, {}
     for name, bundle in bundles.items():
         preds[name] = predict(bundle, part)
@@ -74,7 +93,7 @@ def run_final_test(turbine_id: int = 1, out_dir: Path = OUT_DIR,
             predict_seconds=bundle['metadata'].get('last_predict_seconds'))
     thresholds = dict(val_summary['thresholds'])
     results = evaluate_split(part, preds, runtimes, thresholds, cfg)
-    if not write:
+    if validation_only or not write:
         return results
     coverage['splits'] = {split_name: dict(
         rows=part.height, issues=part['issue_at'].n_unique(),
@@ -92,7 +111,7 @@ def run_final_test(turbine_id: int = 1, out_dir: Path = OUT_DIR,
         status='opened_one_time_final_scoring', rows=part.height,
         issues=part['issue_at'].n_unique(),
         authorized_by='user_2026-11-22',
-        frozen_config_sha256=hashlib.sha256(CONFIG_PATH.read_bytes()).hexdigest(),
+        frozen_config_sha256=hashlib.sha256(config_bytes).hexdigest(),
         snapshot_id=json.loads((out_dir / 'run_manifest.json').read_text())['snapshot_id'],
     )
     summary = write_reports(out_dir, split_name, results, thresholds, coverage, cfg,
@@ -108,15 +127,16 @@ def run_baseline(turbine_id: int = 1, out_dir: Path = OUT_DIR) -> dict:
 
     预注册协议见 configs/f01_experiment.json：
     - 训练集拟合；验证集用于 Ridge alpha 选择、LightGBM 早停与门禁判定；
-    - 测试集首轮保持关闭（规划 T04），一次性最终评分见 run_final_test。
+    - 仅读取训练和验证所需的历史观测，覆盖统计同样止于验证期。
     """
     started = _time.perf_counter()
+    out_dir = Path(out_dir)
+    if _has_test_evidence(out_dir):
+        raise ValueError(f'{out_dir} 已保存一次性测试证据；请用 --out-dir 指定新的运行目录')
     cfg = json.loads(CONFIG_PATH.read_text())
-    frame = load_turbine_frame(turbine_id)
-    samples, coverage = build_samples(frame, turbine_id=turbine_id)
-    train = split_by_target(samples, 'train')
-    validation = split_by_target(samples, 'validation')
-    test = split_by_target(samples, 'test')
+    samples, coverage = _load_samples(turbine_id, cfg, validation_only=True)
+    train = split_by_target(samples, 'train', config_path=CONFIG_PATH)
+    validation = split_by_target(samples, 'validation', config_path=CONFIG_PATH)
     if train.is_empty() or validation.is_empty():
         raise ValueError('Empty train/validation split; check database ingestion')
     thresholds = train_thresholds(train, cfg)
@@ -134,15 +154,15 @@ def run_baseline(turbine_id: int = 1, out_dir: Path = OUT_DIR) -> dict:
     coverage['splits'] = {
         name: dict(rows=part.height, issues=part['issue_at'].n_unique(),
                    target_min=str(part['valid_at'].min()), target_max=str(part['valid_at'].max()))
-        for name, part in (('train', train), ('validation', validation), ('test', test))}
+        for name, part in (('train', train), ('validation', validation))}
+    coverage['observed_before'] = cfg['splits']['validation'][1]
+    coverage['splits']['test'] = dict(rows=None, issues=None, target_min=None, target_max=None)
     test_availability = dict(
-        status='locked_by_gate_this_round', rows=test.height,
-        issues=test['issue_at'].n_unique(),
-        note='测试集未评分；打开须在下一轮以本冻结配置执行一次性最终评分。')
+        status='locked_by_gate_this_round', rows=None, issues=None,
+        note='验证运行未读取测试期观测，测试期覆盖率未统计。')
 
-    out_dir = Path(out_dir)
-    write_reports(out_dir, 'validation', results, thresholds, coverage, cfg,
-                  test_availability, tests_passed)
+    summary = write_reports(out_dir, 'validation', results, thresholds, coverage, cfg,
+                            test_availability, tests_passed)
 
     (out_dir / 'models').mkdir(parents=True, exist_ok=True)
     for name, bundle in bundles.items():
@@ -174,4 +194,5 @@ def run_baseline(turbine_id: int = 1, out_dir: Path = OUT_DIR) -> dict:
         models={m: {k: s[k] for k in ('MAE', 'RMSE', 'Bias', 'n')}
                 for m, s in results.items()},
         coverage=coverage['splits'],
+        gate=summary['gate'],
         out=str(out_dir))
